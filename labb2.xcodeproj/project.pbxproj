@@ -14,6 +14,7 @@
 		5FB065E11C0CF9BA00E1ACE6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FB065DF1C0CF9BA00E1ACE6 /* LaunchScreen.storyboard */; };
 		5FB065EC1C0CF9BA00E1ACE6 /* labb2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB065EB1C0CF9BA00E1ACE6 /* labb2Tests.swift */; };
 		5FB065F71C0CF9BA00E1ACE6 /* labb2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB065F61C0CF9BA00E1ACE6 /* labb2UITests.swift */; };
+		5FB066051C0CFB7900E1ACE6 /* rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB066041C0CFB7900E1ACE6 /* rules.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		5FB065F21C0CF9BA00E1ACE6 /* labb2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = labb2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FB065F61C0CF9BA00E1ACE6 /* labb2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = labb2UITests.swift; sourceTree = "<group>"; };
 		5FB065F81C0CF9BA00E1ACE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5FB066041C0CFB7900E1ACE6 /* rules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = rules.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				5FB065DD1C0CF9BA00E1ACE6 /* Assets.xcassets */,
 				5FB065DF1C0CF9BA00E1ACE6 /* LaunchScreen.storyboard */,
 				5FB065E21C0CF9BA00E1ACE6 /* Info.plist */,
+				5FB066041C0CFB7900E1ACE6 /* rules.swift */,
 			);
 			path = labb2;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FB066051C0CFB7900E1ACE6 /* rules.swift in Sources */,
 				5FB065D91C0CF9BA00E1ACE6 /* ViewController.swift in Sources */,
 				5FB065D71C0CF9BA00E1ACE6 /* AppDelegate.swift in Sources */,
 			);
@@ -403,6 +407,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = labb2/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.exyr.mobila.labb2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -414,6 +419,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = labb2/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.exyr.mobila.labb2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
