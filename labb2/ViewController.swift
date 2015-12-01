@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        self.upsideDown.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2*2));
     }
 
     override func didReceiveMemoryWarning() {
@@ -20,6 +21,8 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBOutlet weak var upsideDown: UILabel!
 
+    
 }
 
