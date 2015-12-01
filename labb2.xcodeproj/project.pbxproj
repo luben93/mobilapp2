@@ -15,6 +15,7 @@
 		5FB065EC1C0CF9BA00E1ACE6 /* labb2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB065EB1C0CF9BA00E1ACE6 /* labb2Tests.swift */; };
 		5FB065F71C0CF9BA00E1ACE6 /* labb2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB065F61C0CF9BA00E1ACE6 /* labb2UITests.swift */; };
 		5FB066051C0CFB7900E1ACE6 /* rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB066041C0CFB7900E1ACE6 /* rules.swift */; };
+		5FB066071C0D0CBA00E1ACE6 /* gamePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB066061C0D0CBA00E1ACE6 /* gamePlan.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		5FB065F61C0CF9BA00E1ACE6 /* labb2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = labb2UITests.swift; sourceTree = "<group>"; };
 		5FB065F81C0CF9BA00E1ACE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5FB066041C0CFB7900E1ACE6 /* rules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = rules.swift; sourceTree = "<group>"; };
+		5FB066061C0D0CBA00E1ACE6 /* gamePlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = gamePlan.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				5FB065D61C0CF9BA00E1ACE6 /* AppDelegate.swift */,
 				5FB065D81C0CF9BA00E1ACE6 /* ViewController.swift */,
 				5FB065DA1C0CF9BA00E1ACE6 /* Main.storyboard */,
+				5FB066061C0D0CBA00E1ACE6 /* gamePlan.swift */,
 				5FB065DD1C0CF9BA00E1ACE6 /* Assets.xcassets */,
 				5FB065DF1C0CF9BA00E1ACE6 /* LaunchScreen.storyboard */,
 				5FB065E21C0CF9BA00E1ACE6 /* Info.plist */,
@@ -264,6 +267,7 @@
 			files = (
 				5FB066051C0CFB7900E1ACE6 /* rules.swift in Sources */,
 				5FB065D91C0CF9BA00E1ACE6 /* ViewController.swift in Sources */,
+				5FB066071C0D0CBA00E1ACE6 /* gamePlan.swift in Sources */,
 				5FB065D71C0CF9BA00E1ACE6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
