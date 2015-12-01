@@ -21,24 +21,24 @@ class gamePlan: UIView {
     override func drawRect(rect: CGRect) {
         
         let outer = UIBezierPath(rect: CGRect(x: bounds.midX * 0.1, y: bounds.midY * 0.1, width: bounds.maxX * 0.9, height: bounds.maxY * 0.9))
-        let middle = UIBezierPath(rect: CGRect(x: bounds.midX * 0.5, y: bounds.midY * 0.5, width: bounds.maxX * 0.5, height: bounds.maxY * 0.5))
-        let inner = UIBezierPath(rect: CGRect(x: bounds.midX * 0.9, y: bounds.midY * 0.9, width: bounds.maxX * 0.1, height: bounds.maxY * 0.1))
+        let middle = UIBezierPath(rect: CGRect(x: bounds.midX * 0.4, y: bounds.midY * 0.4, width: bounds.maxX * 0.6, height: bounds.maxY * 0.6))
+        let inner = UIBezierPath(rect: CGRect(x: bounds.midX * 0.8, y: bounds.midY * 0.8, width: bounds.maxX * 0.2, height: bounds.maxY * 0.2))
         let up = UIBezierPath()
         let down = UIBezierPath()
         let left = UIBezierPath()
         let rigth = UIBezierPath()
         
         up.moveToPoint(CGPoint(x: bounds.midX, y: bounds.minY + bounds.midY * 0.1))
-        up.addLineToPoint(CGPoint(x: bounds.midX, y: bounds.midY - bounds.midY * 0.1 ))
+        up.addLineToPoint(CGPoint(x: bounds.midX, y: bounds.midY - bounds.midY * 0.2 ))
         
         down.moveToPoint(CGPoint(x: bounds.midX, y: bounds.maxY - bounds.midY * 0.1))
-        down.addLineToPoint(CGPoint(x: bounds.midX, y: bounds.midY + bounds.midY * 0.1))
+        down.addLineToPoint(CGPoint(x: bounds.midX, y: bounds.midY + bounds.midY * 0.2))
         
         rigth.moveToPoint(CGPoint(x: bounds.maxX - bounds.maxX * 0.05, y: bounds.midY))
-        rigth.addLineToPoint(CGPoint(x: bounds.midX + bounds.midX * 0.1 , y: bounds.midY))
+        rigth.addLineToPoint(CGPoint(x: bounds.midX + bounds.midX * 0.2 , y: bounds.midY))
 
         left.moveToPoint(CGPoint(x: bounds.minX + bounds.midX * 0.1, y: bounds.midY))
-        left.addLineToPoint(CGPoint(x: bounds.midX - bounds.midX * 0.1, y: bounds.midY))
+        left.addLineToPoint(CGPoint(x: bounds.midX - bounds.midX * 0.2, y: bounds.midY))
         
         color.set()
         
