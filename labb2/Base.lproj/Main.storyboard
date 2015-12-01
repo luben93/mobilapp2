@@ -197,38 +197,59 @@
                                     <constraint firstItem="pL3-9a-n1h" firstAttribute="leading" secondItem="kGY-MO-QQm" secondAttribute="leading" id="zMj-cg-7yP"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="upsideup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sJ3-Tw-bVp">
-                                <rect key="frame" x="171" y="133" width="71" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="RED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S5c-2h-don">
+                                <rect key="frame" x="195" y="28" width="33" height="21"/>
                                 <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="tAW-gP-l2w"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="upsidedown" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fP9-oI-eNy">
-                                <rect key="frame" x="160" y="563" width="93" height="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BLUE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mvf-KZ-xbD">
+                                <rect key="frame" x="186" y="695" width="42" height="21"/>
                                 <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="3Q4-tx-Pdw"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OYa-OU-jOf">
+                                <rect key="frame" x="20" y="28" width="73" height="30"/>
+                                <animations/>
+                                <state key="normal" title="RedButton"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oGm-Bi-kLa">
+                                <rect key="frame" x="319" y="686" width="75" height="30"/>
+                                <animations/>
+                                <state key="normal" title="blueButton"/>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="oGm-Bi-kLa" firstAttribute="trailing" secondItem="1d0-qK-irR" secondAttribute="trailing" id="0j0-Ma-QdL"/>
+                            <constraint firstItem="OYa-OU-jOf" firstAttribute="leading" secondItem="1d0-qK-irR" secondAttribute="leading" id="11y-za-fd6"/>
                             <constraint firstAttribute="leadingMargin" secondItem="1d0-qK-irR" secondAttribute="leading" id="8Bw-Dj-Ad1"/>
+                            <constraint firstItem="S5c-2h-don" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="J6B-hz-hBq"/>
                             <constraint firstItem="1d0-qK-irR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="MZb-cb-A54"/>
-                            <constraint firstItem="fP9-oI-eNy" firstAttribute="centerX" secondItem="sJ3-Tw-bVp" secondAttribute="centerX" id="N9M-bC-r06"/>
-                            <constraint firstItem="fP9-oI-eNy" firstAttribute="centerX" secondItem="1d0-qK-irR" secondAttribute="centerX" id="OWf-Ys-bUE"/>
                             <constraint firstItem="1d0-qK-irR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Q9V-om-VZZ"/>
-                            <constraint firstItem="fP9-oI-eNy" firstAttribute="top" secondItem="1d0-qK-irR" secondAttribute="bottom" constant="8" symbolic="YES" id="adP-bG-hCd"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="fP9-oI-eNy" secondAttribute="bottom" constant="133" id="fAH-0i-e5R"/>
-                            <constraint firstItem="sJ3-Tw-bVp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="113" id="g73-Rz-SKM"/>
-                            <constraint firstItem="1d0-qK-irR" firstAttribute="top" secondItem="sJ3-Tw-bVp" secondAttribute="bottom" constant="27" id="reX-PL-2bT"/>
+                            <constraint firstItem="OYa-OU-jOf" firstAttribute="top" secondItem="S5c-2h-don" secondAttribute="top" id="YGy-Kd-Xw9"/>
+                            <constraint firstItem="Mvf-KZ-xbD" firstAttribute="centerX" secondItem="1d0-qK-irR" secondAttribute="centerX" id="aye-dM-HW9"/>
+                            <constraint firstItem="S5c-2h-don" firstAttribute="leading" secondItem="Mvf-KZ-xbD" secondAttribute="leading" id="b4O-SS-Pws"/>
+                            <constraint firstItem="oGm-Bi-kLa" firstAttribute="bottom" secondItem="Mvf-KZ-xbD" secondAttribute="bottom" id="gPs-nr-kd7"/>
+                            <constraint firstAttribute="bottom" secondItem="Mvf-KZ-xbD" secondAttribute="bottom" constant="20" symbolic="YES" id="imt-B2-fnB"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
-                        <outlet property="upsideDown" destination="fP9-oI-eNy" id="Rzz-jX-qP9"/>
+                        <outlet property="blueButton" destination="oGm-Bi-kLa" id="aqn-sr-xbm"/>
+                        <outlet property="moveButton" destination="OWw-4M-2LO" id="MPx-GW-FUI"/>
+                        <outlet property="redButton" destination="OYa-OU-jOf" id="zb1-ON-piF"/>
+                        <outlet property="upsideDown" destination="S5c-2h-don" id="WON-x1-K3q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
