@@ -227,6 +227,11 @@
                                 <animations/>
                                 <state key="normal" title="blueButton"/>
                             </button>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k6a-rK-QSO" customClass="SKView">
+                                <rect key="frame" x="20" y="28" width="374" height="700"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -234,19 +239,24 @@
                             <constraint firstItem="oGm-Bi-kLa" firstAttribute="trailing" secondItem="1d0-qK-irR" secondAttribute="trailing" id="0j0-Ma-QdL"/>
                             <constraint firstItem="OYa-OU-jOf" firstAttribute="leading" secondItem="1d0-qK-irR" secondAttribute="leading" id="11y-za-fd6"/>
                             <constraint firstAttribute="leadingMargin" secondItem="1d0-qK-irR" secondAttribute="leading" id="8Bw-Dj-Ad1"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="k6a-rK-QSO" secondAttribute="bottom" constant="8" symbolic="YES" id="AEp-3c-B5y"/>
                             <constraint firstItem="S5c-2h-don" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="J6B-hz-hBq"/>
                             <constraint firstItem="1d0-qK-irR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="MZb-cb-A54"/>
                             <constraint firstItem="1d0-qK-irR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Q9V-om-VZZ"/>
+                            <constraint firstItem="k6a-rK-QSO" firstAttribute="top" secondItem="OYa-OU-jOf" secondAttribute="top" id="VJx-l8-dOM"/>
                             <constraint firstItem="OYa-OU-jOf" firstAttribute="top" secondItem="S5c-2h-don" secondAttribute="top" id="YGy-Kd-Xw9"/>
                             <constraint firstItem="Mvf-KZ-xbD" firstAttribute="centerX" secondItem="1d0-qK-irR" secondAttribute="centerX" id="aye-dM-HW9"/>
                             <constraint firstItem="S5c-2h-don" firstAttribute="leading" secondItem="Mvf-KZ-xbD" secondAttribute="leading" id="b4O-SS-Pws"/>
                             <constraint firstItem="oGm-Bi-kLa" firstAttribute="bottom" secondItem="Mvf-KZ-xbD" secondAttribute="bottom" id="gPs-nr-kd7"/>
+                            <constraint firstItem="k6a-rK-QSO" firstAttribute="leading" secondItem="OYa-OU-jOf" secondAttribute="leading" id="i9s-fa-L6M"/>
                             <constraint firstAttribute="bottom" secondItem="Mvf-KZ-xbD" secondAttribute="bottom" constant="20" symbolic="YES" id="imt-B2-fnB"/>
+                            <constraint firstItem="k6a-rK-QSO" firstAttribute="trailing" secondItem="oGm-Bi-kLa" secondAttribute="trailing" id="j6j-FZ-s0A"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="blueButton" destination="oGm-Bi-kLa" id="aqn-sr-xbm"/>
+                        <outlet property="gameView" destination="k6a-rK-QSO" id="gsB-O5-sqD"/>
                         <outlet property="moveButton" destination="OWw-4M-2LO" id="MPx-GW-FUI"/>
                         <outlet property="redButton" destination="OYa-OU-jOf" id="zb1-ON-piF"/>
                         <outlet property="upsideDown" destination="S5c-2h-don" id="WON-x1-K3q"/>
@@ -254,7 +264,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="297" y="378"/>
+            <point key="canvasLocation" x="62" y="416"/>
         </scene>
     </scenes>
 </document>
