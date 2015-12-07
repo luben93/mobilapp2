@@ -16,7 +16,9 @@ class GameScene: SKScene {
     var blueTiles = [Int : SKSpriteNode]()
     //let blueTiles = [SKSpriteNode](count: 9, repeatedValue:  SKSpriteNode(imageNamed: "blueTile"))
     var redTiles = [Int : SKSpriteNode]()
-    var places = [CGPoint]()
+    var places = [CGPoint](count: 25, repeatedValue: CGPoint())
+    var redIndex = 1
+    var blueIndex = 1
 
     override func didMoveToView(view: SKView) {
         backgroundColor = SKColor.clearColor()
@@ -31,6 +33,10 @@ class GameScene: SKScene {
         }
         let touchLocation = touch.locationInNode(self)
         print("touch\(touchLocation)")
+        redTiles[redIndex]!.removeFromParent()
+        redTiles[redIndex]!.position = touchLocation
+        addChild(redTiles[redIndex]!)
+        
     }
     
     
@@ -48,76 +54,76 @@ class GameScene: SKScene {
         places[2] = CGPoint(x:size.width * 0.2,y:size.height/2 + size.width/2 * 0.5)
         places[1] = CGPoint(x:size.width * 0.4,y:size.height/2 + size.width/2 * 0.2)
         
-        let sex = CGPoint(x:size.width * 0.5 ,y:size.height/2 + size.width/2 * 0.9)
-        let fem = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.5)
-        let fyra = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.2)
+        places[6] = CGPoint(x:size.width * 0.5 ,y:size.height/2 + size.width/2 * 0.9)
+        places[5] = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.5)
+        places[4] = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.2)
         
-        let nio = CGPoint(x:size.width * 0.99,y:size.height/2 + size.width/2 * 0.9)
-        let atta = CGPoint(x:size.width * 0.8,y:size.height/2 + size.width/2 * 0.5)
-        let sju = CGPoint(x:size.width * 0.6,y:size.height/2 + size.width/2 * 0.2)
+        places[9] = CGPoint(x:size.width * 0.99,y:size.height/2 + size.width/2 * 0.9)
+        places[8] = CGPoint(x:size.width * 0.8,y:size.height/2 + size.width/2 * 0.5)
+        places[7] = CGPoint(x:size.width * 0.6,y:size.height/2 + size.width/2 * 0.2)
         
-        let tolv = CGPoint(x:size.width * 0.99,y:size.height/2 )
-        let elva = CGPoint(x:size.width * 0.8,y:size.height/2 )
-        let tio = CGPoint(x:size.width * 0.6,y:size.height/2 )
+        places[12] = CGPoint(x:size.width * 0.99,y:size.height/2 )
+        places[11] = CGPoint(x:size.width * 0.8,y:size.height/2 )
+        places[10] = CGPoint(x:size.width * 0.6,y:size.height/2 )
         
-        let femton = CGPoint(x:size.width * 0.99, y:size.height/2 - size.width/2 * 0.9)
-        let fjorton = CGPoint(x:size.width * 0.8, y:size.height/2 - size.width/2 * 0.5)
-        let tretton = CGPoint(x:size.width * 0.6, y:size.height/2 - size.width/2 * 0.2)
+        places[15] = CGPoint(x:size.width * 0.99, y:size.height/2 - size.width/2 * 0.9)
+        places[14] = CGPoint(x:size.width * 0.8, y:size.height/2 - size.width/2 * 0.5)
+        places[13] = CGPoint(x:size.width * 0.6, y:size.height/2 - size.width/2 * 0.2)
         
-        let sexton = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.9)
-        let sjutton = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.5)
-        let arton = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.2)
+        places[18] = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.9)
+        places[19] = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.5)
+        places[16] = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.2)
         
-        let tjugoett = CGPoint(x:size.width * 0.01,y:size.height/2 - size.width/2 * 0.9)
-        let tjugo = CGPoint(x:size.width * 0.2,y:size.height/2 - size.width/2 * 0.5)
-        let nitton = CGPoint(x:size.width * 0.4,y:size.height/2 - size.width/2 * 0.2)
+        places[21] = CGPoint(x:size.width * 0.01,y:size.height/2 - size.width/2 * 0.9)
+        places[20] = CGPoint(x:size.width * 0.2,y:size.height/2 - size.width/2 * 0.5)
+        places[19] = CGPoint(x:size.width * 0.4,y:size.height/2 - size.width/2 * 0.2)
         
-        let tjugofyra = CGPoint(x:size.width * 0.01,y:size.height/2 )
-        let tjugotre = CGPoint(x:size.width * 0.2,y:size.height/2)
-        let tjugotva = CGPoint(x:size.width * 0.4,y:size.height/2 )
+        places[24] = CGPoint(x:size.width * 0.01,y:size.height/2 )
+        places[23] = CGPoint(x:size.width * 0.2,y:size.height/2)
+        places[22] = CGPoint(x:size.width * 0.4,y:size.height/2 )
         
         
         
         let outer = CGPathCreateMutable()
         
-        CGPathMoveToPoint(outer, nil, tre.x, tre.y)
-        CGPathAddLineToPoint(outer, nil, nio.x,nio.y)
-        CGPathAddLineToPoint(outer, nil, femton.x,femton.y)
-        CGPathAddLineToPoint(outer, nil, tjugoett.x,tjugoett.y)
+        CGPathMoveToPoint(outer, nil, places[3].x, places[3].y)
+        CGPathAddLineToPoint(outer, nil, places[9].x,places[9].y)
+        CGPathAddLineToPoint(outer, nil, places[15].x,places[15].y)
+        CGPathAddLineToPoint(outer, nil, places[21].x,places[21].y)
         drawRect(outer)
         
         let middle = CGPathCreateMutable()
-        CGPathMoveToPoint(middle, nil, tva.x, tva.y)
-        CGPathAddLineToPoint(middle, nil, atta.x,atta.y)
-        CGPathAddLineToPoint(middle, nil, fjorton.x,fjorton.y)
-        CGPathAddLineToPoint(middle, nil, tjugo.x,tjugo.y)
+        CGPathMoveToPoint(middle, nil, places[2].x, places[2].y)
+        CGPathAddLineToPoint(middle, nil, places[8].x,places[8].y)
+        CGPathAddLineToPoint(middle, nil, places[14].x,places[14].y)
+        CGPathAddLineToPoint(middle, nil, places[20].x,places[20].y)
         drawRect(middle)
         
         let inner = CGPathCreateMutable()
-        CGPathMoveToPoint(inner, nil, ett.x, ett.y)
-        CGPathAddLineToPoint(inner, nil, sju.x,sju.y)
-        CGPathAddLineToPoint(inner, nil, tretton.x,tretton.y)
-        CGPathAddLineToPoint(inner, nil, nitton.x,nitton.y)
+        CGPathMoveToPoint(inner, nil, places[1].x, places[1].y)
+        CGPathAddLineToPoint(inner, nil, places[7].x,places[7].y)
+        CGPathAddLineToPoint(inner, nil, places[13].x,places[13].y)
+        CGPathAddLineToPoint(inner, nil, places[19].x,places[19].y)
         drawRect(inner)
         
         let up = CGPathCreateMutable()
-        CGPathMoveToPoint(up,nil,sex.x,sex.y)
-        CGPathAddLineToPoint(up, nil, fyra.x,fyra.y)
+        CGPathMoveToPoint(up,nil,places[6].x,places[6].y)
+        CGPathAddLineToPoint(up, nil, places[4].x,places[4].y)
         drawRect(up)
         
         let down = CGPathCreateMutable()
-        CGPathMoveToPoint(down,nil,sexton.x,sexton.y)
-        CGPathAddLineToPoint(down, nil, arton.x,arton.y)
+        CGPathMoveToPoint(down,nil,places[16].x,places[16].y)
+        CGPathAddLineToPoint(down, nil, places[18].x,places[18].y)
         drawRect(down)
         
         let rigth = CGPathCreateMutable()
-        CGPathMoveToPoint(rigth,nil,tolv.x,tolv.y)
-        CGPathAddLineToPoint(rigth, nil, tio.x,tio.y)
+        CGPathMoveToPoint(rigth,nil,places[12].x,places[12].y)
+        CGPathAddLineToPoint(rigth, nil, places[10].x,places[10].y)
         drawRect(rigth)
         
         let left = CGPathCreateMutable()
-        CGPathMoveToPoint(left,nil,tjugofyra.x,tjugofyra.y)
-        CGPathAddLineToPoint(left, nil, tjugotva.x,tjugotva.y)
+        CGPathMoveToPoint(left,nil,places[24].x,places[24].y)
+        CGPathAddLineToPoint(left, nil, places[22].x,places[22].y)
         drawRect(left)
         
 
