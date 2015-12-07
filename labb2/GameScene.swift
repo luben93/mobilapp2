@@ -17,10 +17,12 @@ class GameScene: SKScene {
     //let blueTiles = [SKSpriteNode](count: 9, repeatedValue:  SKSpriteNode(imageNamed: "blueTile"))
     var redTiles = [Int : SKSpriteNode]()
     var places = [CGPoint](count: 25, repeatedValue: CGPoint())
-    var redIndex = 1
-    var blueIndex = 1
+//    var redIndex = 1
+//    var blueIndex = 1
+    let rule = rules()
 
     override func didMoveToView(view: SKView) {
+        
         backgroundColor = SKColor.clearColor()
         alotOfStuff()
         
@@ -33,9 +35,9 @@ class GameScene: SKScene {
         }
         let touchLocation = touch.locationInNode(self)
         print("touch\(touchLocation)")
-        redTiles[redIndex]!.removeFromParent()
-        redTiles[redIndex]!.position = touchLocation
-        addChild(redTiles[redIndex]!)
+        redTiles[1]!.removeFromParent()
+        redTiles[1]!.position = touchLocation
+        addChild(redTiles[1]!)//todo rule.legalMove eller ruls.remove ??????????
         
     }
     
