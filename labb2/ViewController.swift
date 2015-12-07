@@ -11,33 +11,34 @@ import SpriteKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var blueLabel: UILabel!
     @IBOutlet weak var gameView: UIView!
-    @IBOutlet weak var upsideDown: UILabel!
+    @IBOutlet weak var redLabel: UILabel!
+    @IBOutlet weak var gamePlane: gamePlan!
+    var gameScene:GameScene?
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.upsideDown.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2*2));
-//        let scene = gamePlan(size: view.bounds.size)
-//        let skView = view as! SKView
-//        skView.showsFPS = true
-//        skView.showsNodeCount = true
-//        skView.ignoresSiblingOrder = true
-//        scene.scaleMode = .ResizeFill
-//        skView.presentScene(scene)
+        self.redLabel.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2*2));
         let scene = GameScene(size: view.bounds.size)
         let skView = gameView as! SKView
-//        skView.showsFPS = true
-//        skView.showsNodeCount = true
+       //let skView:SKView = gameView
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
-//        scene.scaleMode = .ResizeFill
         skView.presentScene(scene)
+        
 
     }
-
-    @IBOutlet weak var redButton: UIButton!
-    @IBOutlet weak var blueButton: UIButton!
-    @IBOutlet weak var moveButton: UIButton!
+     
+    @IBAction func button(sender: UIButton) {
+        print("title:   \(sender.currentTitle)")
+        print("plane xy:\(sender.frame.origin)")
+        print("plane xy:\(sender.frame)")
+        print("plane xy:\(sender.frame.origin)")
+        print("outer xy:\(gamePlane.frame)")
+        
+        gameScene?.moveRedTo( CGPoint(x:sender.frame.origin.x + gamePlane.frame.origin.x ,y:sender.frame.origin.y + gamePlane.frame.origin.y))
+    
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

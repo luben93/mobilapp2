@@ -10,47 +10,41 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    let player = SKSpriteNode(imageNamed: "player")
-    
+    var blueTiles=[Int : SKSpriteNode]()
+    //let blueTiles = [SKSpriteNode](count: 9, repeatedValue:  SKSpriteNode(imageNamed: "blueTile"))
+    var redTiles=[Int : SKSpriteNode]()
+
     override func didMoveToView(view: SKView) {
-//        backgroundColor = SKColor.whiteColor()
         backgroundColor = SKColor.clearColor()
+       
+        for i in 1...9 {
+            blueTiles[i] = SKSpriteNode(imageNamed: "blueTile")
+            redTiles[i] = SKSpriteNode(imageNamed: "redTile")
+            blueTiles[i]!.position = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: size.height * 0.1)
+            redTiles[i]!.position = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height * 0.9)
+            addChild(blueTiles[i]!)
+            addChild(redTiles[i]!)
+        }
         
-        player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
-        addChild(player)
-        runAction(SKAction.repeatActionForever(
-            SKAction.sequence([
-                SKAction.runBlock(addMonster),
-                SKAction.waitForDuration(1.0)
-            ])
-        ))
+        let path = CGPathCreateMutable()
+        CGPathMoveToPoint(path, nil, 0, 0)
+        CGPathAddLineToPoint(path, nil, size.width, size.height)
+        
+        
+        let shapeNode = SKShapeNode()
+        shapeNode.path = path
+        shapeNode.name = "line"
+        shapeNode.strokeColor = UIColor.grayColor()
+        shapeNode.lineWidth = 2
+        shapeNode.zPosition = 1
+        self.addChild(shapeNode)
+        
     }
     
-    func random()->CGFloat{
-        return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
+    func moveRedTo(point:CGPoint) {
+        redTiles[1]?.position = point
+        addChild(redTiles[1]!)
     }
     
-    func random(min min:CGFloat,max:CGFloat)->CGFloat{
-        return random() * (max - min) + min
-    }
-    
-    func addMonster(){
-        
-        let monster = SKSpriteNode(imageNamed: "monster")
-        
-        let actualY = random(min:monster.size.height/2,max: size.height - monster.size.height/2)
-        
-        monster.position = CGPoint(x: size.width + monster.size.width/2 , y: actualY)
-        
-        addChild(monster)
-        
-        let actualDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))
-        
-        let actionMove = SKAction.moveTo(CGPoint(x: -monster.size.width/2, y: actualY), duration: NSTimeInterval(actualDuration))
-        let actionMoveDone = SKAction.removeFromParent()
-        monster.runAction(SKAction.sequence([actionMove, actionMoveDone]))
-    
-    
-    
-    }
+
 }
