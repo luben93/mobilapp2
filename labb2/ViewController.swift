@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var gamePlane: gamePlan!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.redLabel.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2*2));
+        self.redLabel.transform = CGAffineTransformMakeRotation(CGFloat(M_PI));
         let scene = GameScene(size: view.bounds.size)
         let skView = gameView as! SKView
        //let skView:SKView = gameView

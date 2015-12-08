@@ -24,15 +24,12 @@ class rules {
     
     init(){
         gameplan = (0...25).map() { $0 }
-        blue = 9
-        red = 9
-        
     }
     
     //MODEL TOAD save
     var gameplan:[Int]
-    var blue:Int
-    var red:Int
+    var blue:Int = 9
+    var red:Int = 9
     var isBluesTurn = false
     //end of model
 
@@ -41,6 +38,7 @@ class rules {
     let redMoves = 2
     let blueMarker = 4
     let redMarker = 5
+//    let save = NSUserDefaults.standardUserDefaults()
     
     func board(from:Int)->Int?{
         return gameplan[from]

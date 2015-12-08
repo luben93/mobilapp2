@@ -29,6 +29,7 @@ class GameScene: SKScene {
     var redTiles = [Int : SKSpriteNode]()
     var places = [CGPoint](count: 25, repeatedValue: CGPoint())
     var tileSelected:SKSpriteNode?
+    let label = SKLabelNode()
 
     let rule = rules()
 //    let rule = NSUserDefaults.standardUserDefaults().objectForKey("save") as? rules
@@ -42,6 +43,8 @@ class GameScene: SKScene {
 //        }else{
 //            NSUserDefaults.standardUserDefaults().setObject(rule, forKey: "save")
 //        }
+        
+    
         
     }
     
@@ -57,8 +60,21 @@ class GameScene: SKScene {
             moveFromPile(touchLocation,tile: tile)
             tileSelected = nil
             rule.isBluesTurn = !rule.isBluesTurn
+            label.text = "select tile"
+            if rule.isBluesTurn {
+                label.fontColor = SKColor.redColor()
+                label.zRotation = CGFloat(M_PI)
+
+            }else{
+                label.fontColor = SKColor.blueColor()
+                label.zRotation = CGFloat(0)
+            }
+            
+
+            
         }else{
             tileSelected = selectTile(touchLocation)
+            label.text = "place tile"
         }
     }
     
@@ -213,6 +229,14 @@ class GameScene: SKScene {
         CGPathMoveToPoint(left,nil,places[24].x,places[24].y)
         CGPathAddLineToPoint(left, nil, places[22].x,places[22].y)
         drawRect(left)
+        
+        //let label = SKLabelNode(fontNamed: "Chalkduster")
+        label.text = "Your turn"
+        label.fontSize = 15
+        label.fontColor = SKColor.blueColor()
+        label.position = places[0]
+        label.setScale(1)
+        addChild(label)
         
 
     }
