@@ -40,22 +40,32 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k6a-rK-QSO" customClass="SKView">
-                                <rect key="frame" x="20" y="20" width="374" height="696"/>
+                                <rect key="frame" x="20" y="57" width="374" height="630"/>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ipE-Cn-TrU">
+                                <rect key="frame" x="346" y="695" width="50" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Restart"/>
+                                <connections>
+                                    <action selector="restart:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yuX-9m-eM1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="ipE-Cn-TrU" firstAttribute="top" secondItem="Mvf-KZ-xbD" secondAttribute="top" id="28S-4R-aiv"/>
                             <constraint firstItem="Mvf-KZ-xbD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8qY-Oj-S8Q"/>
                             <constraint firstItem="k6a-rK-QSO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Gal-hn-VwP"/>
                             <constraint firstItem="Mvf-KZ-xbD" firstAttribute="leading" secondItem="S5c-2h-don" secondAttribute="leading" id="Jr7-7M-Vc1"/>
-                            <constraint firstAttribute="bottom" secondItem="k6a-rK-QSO" secondAttribute="bottom" constant="20" symbolic="YES" id="M7x-BW-pPK"/>
-                            <constraint firstItem="Mvf-KZ-xbD" firstAttribute="bottom" secondItem="k6a-rK-QSO" secondAttribute="bottom" id="OBM-Gt-IsK"/>
-                            <constraint firstItem="k6a-rK-QSO" firstAttribute="top" secondItem="S5c-2h-don" secondAttribute="bottom" constant="-29" id="TqJ-5q-Ccv"/>
+                            <constraint firstAttribute="bottom" secondItem="k6a-rK-QSO" secondAttribute="bottom" constant="49" id="M7x-BW-pPK"/>
+                            <constraint firstItem="Mvf-KZ-xbD" firstAttribute="bottom" secondItem="k6a-rK-QSO" secondAttribute="bottom" constant="29" id="OBM-Gt-IsK"/>
+                            <constraint firstItem="k6a-rK-QSO" firstAttribute="top" secondItem="S5c-2h-don" secondAttribute="bottom" constant="8" id="TqJ-5q-Ccv"/>
                             <constraint firstAttribute="trailingMargin" secondItem="k6a-rK-QSO" secondAttribute="trailing" id="cNB-z5-w4L"/>
                             <constraint firstItem="S5c-2h-don" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="gWw-6o-qZH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ipE-Cn-TrU" secondAttribute="trailing" constant="-2" id="n3b-Vs-raO"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>

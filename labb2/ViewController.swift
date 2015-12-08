@@ -15,7 +15,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var redLabel: UILabel!
     @IBOutlet weak var gamePlane: gamePlan!
-    var gameScene:GameScene?
     override func viewDidLoad() {
         super.viewDidLoad()
         self.redLabel.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2*2));
@@ -29,23 +28,15 @@ class ViewController: UIViewController {
 
     }
      
-    @IBAction func button(sender: UIButton) {
-        print("title:   \(sender.currentTitle)")
-        print("plane xy:\(sender.frame.origin)")
-        print("plane xy:\(sender.frame)")
-        print("plane xy:\(sender.frame.origin)")
-        print("outer xy:\(gamePlane.frame)")
-        
-        gameScene?.moveRedTo( CGPoint(x:sender.frame.origin.x + gamePlane.frame.origin.x ,y:sender.frame.origin.y + gamePlane.frame.origin.y))
     
+    @IBAction func restart(sender: UIButton) {
+        let scene = GameScene(size: view.bounds.size)
+        let skView = gameView as! SKView
+        //let skView:SKView = gameView
+        skView.ignoresSiblingOrder = true
+        skView.allowsTransparency = true
+        skView.presentScene(scene)
+//        NSUserDefaults.standardUserDefaults().setObject(rules(), forKey: "save")
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-//    @IBOutlet weak var upsideDown: UILabel!
-
-    
 }
 

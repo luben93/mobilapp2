@@ -5,6 +5,18 @@
 //  Created by lucas persson on 2015-12-01.
 //  Copyright (c) 2015 lucas persson. All rights reserved.
 //
+/*
+* The game board positions
+*
+* 03           06           09
+*     02       05       08
+*         01   04   07
+* 24  23  22   00   10  11  12
+*         19   16   13
+*     20       17       14
+* 21           18           15
+*
+*/
 
 import SpriteKit
 
@@ -14,31 +26,103 @@ class GameScene: SKScene {
    
     
     var blueTiles = [Int : SKSpriteNode]()
-    //let blueTiles = [SKSpriteNode](count: 9, repeatedValue:  SKSpriteNode(imageNamed: "blueTile"))
     var redTiles = [Int : SKSpriteNode]()
     var places = [CGPoint](count: 25, repeatedValue: CGPoint())
-//    var redIndex = 1
-//    var blueIndex = 1
+    var tileSelected:SKSpriteNode?
+
     let rule = rules()
+//    let rule = NSUserDefaults.standardUserDefaults().objectForKey("save") as? rules
 
     override func didMoveToView(view: SKView) {
         
         backgroundColor = SKColor.clearColor()
         alotOfStuff()
+       
+//        if let _ = rule {
+//        }else{
+//            NSUserDefaults.standardUserDefaults().setObject(rule, forKey: "save")
+//        }
         
     }
     
+    
+    
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    //TODO here
         guard let touch = touches.first else {
             return
         }
         let touchLocation = touch.locationInNode(self)
-        print("touch\(touchLocation)")
-        redTiles[1]!.removeFromParent()
-        redTiles[1]!.position = touchLocation
-        addChild(redTiles[1]!)//todo rule.legalMove eller ruls.remove ??????????
         
+        if let tile = tileSelected{
+            moveFromPile(touchLocation,tile: tile)
+            tileSelected = nil
+            rule.isBluesTurn = !rule.isBluesTurn
+        }else{
+            tileSelected = selectTile(touchLocation)
+        }
+    }
+    
+    
+    func selectTile(touchLocation:CGPoint)->SKSpriteNode{
+        var currentPlayerTiles:[Int:SKSpriteNode]
+        if rule.isBluesTurn {
+             currentPlayerTiles = redTiles
+        }else{
+             currentPlayerTiles = blueTiles
+        }
+        
+        let closestIndex = closestTile(touchLocation, cmp:currentPlayerTiles)
+        return currentPlayerTiles[closestIndex]!
+        
+        
+    }
+    
+    func moveFromPile(touchLocation:CGPoint,tile:SKSpriteNode){
+        let closestIndex = closestPlaces(touchLocation)
+        //todo rule.legalMove eller ruls.remove ??????????
+       // if( rule validmove
+        let current = tile
+        
+//        if rule.redDoTurn() {
+//            current = redTiles[rule.red--]!
+//        }else{
+//            current = blueTiles[rule.blue--]!
+//            
+//        }
+        current.removeFromParent()
+        current.position = places[closestIndex]
+        addChild(current)
+
+    }
+    
+    func closestPlaces(touch:CGPoint) -> Int{
+        
+        var diff = CGFloat(10000)
+        var out = -1
+        for i in 1...24{
+            let tmp = sqrt(pow(touch.x-places[i].x,2)+pow(touch.y-places[i].y,2))
+            if tmp <= diff {
+                diff = tmp
+                out = i
+            }
+        }
+        
+        return out
+    }
+    
+    func closestTile(touch:CGPoint,cmp:[Int:SKSpriteNode]) -> Int{
+        
+        var diff = CGFloat(10000)
+        var out = -1
+        for i in 1...cmp.count{
+            let tmp = sqrt(pow(touch.x-cmp[i]!.position.x,2)+pow(touch.y-cmp[i]!.position.y,2))
+            if tmp <= diff {
+                diff = tmp
+                out = i
+            }
+        }
+        
+        return out
     }
     
     
@@ -52,39 +136,41 @@ class GameScene: SKScene {
             addChild(redTiles[i]!)
         }
         
-        places[3] = CGPoint(x:size.width * 0.01,y:size.height/2 + size.width/2 * 0.9)
-        places[2] = CGPoint(x:size.width * 0.2,y:size.height/2 + size.width/2 * 0.5)
-        places[1] = CGPoint(x:size.width * 0.4,y:size.height/2 + size.width/2 * 0.2)
+        places[0] = CGPoint(x:size.width/2,y:size.height/2)
         
-        places[6] = CGPoint(x:size.width * 0.5 ,y:size.height/2 + size.width/2 * 0.9)
-        places[5] = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.5)
-        places[4] = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.2)
+        places[3] = CGPoint(x:size.width * 0.02,y:size.height/2 + size.width/2 * 0.9)
+        places[2] = CGPoint(x:size.width * 0.2,y:size.height/2 + size.width/2 * 0.6)
+        places[1] = CGPoint(x:size.width * 0.35,y:size.height/2 + size.width/2 * 0.25)
         
-        places[9] = CGPoint(x:size.width * 0.99,y:size.height/2 + size.width/2 * 0.9)
-        places[8] = CGPoint(x:size.width * 0.8,y:size.height/2 + size.width/2 * 0.5)
-        places[7] = CGPoint(x:size.width * 0.6,y:size.height/2 + size.width/2 * 0.2)
+        places[6] = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.9)
+        places[5] = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.6)
+        places[4] = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.25)
         
-        places[12] = CGPoint(x:size.width * 0.99,y:size.height/2 )
-        places[11] = CGPoint(x:size.width * 0.8,y:size.height/2 )
-        places[10] = CGPoint(x:size.width * 0.6,y:size.height/2 )
+        places[9] = CGPoint(x:size.width * 0.98,y:size.height/2 + size.width/2 * 0.9)
+        places[8] = CGPoint(x:size.width * 0.8,y:size.height/2 + size.width/2 * 0.6)
+        places[7] = CGPoint(x:size.width * 0.65,y:size.height/2 + size.width/2 * 0.25)
         
-        places[15] = CGPoint(x:size.width * 0.99, y:size.height/2 - size.width/2 * 0.9)
-        places[14] = CGPoint(x:size.width * 0.8, y:size.height/2 - size.width/2 * 0.5)
-        places[13] = CGPoint(x:size.width * 0.6, y:size.height/2 - size.width/2 * 0.2)
+        places[12] = CGPoint(x:size.width * 0.98,y:size.height * 0.5 )
+        places[11] = CGPoint(x:size.width * 0.8,y:size.height * 0.5 )
+        places[10] = CGPoint(x:size.width * 0.65,y:size.height * 0.5 )
+        
+        places[15] = CGPoint(x:size.width * 0.98, y:size.height/2 - size.width/2 * 0.9)
+        places[14] = CGPoint(x:size.width * 0.8, y:size.height/2 - size.width/2 * 0.6)
+        places[13] = CGPoint(x:size.width * 0.65, y:size.height/2 - size.width/2 * 0.25)
         
         places[18] = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.9)
-        places[19] = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.5)
-        places[16] = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.2)
+        places[17] = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.6)
+        places[16] = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.25)
         
-        places[21] = CGPoint(x:size.width * 0.01,y:size.height/2 - size.width/2 * 0.9)
-        places[20] = CGPoint(x:size.width * 0.2,y:size.height/2 - size.width/2 * 0.5)
-        places[19] = CGPoint(x:size.width * 0.4,y:size.height/2 - size.width/2 * 0.2)
+        places[21] = CGPoint(x:size.width * 0.02,y:size.height/2 - size.width/2 * 0.9)
+        places[20] = CGPoint(x:size.width * 0.2,y:size.height/2 - size.width/2 * 0.6)
+        places[19] = CGPoint(x:size.width * 0.35,y:size.height/2 - size.width/2 * 0.25)
         
-        places[24] = CGPoint(x:size.width * 0.01,y:size.height/2 )
+        places[24] = CGPoint(x:size.width * 0.02,y:size.height/2 )
         places[23] = CGPoint(x:size.width * 0.2,y:size.height/2)
-        places[22] = CGPoint(x:size.width * 0.4,y:size.height/2 )
+        places[22] = CGPoint(x:size.width * 0.35,y:size.height/2 )
         
-        
+       
         
         let outer = CGPathCreateMutable()
         

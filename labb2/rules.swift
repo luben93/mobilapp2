@@ -11,7 +11,7 @@
 * 03           06           09
 *     02       05       08
 *         01   04   07
-* 24  23  22        10  11  12
+* 24  23  22   00   10  11  12
 *         19   16   13
 *     20       17       14
 * 21           18           15
@@ -26,15 +26,16 @@ class rules {
         gameplan = (0...25).map() { $0 }
         blue = 9
         red = 9
-        turn = redMoves
         
     }
     
+    //MODEL TOAD save
     var gameplan:[Int]
     var blue:Int
     var red:Int
-    var turn:Int
-    
+    var isBluesTurn = false
+    //end of model
+
     let emptySpace = 0
     let blueMoves = 1
     let redMoves = 2
@@ -45,9 +46,17 @@ class rules {
         return gameplan[from]
     }
     
-    func win(color:Int)->Bool{
+    func redDoTurn()->Bool{
+        if isBluesTurn{
+            isBluesTurn = false
+            return true
+        }
+        isBluesTurn = true
+        return false
+    }
+        func win(color:Int)->Bool{
         var markers = 0
-        for count in 0..<23{
+        for count in 0...23{
             if gameplan[count] != 0 && gameplan[count] != color{
                 markers++
             }
@@ -66,21 +75,21 @@ class rules {
         return false
     }
     
-    func legalMove(to:Int,from:Int,color:Int) -> Bool {
-        if color == turn {
-            if turn == redMoves {
+    func legalMove(to:Int,from:Int,isColorBlue:Bool) -> Bool {
+        if isColorBlue == isBluesTurn {
+            if !isBluesTurn {
                 if red >= 0 {
                     if gameplan[to] == emptySpace {
                         gameplan[to] = redMarker
                         red--
-                        turn = blueMoves
+                        isBluesTurn = true
                         return true
                     }
                 }
                 if gameplan[to] == emptySpace {
                     if let _ = isValidMove(to,from:from){
                         gameplan[to] = redMarker
-                        turn = blueMoves
+                        isBluesTurn = true
                         blue--
                         return true
                         
@@ -89,7 +98,7 @@ class rules {
                 if gameplan[to] == emptySpace{
                     if let _ = isValidMove(to,from:from){
                         gameplan[to] = blueMarker
-                        turn = redMoves
+                        isBluesTurn = false
                         return true
                     }
                     
