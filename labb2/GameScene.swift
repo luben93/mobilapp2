@@ -29,6 +29,8 @@ class GameScene: SKScene {
     var redTiles = [Int : SKSpriteNode]()
     var places = [CGPoint](count: 25, repeatedValue: CGPoint())
     var tileSelected:SKSpriteNode?
+    var blueCan:SKSpriteNode?
+    var redCan:SKSpriteNode?
     let label = SKLabelNode()
 
     let rule = rules()
@@ -146,8 +148,8 @@ class GameScene: SKScene {
         for i in 1...9 {
             blueTiles[i] = SKSpriteNode(imageNamed: "blueTile")
             redTiles[i] = SKSpriteNode(imageNamed: "redTile")
-            blueTiles[i]!.position = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: size.height * 0.1)
-            redTiles[i]!.position = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height * 0.9)
+            blueTiles[i]!.position = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: size.height * 0.2)
+            redTiles[i]!.position = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height * 0.2)
             addChild(blueTiles[i]!)
             addChild(redTiles[i]!)
         }
@@ -230,6 +232,15 @@ class GameScene: SKScene {
         CGPathAddLineToPoint(left, nil, places[22].x,places[22].y)
         drawRect(left)
         
+        blueCan=SKSpriteNode(imageNamed: "blueCan")
+        blueCan?.position=CGPoint(x:size.width*0.9,y:size.height*0.1)
+        addChild(blueCan!)
+        
+        redCan=SKSpriteNode(imageNamed: "redCan")
+        redCan?.position=CGPoint(x:size.width*0.1,y:size.height*0.9)
+        addChild(redCan!)
+        
+        
         //let label = SKLabelNode(fontNamed: "Chalkduster")
         label.text = "Your turn"
         label.fontSize = 15
@@ -237,6 +248,8 @@ class GameScene: SKScene {
         label.position = places[0]
         label.setScale(1)
         addChild(label)
+        
+        
         
 
     }
@@ -255,10 +268,11 @@ class GameScene: SKScene {
         self.addChild(shapeNode)
     }
     
-    func moveRedTo(point:CGPoint) {
-        redTiles[1]?.position = point
-        addChild(redTiles[1]!)
-    }
+  
+//    func moveRedTo(point:CGPoint) {
+//        redTiles[1]?.position = point
+//        addChild(redTiles[1]!)
+//    }
     
 
 }
