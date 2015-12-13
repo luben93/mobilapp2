@@ -23,30 +23,43 @@ import SpriteKit
 class GameScene: SKScene {
     
     
-   
     
-    var blueTiles = [Int : SKSpriteNode]()
-    var redTiles = [Int : SKSpriteNode]()
+    
+    var blueTiles = [SKSpriteNode?](count: 10, repeatedValue: nil)
+    var redTiles = [SKSpriteNode?](count: 10, repeatedValue: nil)
     var places = [CGPoint](count: 25, repeatedValue: CGPoint())
-    var tileSelected:SKSpriteNode?
-    var blueCan:SKSpriteNode?
-    var redCan:SKSpriteNode?
+    var tileSelected:Int?
+    var blueCan = SKSpriteNode()
+    var redCan = SKSpriteNode()
     let label = SKLabelNode()
-
     let rule = rules()
-//    let rule = NSUserDefaults.standardUserDefaults().objectForKey("save") as? rules
-
+    var currentTiles:[SKSpriteNode?]{
+        get{
+            if rule.isBluesTurn {
+                return redTiles
+            }else{
+                return blueTiles
+            }
+        }
+    }
+    var currentCan:SKSpriteNode{
+        get{
+            if rule.isBluesTurn {
+                return blueCan
+            }else{
+                return redCan
+            }
+        }
+    }
+    
+    
+    
     override func didMoveToView(view: SKView) {
         
         backgroundColor = SKColor.clearColor()
         alotOfStuff()
-       
-//        if let _ = rule {
-//        }else{
-//            NSUserDefaults.standardUserDefaults().setObject(rule, forKey: "save")
-//        }
         
-    
+        
         
     }
     
@@ -57,61 +70,71 @@ class GameScene: SKScene {
             return
         }
         let touchLocation = touch.locationInNode(self)
-        
-        if let tile = tileSelected{
-            moveFromPile(touchLocation,tile: tile)
-            tileSelected = nil
-            rule.isBluesTurn = !rule.isBluesTurn
-            label.text = "select tile"
-            if rule.isBluesTurn {
-                label.fontColor = SKColor.redColor()
-                label.zRotation = CGFloat(M_PI)
-
+        print("touch blue \(rule.isBluesTurn )")
+        if let tileN = tileSelected{
+            
+            let diff = sqrt(pow(touchLocation.x-currentCan.position.x,2)+pow(touchLocation.y-currentCan.position.y,2))
+            if 30 <= diff {
+                
+                if rule.legalMove(closestPlaces(touchLocation), from: tileN){
+                    if let tile =  currentTiles[tileN]{
+                        tile.removeFromParent()
+                        tile.position = places[closestPlaces(touchLocation)]
+                        addChild(tile)
+                    }
+                    tileSelected = nil
+                    rule.isBluesTurn = !rule.isBluesTurn
+                    
+                    label.text = "select tile"
+                    if rule.isBluesTurn {
+                        label.fontColor = SKColor.redColor()
+                        label.zRotation = CGFloat(M_PI)
+                        
+                    }else{
+                        label.fontColor = SKColor.blueColor()
+                        label.zRotation = CGFloat(0)
+                    }
+                }
             }else{
-                label.fontColor = SKColor.blueColor()
-                label.zRotation = CGFloat(0)
+                //trashCan
+                print("trashcan\(touchLocation)")
+                if let cTile = currentTiles[tileN] {
+                    cTile.position = CGPoint(x:-100,y:-100)
+                    cTile.removeFromParent()
+                    if rule.isBluesTurn {
+                         blueTiles[tileN]=nil
+                    }else{
+                         redTiles[tileN]=nil
+                    }
+                   
+                }
+                
+
+                
             }
             
-
             
         }else{
-            tileSelected = selectTile(touchLocation)
+            tileSelected = closestTile(touchLocation, cmp:currentTiles)
+            //print("tileSelected \(tileSelected) rule tile \(rule.board(9))")
             label.text = "place tile"
+            
         }
-    }
-    
-    
-    func selectTile(touchLocation:CGPoint)->SKSpriteNode{
-        var currentPlayerTiles:[Int:SKSpriteNode]
-        if rule.isBluesTurn {
-             currentPlayerTiles = redTiles
-        }else{
-             currentPlayerTiles = blueTiles
-        }
-        
-        let closestIndex = closestTile(touchLocation, cmp:currentPlayerTiles)
-        return currentPlayerTiles[closestIndex]!
-        
+        //            print("red \(sqrt(pow(touchLocation.x-redCan.position.x,2)+pow(touchLocation.y-redCan!.position.y,2))) blue \(sqrt(pow(touchLocation.x-blueCan!.position.x,2)+pow(touchLocation.y-blueCan!.position.y,2)))")
         
     }
     
-    func moveFromPile(touchLocation:CGPoint,tile:SKSpriteNode){
-        let closestIndex = closestPlaces(touchLocation)
-        //todo rule.legalMove eller ruls.remove ??????????
-       // if( rule validmove
-        let current = tile
-        
-//        if rule.redDoTurn() {
-//            current = redTiles[rule.red--]!
-//        }else{
-//            current = blueTiles[rule.blue--]!
-//            
+//    
+//    func moveFromPile(touchLocation:CGPoint,tileN:Int){
+////        let closestIndex = closestPlaces(touchLocation)
+//       //        let current = currentTiles[tile]
+//        if let tile =  currentTiles[tileN]{
+//           tile.removeFromParent()
+//            tile.position = places[closestPlaces(touchLocation)]
+//            addChild(tile)
 //        }
-        current.removeFromParent()
-        current.position = places[closestIndex]
-        addChild(current)
-
-    }
+//        
+//    }
     
     func closestPlaces(touch:CGPoint) -> Int{
         
@@ -128,15 +151,17 @@ class GameScene: SKScene {
         return out
     }
     
-    func closestTile(touch:CGPoint,cmp:[Int:SKSpriteNode]) -> Int{
+    func closestTile(touch:CGPoint,cmp:[SKSpriteNode?]) -> Int{
         
         var diff = CGFloat(10000)
         var out = -1
-        for i in 1...cmp.count{
-            let tmp = sqrt(pow(touch.x-cmp[i]!.position.x,2)+pow(touch.y-cmp[i]!.position.y,2))
+        for i in 0...cmp.count-1{
+            if let cTile = cmp[i]?.position {
+            let tmp = sqrt(pow(touch.x-cTile.x,2)+pow(touch.y-cTile.y,2))
             if tmp <= diff {
                 diff = tmp
                 out = i
+                }
             }
         }
         
@@ -146,14 +171,14 @@ class GameScene: SKScene {
     
     func alotOfStuff(){
         blueCan=SKSpriteNode(imageNamed: "blueCan")
-        blueCan?.position=CGPoint(x:size.width*0.9,y:size.height*0.05)
-        addChild(blueCan!)
+        blueCan.position=CGPoint(x:size.width*0.9,y:size.height*0.05)
+        addChild(blueCan)
         
         redCan=SKSpriteNode(imageNamed: "redCan")
-        redCan?.position=CGPoint(x:size.width*0.1,y:size.height*0.95)
-        addChild(redCan!)
+        redCan.position=CGPoint(x:size.width*0.1,y:size.height*0.95)
+        addChild(redCan)
         
-
+        
         
         for i in 1...9 {
             blueTiles[i] = SKSpriteNode(imageNamed: "blueTile")
@@ -198,7 +223,7 @@ class GameScene: SKScene {
         places[23] = CGPoint(x:size.width * 0.2,y:size.height/2)
         places[22] = CGPoint(x:size.width * 0.35,y:size.height/2 )
         
-       
+        
         
         let outer = CGPathCreateMutable()
         
@@ -253,28 +278,28 @@ class GameScene: SKScene {
         
         
         
-
+        
     }
     
     func drawRect(rect:CGMutablePathRef){
-       
+        
         CGPathCloseSubpath(rect)
-
+        
         
         let shapeNode = SKShapeNode()
         shapeNode.path = rect
-//        shapeNode.name = rect
+        //        shapeNode.name = rect
         shapeNode.strokeColor = UIColor.grayColor()
         shapeNode.lineWidth = 2
         shapeNode.zPosition = 1
         self.addChild(shapeNode)
     }
     
-  
-//    func moveRedTo(point:CGPoint) {
-//        redTiles[1]?.position = point
-//        addChild(redTiles[1]!)
-//    }
     
+    //    func moveRedTo(point:CGPoint) {
+    //        redTiles[1]?.position = point
+    //        addChild(redTiles[1]!)
+    //    }
 
+    
 }

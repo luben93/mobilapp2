@@ -20,6 +20,8 @@ class ViewController: UIViewController {
         self.redLabel.transform = CGAffineTransformMakeRotation(CGFloat(M_PI));
         let scene = GameScene(size: view.bounds.size)
         let skView = gameView as! SKView
+        NSUserDefaults.standardUserDefaults().setInteger(-1, forKey: "blue")
+        NSUserDefaults.standardUserDefaults().setInteger(-1, forKey: "red")
        //let skView:SKView = gameView
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
@@ -32,11 +34,18 @@ class ViewController: UIViewController {
     @IBAction func restart(sender: UIButton) {
         let scene = GameScene(size: view.bounds.size)
         let skView = gameView as! SKView
-        //let skView:SKView = gameView
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
         skView.presentScene(scene)
-//        NSUserDefaults.standardUserDefaults().setObject(rules(), forKey: "save")
+        print("reset turn was\(NSUserDefaults.standardUserDefaults().integerForKey("isBluesTurn"))")
+NSUserDefaults.standardUserDefaults().setInteger(0, forKey: "isBluesTurn")
+        NSUserDefaults.standardUserDefaults().setInteger(-1, forKey: "blue")
+        NSUserDefaults.standardUserDefaults().setInteger(-1, forKey: "red")
+       // [Int](count:25,repeatedValue:0)
+        NSUserDefaults.standardUserDefaults().setObject([Int](count:25,repeatedValue:0), forKey: "gameplan")
+
+//        NSUserDefaults.resetStandardUserDefaults()
+        print("reset turn is\(NSUserDefaults.standardUserDefaults().integerForKey("isBluesTurn"))")
     }
 }
 
