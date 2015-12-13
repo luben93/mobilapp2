@@ -145,11 +145,21 @@ class GameScene: SKScene {
     
     
     func alotOfStuff(){
+        blueCan=SKSpriteNode(imageNamed: "blueCan")
+        blueCan?.position=CGPoint(x:size.width*0.9,y:size.height*0.05)
+        addChild(blueCan!)
+        
+        redCan=SKSpriteNode(imageNamed: "redCan")
+        redCan?.position=CGPoint(x:size.width*0.1,y:size.height*0.95)
+        addChild(redCan!)
+        
+
+        
         for i in 1...9 {
             blueTiles[i] = SKSpriteNode(imageNamed: "blueTile")
             redTiles[i] = SKSpriteNode(imageNamed: "redTile")
-            blueTiles[i]!.position = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: size.height * 0.2)
-            redTiles[i]!.position = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height * 0.2)
+            blueTiles[i]!.position = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: size.height * 0.15)
+            redTiles[i]!.position = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height * 0.85)
             addChild(blueTiles[i]!)
             addChild(redTiles[i]!)
         }
@@ -231,14 +241,6 @@ class GameScene: SKScene {
         CGPathMoveToPoint(left,nil,places[24].x,places[24].y)
         CGPathAddLineToPoint(left, nil, places[22].x,places[22].y)
         drawRect(left)
-        
-        blueCan=SKSpriteNode(imageNamed: "blueCan")
-        blueCan?.position=CGPoint(x:size.width*0.9,y:size.height*0.1)
-        addChild(blueCan!)
-        
-        redCan=SKSpriteNode(imageNamed: "redCan")
-        redCan?.position=CGPoint(x:size.width*0.1,y:size.height*0.9)
-        addChild(redCan!)
         
         
         //let label = SKLabelNode(fontNamed: "Chalkduster")
