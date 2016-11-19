@@ -3,5 +3,4 @@ osx_image: xcode8.1
 #xcode_project: labb2.xcodeproj # path to your xcodeproj folder
 #xcode_scheme: labb2
 script:
-    xctool -project labb2.xcodeproj -scheme labb2 CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
-
+    xctool -project labb2.xcodeproj -scheme labb2 CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO run-tests -test-sdk iphonesimulator10.1
