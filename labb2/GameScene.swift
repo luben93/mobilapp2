@@ -25,9 +25,9 @@ class GameScene: SKScene {
     
     
     
-    var blueTiles = [SKSpriteNode?](count: 10, repeatedValue: nil)
-    var redTiles = [SKSpriteNode?](count: 10, repeatedValue: nil)
-    var places = [CGPoint](count: 25, repeatedValue: CGPoint())
+    var blueTiles = [SKSpriteNode?](repeating: nil, count: 10)
+    var redTiles = [SKSpriteNode?](repeating: nil, count: 10)
+    var places = [CGPoint](repeating: CGPoint(), count: 25)
     var tileSelected:Int?
     var blueCan = SKSpriteNode()
     var redCan = SKSpriteNode()
@@ -53,23 +53,19 @@ class GameScene: SKScene {
     }
     
     
-    
-    override func didMoveToView(view: SKView) {
-        
-        backgroundColor = SKColor.clearColor()
+    override func didMove(to view: SKView) {
+        print("did move, doing alotOfStuff")
+        backgroundColor = SKColor.clear
         alotOfStuff()
-        
-        
-        
     }
     
     
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else {
             return
         }
-        let touchLocation = touch.locationInNode(self)
+        let touchLocation = touch.location(in: self)
         print("touch blue \(rule.isBluesTurn )")
         if let tileN = tileSelected{
             
@@ -83,18 +79,9 @@ class GameScene: SKScene {
                         addChild(tile)
                     }
                     tileSelected = nil
-                    rule.isBluesTurn = !rule.isBluesTurn
+                    //rule.isBluesTurn = !rule.isBluesTurn // already doning this
                     
-                    label.text = "select tile"
-                    if rule.isBluesTurn {
-                        label.fontColor = SKColor.redColor()
-                        label.zRotation = CGFloat(M_PI)
-                        
-                    }else{
-                        label.fontColor = SKColor.blueColor()
-                        label.zRotation = CGFloat(0)
                     }
-                }
             }else{
                 //trashCan
                 print("trashcan\(touchLocation)")
@@ -117,14 +104,24 @@ class GameScene: SKScene {
         }else{
             tileSelected = closestTile(touchLocation, cmp:currentTiles)
             //print("tileSelected \(tileSelected) rule tile \(rule.board(9))")
-            label.text = "place tile"
+            //label.text = "place tile"
             
         }
         //            print("red \(sqrt(pow(touchLocation.x-redCan.position.x,2)+pow(touchLocation.y-redCan!.position.y,2))) blue \(sqrt(pow(touchLocation.x-blueCan!.position.x,2)+pow(touchLocation.y-blueCan!.position.y,2)))")
-        
+        if rule.isBluesTurn {
+            label.text = "blues turn"
+            label.fontColor = SKColor.blue
+            label.zRotation = CGFloat(0)
+        }else{
+            label.text = "reds turn"
+            label.fontColor = SKColor.red
+            label.zRotation = CGFloat(M_PI)
+        }
+
     }
     
-//    
+    
+//
 //    func moveFromPile(touchLocation:CGPoint,tileN:Int){
 ////        let closestIndex = closestPlaces(touchLocation)
 //       //        let current = currentTiles[tile]
@@ -136,7 +133,7 @@ class GameScene: SKScene {
 //        
 //    }
     
-    func closestPlaces(touch:CGPoint) -> Int{
+    func closestPlaces(_ touch:CGPoint) -> Int{
         
         var diff = CGFloat(10000)
         var out = -1
@@ -151,7 +148,7 @@ class GameScene: SKScene {
         return out
     }
     
-    func closestTile(touch:CGPoint,cmp:[SKSpriteNode?]) -> Int{
+    func closestTile(_ touch:CGPoint,cmp:[SKSpriteNode?]) -> Int{
         
         var diff = CGFloat(10000)
         var out = -1
@@ -225,71 +222,74 @@ class GameScene: SKScene {
         
         
         
-        let outer = CGPathCreateMutable()
-        
-        CGPathMoveToPoint(outer, nil, places[3].x, places[3].y)
-        CGPathAddLineToPoint(outer, nil, places[9].x,places[9].y)
-        CGPathAddLineToPoint(outer, nil, places[15].x,places[15].y)
-        CGPathAddLineToPoint(outer, nil, places[21].x,places[21].y)
+        let outer = CGMutablePath()
+        outer.move(to: places[3])
+        outer.addLine(to: places[9])
+        outer.addLine(to: places[15])
+        outer.addLine(to: places[21])
         drawRect(outer)
         
-        let middle = CGPathCreateMutable()
-        CGPathMoveToPoint(middle, nil, places[2].x, places[2].y)
-        CGPathAddLineToPoint(middle, nil, places[8].x,places[8].y)
-        CGPathAddLineToPoint(middle, nil, places[14].x,places[14].y)
-        CGPathAddLineToPoint(middle, nil, places[20].x,places[20].y)
+        let middle = CGMutablePath()
+        middle.move(to: places[2])
+        middle.addLine(to: places[8])
+        middle.addLine(to: places[14])
+        middle.addLine(to: places[20])
+
         drawRect(middle)
         
-        let inner = CGPathCreateMutable()
-        CGPathMoveToPoint(inner, nil, places[1].x, places[1].y)
-        CGPathAddLineToPoint(inner, nil, places[7].x,places[7].y)
-        CGPathAddLineToPoint(inner, nil, places[13].x,places[13].y)
-        CGPathAddLineToPoint(inner, nil, places[19].x,places[19].y)
+        let inner = CGMutablePath()
+        inner.move(to: places[1])
+        inner.addLine(to: places[7])
+        inner.addLine(to: places[13])
+        inner.addLine(to: places[19])
+
+        
         drawRect(inner)
         
-        let up = CGPathCreateMutable()
-        CGPathMoveToPoint(up,nil,places[6].x,places[6].y)
-        CGPathAddLineToPoint(up, nil, places[4].x,places[4].y)
-        drawRect(up)
+        let up = CGMutablePath()
+        up.move(to: places[6])
+        up.addLine(to: places[4])
         
-        let down = CGPathCreateMutable()
-        CGPathMoveToPoint(down,nil,places[16].x,places[16].y)
-        CGPathAddLineToPoint(down, nil, places[18].x,places[18].y)
+            drawRect(up)
+        
+        let down = CGMutablePath()
+        down.move(to: places[16])
+        down.addLine(to: places[18])
+        
         drawRect(down)
         
-        let rigth = CGPathCreateMutable()
-        CGPathMoveToPoint(rigth,nil,places[12].x,places[12].y)
-        CGPathAddLineToPoint(rigth, nil, places[10].x,places[10].y)
+        let rigth = CGMutablePath()
+        rigth.move(to: places[12])
+        rigth.addLine(to: places[10])
+        
         drawRect(rigth)
         
-        let left = CGPathCreateMutable()
-        CGPathMoveToPoint(left,nil,places[24].x,places[24].y)
-        CGPathAddLineToPoint(left, nil, places[22].x,places[22].y)
+        let left = CGMutablePath()
+        left.move(to:places[24])
+        left.addLine(to: places[22])
+        
         drawRect(left)
         
         
         //let label = SKLabelNode(fontNamed: "Chalkduster")
         label.text = "Your turn"
         label.fontSize = 15
-        label.fontColor = SKColor.blueColor()
+        label.fontColor = SKColor.blue
         label.position = places[0]
         label.setScale(1)
         addChild(label)
         
-        
-        
-        
     }
     
-    func drawRect(rect:CGMutablePathRef){
+    func drawRect(_ rect:CGMutablePath){
         
-        CGPathCloseSubpath(rect)
+        rect.closeSubpath()
         
         
         let shapeNode = SKShapeNode()
         shapeNode.path = rect
         //        shapeNode.name = rect
-        shapeNode.strokeColor = UIColor.grayColor()
+        shapeNode.strokeColor = UIColor.gray
         shapeNode.lineWidth = 2
         shapeNode.zPosition = 1
         self.addChild(shapeNode)

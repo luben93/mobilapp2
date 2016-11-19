@@ -27,71 +27,53 @@ class rules {
     let redMoves = 2
     let blueMarker = 4
     let redMarker = 5
-    let save = NSUserDefaults.standardUserDefaults()
+    let save = UserDefaults.standard
     var gameplan:[Int]{
         get{
-            if let out = save.arrayForKey("gameplan") as? [Int]{
+            if let out = save.array(forKey: "gameplan") as? [Int]{
                 return out
             }else{
-                let tmp = [Int](count:25,repeatedValue:0)
-                save.setObject(tmp, forKey: "gameplan")
+                print("as? [int] did not work")
+                let tmp = [Int](repeating: 0,count: 25)
+                save.set(tmp, forKey: "gameplan")
                 return tmp
             }
         }
         set{
-            save.setObject(newValue, forKey: "gameplan")
+            save.set(newValue, forKey: "gameplan")
         }
     }
     var blue:Int{
         get{
-            let out = save.integerForKey("blue")
-            switch out{
-            case -1:
-                save.setInteger(9, forKey: "blue")
-                return 9
-            default: return out
-            }
+            return save.integer(forKey: "blue")
         }
         set{
-            save.setInteger(newValue, forKey: "blue")
+            save.set(newValue, forKey: "blue")
         }
     }
     var red:Int{
         get{
-            let out = save.integerForKey("red")
-            switch out{
-            case -1:
-                save.setInteger(9, forKey: "red")
-                return 9
-            default: return out
-            }
+            let out = save.integer(forKey: "red")
+            print("key red in Defaults \(out)")
+            return out
         }
         set{
-            save.setInteger(newValue, forKey: "red")
+            save.set(newValue, forKey: "red")
         }
     }
     var isBluesTurn:Bool{
         get{
-            switch save.integerForKey("isBluesTurn"){
-            case 1:  return true
-            case 2:  return false
-            default:
-                save.setInteger(1,forKey: "isBluesTurn")
-                return true
-            }
+            let out = save.bool(forKey: "isBluesTurn")
+            print("is blue turn from defaults\(out)")
+            return out
         }
         set{
-            if newValue{
-                save.setInteger(1, forKey: "isBluesTurn")
-            }else{
-                save.setInteger(2, forKey: "isBluesTurn")
-            }
+            save.set(newValue, forKey: "isBluesTurn")
         }
     }
     //end of model
-
     
-    func board(from:Int)->Int?{
+    func board(_ from:Int)->Int?{
         return gameplan[from]
     }
     
@@ -104,11 +86,11 @@ class rules {
         return false
     }
     */
-    func win(color:Int)->Bool{
+    func win(_ color:Int)->Bool{
         var markers = 0
         for count in 0...23{
             if gameplan[count] != 0 && gameplan[count] != color{
-                markers++
+                markers += 1
             }
         }
         if(blue <= 0 && red <= 0 && markers < 3){
@@ -117,7 +99,7 @@ class rules {
         return false
     }
     
-    func remove(from:Int,color:Int) -> Bool{
+    func remove(_ from:Int,color:Int) -> Bool{
         if gameplan[from] == color {
             gameplan[from] = 0
             return true
@@ -125,7 +107,7 @@ class rules {
         return false
     }
     
-    func legalMove(to:Int,from:Int) -> Bool {
+    func legalMove(_ to:Int,from:Int) -> Bool {
         print("before first \n isBlue \(isBluesTurn)")
         if !isBluesTurn {
                 if red >= 0 {
@@ -133,7 +115,7 @@ class rules {
                     if gameplan[to] == emptySpace {
                         print("gameplan empty")
                         gameplan[to] = redMarker
-                        red--
+                        red -= 1
                         isBluesTurn = true
                         return true
                     }
@@ -145,7 +127,7 @@ class rules {
                     
                     gameplan[to] = redMarker
                     isBluesTurn = true
-                    blue--
+                    blue -= 1
                     return true
                 }
             }
@@ -156,7 +138,7 @@ class rules {
                 if gameplan[to] == emptySpace {
                     print("gameplan empty")
                     gameplan[to] = blueMarker
-                    blue--
+                    blue -= 1
                     isBluesTurn = false
                     return true
                 }
@@ -175,7 +157,7 @@ class rules {
         return false
     }
     
-    func remove(to:Int) -> Bool? {
+    func remove(_ to:Int) -> Bool? {
         
         if ((to == 1 || to == 4 || to == 7) && gameplan[1] == gameplan[4]
             && gameplan[4] == gameplan[7]) {
@@ -229,7 +211,7 @@ class rules {
         return nil;
     }
     
-    private func isValidMove(to:Int,from:Int)->Bool?{
+    fileprivate func isValidMove(_ to:Int,from:Int)->Bool?{
         if gameplan[to] != 0 {
             return nil
         }

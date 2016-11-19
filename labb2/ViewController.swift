@@ -17,11 +17,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var gamePlane: gamePlan!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.redLabel.transform = CGAffineTransformMakeRotation(CGFloat(M_PI));
+        self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
         let scene = GameScene(size: view.bounds.size)
         let skView = gameView as! SKView
-        NSUserDefaults.standardUserDefaults().setInteger(-1, forKey: "blue")
-        NSUserDefaults.standardUserDefaults().setInteger(-1, forKey: "red")
+        UserDefaults.standard.set(-1, forKey: "blue")
+        UserDefaults.standard.set(-1, forKey: "red")
        //let skView:SKView = gameView
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
@@ -31,21 +31,21 @@ class ViewController: UIViewController {
     }
      
     
-    @IBAction func restart(sender: UIButton) {
+    @IBAction func restart(_ sender: UIButton) {
         let scene = GameScene(size: view.bounds.size)
         let skView = gameView as! SKView
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
         skView.presentScene(scene)
-        print("reset turn was\(NSUserDefaults.standardUserDefaults().integerForKey("isBluesTurn"))")
-NSUserDefaults.standardUserDefaults().setInteger(0, forKey: "isBluesTurn")
-        NSUserDefaults.standardUserDefaults().setInteger(-1, forKey: "blue")
-        NSUserDefaults.standardUserDefaults().setInteger(-1, forKey: "red")
+        print("reset turn was\(UserDefaults.standard.integer(forKey: "isBluesTurn"))")
+UserDefaults.standard.set(0, forKey: "isBluesTurn")
+        UserDefaults.standard.set(-1, forKey: "blue")
+        UserDefaults.standard.set(-1, forKey: "red")
        // [Int](count:25,repeatedValue:0)
-        NSUserDefaults.standardUserDefaults().setObject([Int](count:25,repeatedValue:0), forKey: "gameplan")
+        UserDefaults.standard.set([Int](repeating: 0,count: 25), forKey: "gameplan")
 
 //        NSUserDefaults.resetStandardUserDefaults()
-        print("reset turn is\(NSUserDefaults.standardUserDefaults().integerForKey("isBluesTurn"))")
+        print("reset turn is\(UserDefaults.standard.integer(forKey: "isBluesTurn"))")
     }
 }
 
