@@ -11,40 +11,41 @@ import SpriteKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var blueLabel: UILabel!
     @IBOutlet weak var gameView: UIView!
-    @IBOutlet weak var upsideDown: UILabel!
+    @IBOutlet weak var redLabel: UILabel!
+    @IBOutlet weak var gamePlane: gamePlan!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.upsideDown.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2*2));
-//        let scene = gamePlan(size: view.bounds.size)
-//        let skView = view as! SKView
-//        skView.showsFPS = true
-//        skView.showsNodeCount = true
-//        skView.ignoresSiblingOrder = true
-//        scene.scaleMode = .ResizeFill
-//        skView.presentScene(scene)
+        self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
         let scene = GameScene(size: view.bounds.size)
         let skView = gameView as! SKView
-//        skView.showsFPS = true
-//        skView.showsNodeCount = true
+        UserDefaults.standard.set(-1, forKey: "blue")
+        UserDefaults.standard.set(-1, forKey: "red")
+       //let skView:SKView = gameView
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
-//        scene.scaleMode = .ResizeFill
         skView.presentScene(scene)
+        
 
     }
-
-    @IBOutlet weak var redButton: UIButton!
-    @IBOutlet weak var blueButton: UIButton!
-    @IBOutlet weak var moveButton: UIButton!
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-//    @IBOutlet weak var upsideDown: UILabel!
-
+     
     
+    @IBAction func restart(_ sender: UIButton) {
+        let scene = GameScene(size: view.bounds.size)
+        let skView = gameView as! SKView
+        skView.ignoresSiblingOrder = true
+        skView.allowsTransparency = true
+        skView.presentScene(scene)
+        print("reset turn was\(UserDefaults.standard.integer(forKey: "isBluesTurn"))")
+UserDefaults.standard.set(0, forKey: "isBluesTurn")
+        UserDefaults.standard.set(-1, forKey: "blue")
+        UserDefaults.standard.set(-1, forKey: "red")
+       // [Int](count:25,repeatedValue:0)
+        UserDefaults.standard.set([Int](repeating: 0,count: 25), forKey: "gameplan")
+
+//        NSUserDefaults.resetStandardUserDefaults()
+        print("reset turn is\(UserDefaults.standard.integer(forKey: "isBluesTurn"))")
+    }
 }
 

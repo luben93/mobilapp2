@@ -11,7 +11,7 @@
 * 03           06           09
 *     02       05       08
 *         01   04   07
-* 24  23  22        10  11  12
+* 24  23  22   00   10  11  12
 *         19   16   13
 *     20       17       14
 * 21           18           15
@@ -21,35 +21,76 @@
 import Foundation
 
 class rules {
-    
-    init(){
-        gameplan = (0...25).map() { $0 }
-        blue = 9
-        red = 9
-        turn = redMoves
-        
-    }
-    
-    var gameplan:[Int]
-    var blue:Int
-    var red:Int
-    var turn:Int
-    
+
     let emptySpace = 0
     let blueMoves = 1
     let redMoves = 2
     let blueMarker = 4
     let redMarker = 5
+    let save = UserDefaults.standard
+    var gameplan:[Int]{
+        get{
+            if let out = save.array(forKey: "gameplan") as? [Int]{
+                return out
+            }else{
+                print("as? [int] did not work")
+                let tmp = [Int](repeating: 0,count: 25)
+                save.set(tmp, forKey: "gameplan")
+                return tmp
+            }
+        }
+        set{
+            save.set(newValue, forKey: "gameplan")
+        }
+    }
+    var blue:Int{
+        get{
+            return save.integer(forKey: "blue")
+        }
+        set{
+            save.set(newValue, forKey: "blue")
+        }
+    }
+    var red:Int{
+        get{
+            let out = save.integer(forKey: "red")
+            print("key red in Defaults \(out)")
+            return out
+        }
+        set{
+            save.set(newValue, forKey: "red")
+        }
+    }
+    var isBluesTurn:Bool{
+        get{
+            let out = save.bool(forKey: "isBluesTurn")
+            print("is blue turn from defaults\(out)")
+            return out
+        }
+        set{
+            save.set(newValue, forKey: "isBluesTurn")
+        }
+    }
+    //end of model
     
-    func board(from:Int)->Int?{
+    func board(_ from:Int)->Int?{
         return gameplan[from]
     }
     
-    func win(color:Int)->Bool{
+   /* func redDoTurn()->Bool{
+        if isBluesTurn{
+            isBluesTurn = false
+            return true
+        }
+        isBluesTurn = true
+        return false
+    }
+    */
+    func win(_ color:Int)->Bool{
         var markers = 0
-        for count in 0..<23{
+        for count in 0...23{
             if gameplan[count] != 0 && gameplan[count] != color{
-                markers++
+                markers += 1
             }
         }
         if(blue <= 0 && red <= 0 && markers < 3){
@@ -58,7 +99,7 @@ class rules {
         return false
     }
     
-    func remove(from:Int,color:Int) -> Bool{
+    func remove(_ from:Int,color:Int) -> Bool{
         if gameplan[from] == color {
             gameplan[from] = 0
             return true
@@ -66,40 +107,57 @@ class rules {
         return false
     }
     
-    func legalMove(to:Int,from:Int,color:Int) -> Bool {
-        if color == turn {
-            if turn == redMoves {
+    func legalMove(_ to:Int,from:Int) -> Bool {
+        print("before first \n isBlue \(isBluesTurn)")
+        if !isBluesTurn {
                 if red >= 0 {
+                    print("r<=0")
                     if gameplan[to] == emptySpace {
+                        print("gameplan empty")
                         gameplan[to] = redMarker
-                        red--
-                        turn = blueMoves
+                        red -= 1
+                        isBluesTurn = true
                         return true
                     }
                 }
-                if gameplan[to] == emptySpace {
-                    if let _ = isValidMove(to,from:from){
-                        gameplan[to] = redMarker
-                        turn = blueMoves
-                        blue--
-                        return true
-                        
-                    }
-                }
-                if gameplan[to] == emptySpace{
-                    if let _ = isValidMove(to,from:from){
-                        gameplan[to] = blueMarker
-                        turn = redMoves
-                        return true
-                    }
+            if gameplan[to] == emptySpace {
+                print("gameplan empty")
+                if let tmp = isValidMove(to,from:from){
+                    print("ris valid \(tmp)")
                     
+                    gameplan[to] = redMarker
+                    isBluesTurn = true
+                    blue -= 1
+                    return true
                 }
             }
+
+        }else{
+            if blue >= 0 {
+                print("b<=0")
+                if gameplan[to] == emptySpace {
+                    print("gameplan empty")
+                    gameplan[to] = blueMarker
+                    blue -= 1
+                    isBluesTurn = false
+                    return true
+                }
         }
+    
+                                if gameplan[to] == emptySpace{
+                    print("bgameplan empty")
+                    if let tmp = isValidMove(to,from:from){
+                        print("is valid \(tmp )")
+                        gameplan[to] = blueMarker
+                        isBluesTurn = false
+                        return true
+                    }
+                }
+            }
         return false
     }
     
-    func remove(to:Int) -> Bool? {
+    func remove(_ to:Int) -> Bool? {
         
         if ((to == 1 || to == 4 || to == 7) && gameplan[1] == gameplan[4]
             && gameplan[4] == gameplan[7]) {
@@ -153,8 +211,7 @@ class rules {
         return nil;
     }
     
-    
-    private func isValidMove(to:Int,from:Int)->Bool?{
+    fileprivate func isValidMove(_ to:Int,from:Int)->Bool?{
         if gameplan[to] != 0 {
             return nil
         }

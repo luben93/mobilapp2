@@ -11,9 +11,9 @@ import SpriteKit
 class MySprites: SKScene{
     
     @IBInspectable var lineWidth:CGFloat = 3
-    @IBInspectable var color: UIColor = UIColor.greenColor()
+    @IBInspectable var color: UIColor = UIColor.green
     
-    override func didMoveToView(bounds: SKView) {
+    override func didMove(to bounds: SKView) {
         /*
         let outer = UIBezierPath(rect: CGRect(x: bounds.midX * 0.1, y: bounds.midY * 0.1, width: bounds.maxX * 0.9, height: bounds.maxY * 0.9))
         let middle = UIBezierPath(rect: CGRect(x: bounds.midX * 0.4, y: bounds.midY * 0.4, width: bounds.maxX * 0.6, height: bounds.maxY * 0.6))
