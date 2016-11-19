@@ -3,5 +3,5 @@ osx_image: xcode8.1
 #xcode_project: labb2.xcodeproj # path to your xcodeproj folder
 #xcode_scheme: labb2
 script:
-    xctool -project labb2.xcproj -scheme labb2 clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+    xctool -project labb2.xcproj -scheme labb2 CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
 
