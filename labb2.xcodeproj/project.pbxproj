@@ -205,7 +205,7 @@
 				TargetAttributes = {
 					5FB065D21C0CF9BA00E1ACE6 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 6P87R72W48;
+						DevelopmentTeam = 9A3JHQM97D;
 						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
@@ -428,11 +428,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 6P87R72W48;
+				DEVELOPMENT_TEAM = 9A3JHQM97D;
 				INFOPLIST_FILE = labb2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.exyr2.mobila.labb2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cj.mobila.labb2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -443,11 +443,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 6P87R72W48;
+				DEVELOPMENT_TEAM = 9A3JHQM97D;
 				INFOPLIST_FILE = labb2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.exyr2.mobila.labb2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cj.mobila.labb2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
