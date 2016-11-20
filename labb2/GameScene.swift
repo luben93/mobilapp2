@@ -70,8 +70,10 @@ class GameScene: SKScene {
     
         switch rule.mode{
         case .place: label.text = "place tile"
+            //draw new tile here
         case .select: label.text = "select tile"
         case .remove: label.text = "remove tile"
+            //remove tile here
         }
         /*
          print("touch blue \(rule.isBluesTurn )")

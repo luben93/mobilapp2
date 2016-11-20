@@ -34,7 +34,7 @@ class rules {
     private var phaseOne = true
     private var gameplan:[Tiles]{
         get{
-            return save.array(forKey: "newGameplan") as! [Tiles]
+            return save.array(forKey: "newGameplan") as? [Tiles] ?? [Tiles](repeating: .Empty,count: 25)
         }
         set{
             save.set(newValue,forKey:"newGameplan")
