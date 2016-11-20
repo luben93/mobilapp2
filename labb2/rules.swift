@@ -84,16 +84,16 @@ class rules {
             save.set(newValue, forKey: "isBluesTurn")
         }
     }
-     enum Tiles {
-        case Blue
-        case Red
-        case Empty
+    enum Tiles: String {
+        case Blue  = "b"
+        case Red   = "r"
+        case Empty = "e"
     }
     
-    enum Modes{
-        case select
-        case place
-        case remove
+    enum Modes: String {
+        case select = "s"
+        case place  = "p"
+        case remove = "r"
     }
     var mode = Modes.select
     var selectedTile:Int?
@@ -164,6 +164,8 @@ class rules {
             if (gameplan[tile!] == opponent ){
                 mode = .place
                 isBluesTurn = !isBluesTurn
+                gameplan[tile!] = .Empty
+
                 return true
             }
         }
@@ -180,9 +182,13 @@ class rules {
                 isBluesTurn = !isBluesTurn
             }
             if(phaseOne){
+                gameplan[tile!] = currentPlayerTile
                 return true
             }else{
-                return isValidMove(to:tile!, from: from)
+                if( isValidMove(to:tile!, from: from)){
+                    gameplan[tile!] = currentPlayerTile
+                }
+                
             }
         }
         

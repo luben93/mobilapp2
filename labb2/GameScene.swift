@@ -64,8 +64,9 @@ class GameScene: SKScene {
         guard let touch = touches.first else {
             return
         }
-        
         let touchLocation = touch.location(in: self)
+        
+        
         rule.tile = closestTile(touchLocation, cmp:currentTiles)!
         
         switch rule.mode{
@@ -184,6 +185,8 @@ class GameScene: SKScene {
     //
     //    }
     
+    
+    //TODO  merge closest place and closet tile to one function and verify that it finds the correct CGPoint, and move 10000 to a minimal distance that matters
     func closestPlaces(_ touch:CGPoint) -> Int{
         
         var diff = CGFloat(10000)
@@ -198,6 +201,7 @@ class GameScene: SKScene {
         
         return out
     }
+    
     
     func closestTile(_ touch:CGPoint,cmp:[SKSpriteNode?]) -> Int?{
         
