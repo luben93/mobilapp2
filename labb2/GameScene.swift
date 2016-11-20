@@ -6,17 +6,17 @@
 //  Copyright (c) 2015 lucas persson. All rights reserved.
 //
 /*
-* The game board positions
-*
-* 03           06           09
-*     02       05       08
-*         01   04   07
-* 24  23  22   00   10  11  12
-*         19   16   13
-*     20       17       14
-* 21           18           15
-*
-*/
+ * The game board positions
+ *
+ * 03           06           09
+ *     02       05       08
+ *         01   04   07
+ * 24  23  22   00   10  11  12
+ *         19   16   13
+ *     20       17       14
+ * 21           18           15
+ *
+ */
 
 import SpriteKit
 
@@ -43,14 +43,14 @@ class GameScene: SKScene {
         }
     }
     /*var currentCan:SKSpriteNode{
-        get{
-            if rule.isBluesTurn {
-                return blueCan
-            }else{
-                return redCan
-            }
-        }
-    }*/
+     get{
+     if rule.isBluesTurn {
+     return blueCan
+     }else{
+     return redCan
+     }
+     }
+     }*/
     
     
     override func didMove(to view: SKView) {
@@ -67,81 +67,97 @@ class GameScene: SKScene {
         
         let touchLocation = touch.location(in: self)
         rule.tile = closestTile(touchLocation, cmp:currentTiles)!
-    
+        
         switch rule.mode{
         case .place: label.text = "place tile"
-            //draw new tile here
-        case .select: label.text = "select tile"
+        //draw new tile here
+        
+        if let tileN = rule.selectedTile{
+            print("iflet selected")
+            if let tile = currentTiles[tileN] {
+                print("iflet work on place")//did not work
+                tile.removeFromParent()
+                tile.position = places[rule.tile!]
+                addChild(tile)
+            }
+        }
+            
+        case .select: label.text = "select tile" // maybe draw tile in a on hand place
         case .remove: label.text = "remove tile"
-            //remove tile here
+        //remove tile here
+        if let tileN = rule.selectedTile{
+            if let tile = currentTiles[tileN] {
+                
+                tile.removeFromParent()
+            }}
         }
         /*
          print("touch blue \(rule.isBluesTurn )")
-        switch mode{
-        case .place:
-        if let tileN = tileSelected{
-            let diff = sqrt(pow(touchLocation.x-currentCan.position.x,2)+pow(touchLocation.y-currentCan.position.y,2))
-            if 30 <= diff {
-                if rule.legalMove(closestPlaces(touchLocation), from: tileN){
-                    if let tile =  currentTiles[tileN]{
-                        tile.removeFromParent()
-                        tile.position = places[closestPlaces(touchLocation)]
-                        addChild(tile)
-                    }
-                    tileSelected = nil
-                    // remove tile if aplicible
-                    if rules.hasMill(){
-                        
-                        label.text = "remove opponents tile"
-                        // remove title mode TODO
-                        mode = .remove
-                    }else{
-                        mode = .select
-                    }
-                    
-                    
-                    //rule.isBluesTurn = !rule.isBluesTurn // already doning this
-                }
-            }else{
-                //trashCan
-                print("trashcan\(touchLocation)")
-                if let cTile = currentTiles[tileN] {
-                    cTile.position = CGPoint(x:-100,y:-100)
-                    cTile.removeFromParent()
-                    if rule.isBluesTurn {
-                         blueTiles[tileN]=nil
-                    }else{
-                         redTiles[tileN]=nil
-                    }
-                }
-            }
-        }
-        case .select:
-            tileSelected = closestTile(touchLocation, cmp:currentTiles)
-            print("tileSelected \(tileSelected) ")
-            mode = .place
-            //label.text = "place tile"
-        case .remove:
-            if rule.isBluesTurn {
-                tile = closestTile(touchLocation, cmp:blueTiles)
-            }else{
-                tile = closestTile(touchLocation, cmp:blueTiles)
-            }
-            rule.re
-            
-        }
-        //            print("red \(sqrt(pow(touchLocation.x-redCan.position.x,2)+pow(touchLocation.y-redCan!.position.y,2))) blue \(sqrt(pow(touchLocation.x-blueCan!.position.x,2)+pow(touchLocation.y-blueCan!.position.y,2)))")
-        */
+         switch mode{
+         case .place:
+         if let tileN = tileSelected{
+         let diff = sqrt(pow(touchLocation.x-currentCan.position.x,2)+pow(touchLocation.y-currentCan.position.y,2))
+         if 30 <= diff {
+         if rule.legalMove(closestPlaces(touchLocation), from: tileN){
+         if let tile =  currentTiles[tileN]{
+         tile.removeFromParent()
+         tile.position = places[closestPlaces(touchLocation)]
+         addChild(tile)
+         }
+         tileSelected = nil
+         // remove tile if aplicible
+         if rules.hasMill(){
+         
+         label.text = "remove opponents tile"
+         // remove title mode TODO
+         mode = .remove
+         }else{
+         mode = .select
+         }
+         
+         
+         //rule.isBluesTurn = !rule.isBluesTurn // already doning this
+         }
+         }else{
+         //trashCan
+         print("trashcan\(touchLocation)")
+         if let cTile = currentTiles[tileN] {
+         cTile.position = CGPoint(x:-100,y:-100)
+         cTile.removeFromParent()
+         if rule.isBluesTurn {
+         blueTiles[tileN]=nil
+         }else{
+         redTiles[tileN]=nil
+         }
+         }
+         }
+         }
+         case .select:
+         tileSelected = closestTile(touchLocation, cmp:currentTiles)
+         print("tileSelected \(tileSelected) ")
+         mode = .place
+         //label.text = "place tile"
+         case .remove:
+         if rule.isBluesTurn {
+         tile = closestTile(touchLocation, cmp:blueTiles)
+         }else{
+         tile = closestTile(touchLocation, cmp:blueTiles)
+         }
+         rule.re
+         
+         }
+         //            print("red \(sqrt(pow(touchLocation.x-redCan.position.x,2)+pow(touchLocation.y-redCan!.position.y,2))) blue \(sqrt(pow(touchLocation.x-blueCan!.position.x,2)+pow(touchLocation.y-blueCan!.position.y,2)))")
+         */
         setTurnText()
- 
+        
     }
     
     private func setTurnText(){
         /*if tileSelected == nil {
-            label.text = "select tile"
-        }else{
-            label.text = "place tile"
-        }*/
+         label.text = "select tile"
+         }else{
+         label.text = "place tile"
+         }*/
         
         switch rule.currentPlayerTile { //was a flipped bool, now normal
         case .Blue:
@@ -151,22 +167,22 @@ class GameScene: SKScene {
             label.fontColor = SKColor.red
             label.zRotation = CGFloat(M_PI)
         case .Empty: print("labelsetter error error"); break;
-
+            
         }
     }
     
     
-//
-//    func moveFromPile(touchLocation:CGPoint,tileN:Int){
-////        let closestIndex = closestPlaces(touchLocation)
-//       //        let current = currentTiles[tile]
-//        if let tile =  currentTiles[tileN]{
-//           tile.removeFromParent()
-//            tile.position = places[closestPlaces(touchLocation)]
-//            addChild(tile)
-//        }
-//        
-//    }
+    //
+    //    func moveFromPile(touchLocation:CGPoint,tileN:Int){
+    ////        let closestIndex = closestPlaces(touchLocation)
+    //       //        let current = currentTiles[tile]
+    //        if let tile =  currentTiles[tileN]{
+    //           tile.removeFromParent()
+    //            tile.position = places[closestPlaces(touchLocation)]
+    //            addChild(tile)
+    //        }
+    //
+    //    }
     
     func closestPlaces(_ touch:CGPoint) -> Int{
         
@@ -198,15 +214,15 @@ class GameScene: SKScene {
         }
         
         /*for i in 0...cmp.count-1{
-            if let cTile = cmp[i]?.position {
-            let tmp = sqrt(pow(touch.x-cTile.x,2)+pow(touch.y-cTile.y,2))
-            if tmp <= diff {
-                diff = tmp
-                out = i
-                }
-            }
-        }*/
-
+         if let cTile = cmp[i]?.position {
+         let tmp = sqrt(pow(touch.x-cTile.x,2)+pow(touch.y-cTile.y,2))
+         if tmp <= diff {
+         diff = tmp
+         out = i
+         }
+         }
+         }*/
+        
         return out
     }
     
@@ -279,7 +295,6 @@ class GameScene: SKScene {
         middle.addLine(to: places[8])
         middle.addLine(to: places[14])
         middle.addLine(to: places[20])
-
         drawRect(middle)
         
         let inner = CGMutablePath()
@@ -287,32 +302,26 @@ class GameScene: SKScene {
         inner.addLine(to: places[7])
         inner.addLine(to: places[13])
         inner.addLine(to: places[19])
-
-        
         drawRect(inner)
         
         let up = CGMutablePath()
         up.move(to: places[6])
         up.addLine(to: places[4])
-        
-            drawRect(up)
+        drawRect(up)
         
         let down = CGMutablePath()
         down.move(to: places[16])
         down.addLine(to: places[18])
-        
         drawRect(down)
         
         let rigth = CGMutablePath()
         rigth.move(to: places[12])
         rigth.addLine(to: places[10])
-        
         drawRect(rigth)
         
         let left = CGMutablePath()
         left.move(to:places[24])
         left.addLine(to: places[22])
-        
         drawRect(left)
         
         
@@ -346,6 +355,6 @@ class GameScene: SKScene {
     //        redTiles[1]?.position = point
     //        addChild(redTiles[1]!)
     //    }
-
+    
     
 }

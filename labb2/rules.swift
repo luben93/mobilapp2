@@ -96,15 +96,18 @@ class rules {
         case remove
     }
     var mode = Modes.select
-    private var selectedTile:Int?
+    var selectedTile:Int?
     var tile:Int? = nil {
         didSet{
             if tile == nil {return}
+            var out:Bool
+            let oldmode = mode
             switch mode{
-            case .select: select()
-            case .place: place()
-            case .remove: remove()
+            case .select: out = select()
+            case .place: out = place()
+            case .remove: out = remove()
             }
+            print("\(oldmode) \(out)")
         }
     }
     private var possibleMills = [[3,6,9],[2,5,8],[1,4,7],[24,23,22],[10,11,12],[19,16,13],[20,17,14],[21,18,15],//horizontal
@@ -140,8 +143,12 @@ class rules {
     
     func select()-> Bool{
         if (mode == .select){
+            print("selcet \(tile!) \(gameplan[tile!]) \(currentPlayerTile)")
             mode = .place
             if (currentPlayerTile == gameplan[tile!]){
+                selectedTile = tile
+                return true
+            }else if(phaseOne){
                 selectedTile = tile
                 return true
             }
