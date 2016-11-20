@@ -28,21 +28,21 @@ class GameScene: SKScene {
     var blueTiles = [SKSpriteNode?](repeating: nil, count: 10)
     var redTiles = [SKSpriteNode?](repeating: nil, count: 10)
     var places = [CGPoint](repeating: CGPoint(), count: 25)
-    var tileSelected:Int?
+    //var tileSelected:Int?
     var blueCan = SKSpriteNode()
     var redCan = SKSpriteNode()
     let label = SKLabelNode()
     let rule = rules()
     var currentTiles:[SKSpriteNode?]{
         get{
-            if rule.isBluesTurn {
-                return redTiles
-            }else{
-                return blueTiles
+            switch rule.currentPlayerTile { //flipped bool
+            case .Blue: return blueTiles
+            case .Red: return redTiles
+            case .Empty: print("currentTitle error"); return redTiles; //ajabaja
             }
         }
     }
-    var currentCan:SKSpriteNode{
+    /*var currentCan:SKSpriteNode{
         get{
             if rule.isBluesTurn {
                 return blueCan
@@ -50,11 +50,10 @@ class GameScene: SKScene {
                 return redCan
             }
         }
-    }
+    }*/
     
     
     override func didMove(to view: SKView) {
-        print("did move, doing alotOfStuff")
         backgroundColor = SKColor.clear
         alotOfStuff()
     }
@@ -65,13 +64,22 @@ class GameScene: SKScene {
         guard let touch = touches.first else {
             return
         }
+        
         let touchLocation = touch.location(in: self)
-        print("touch blue \(rule.isBluesTurn )")
+        rule.tile = closestTile(touchLocation, cmp:currentTiles)!
+    
+        switch rule.mode{
+        case .place: label.text = "place tile"
+        case .select: label.text = "select tile"
+        case .remove: label.text = "remove tile"
+        }
+        /*
+         print("touch blue \(rule.isBluesTurn )")
+        switch mode{
+        case .place:
         if let tileN = tileSelected{
-            
             let diff = sqrt(pow(touchLocation.x-currentCan.position.x,2)+pow(touchLocation.y-currentCan.position.y,2))
             if 30 <= diff {
-                
                 if rule.legalMove(closestPlaces(touchLocation), from: tileN){
                     if let tile =  currentTiles[tileN]{
                         tile.removeFromParent()
@@ -79,9 +87,19 @@ class GameScene: SKScene {
                         addChild(tile)
                     }
                     tileSelected = nil
-                    //rule.isBluesTurn = !rule.isBluesTurn // already doning this
-                    
+                    // remove tile if aplicible
+                    if rules.hasMill(){
+                        
+                        label.text = "remove opponents tile"
+                        // remove title mode TODO
+                        mode = .remove
+                    }else{
+                        mode = .select
                     }
+                    
+                    
+                    //rule.isBluesTurn = !rule.isBluesTurn // already doning this
+                }
             }else{
                 //trashCan
                 print("trashcan\(touchLocation)")
@@ -93,31 +111,46 @@ class GameScene: SKScene {
                     }else{
                          redTiles[tileN]=nil
                     }
-                   
                 }
-                
-
-                
             }
-            
-            
-        }else{
+        }
+        case .select:
             tileSelected = closestTile(touchLocation, cmp:currentTiles)
-            //print("tileSelected \(tileSelected) rule tile \(rule.board(9))")
+            print("tileSelected \(tileSelected) ")
+            mode = .place
             //label.text = "place tile"
+        case .remove:
+            if rule.isBluesTurn {
+                tile = closestTile(touchLocation, cmp:blueTiles)
+            }else{
+                tile = closestTile(touchLocation, cmp:blueTiles)
+            }
+            rule.re
             
         }
         //            print("red \(sqrt(pow(touchLocation.x-redCan.position.x,2)+pow(touchLocation.y-redCan!.position.y,2))) blue \(sqrt(pow(touchLocation.x-blueCan!.position.x,2)+pow(touchLocation.y-blueCan!.position.y,2)))")
-        if rule.isBluesTurn {
-            label.text = "blues turn"
+        */
+        setTurnText()
+ 
+    }
+    
+    private func setTurnText(){
+        /*if tileSelected == nil {
+            label.text = "select tile"
+        }else{
+            label.text = "place tile"
+        }*/
+        
+        switch rule.currentPlayerTile { //was a flipped bool, now normal
+        case .Blue:
             label.fontColor = SKColor.blue
             label.zRotation = CGFloat(0)
-        }else{
-            label.text = "reds turn"
+        case .Red:
             label.fontColor = SKColor.red
             label.zRotation = CGFloat(M_PI)
-        }
+        case .Empty: print("labelsetter error error"); break;
 
+        }
     }
     
     
@@ -148,11 +181,21 @@ class GameScene: SKScene {
         return out
     }
     
-    func closestTile(_ touch:CGPoint,cmp:[SKSpriteNode?]) -> Int{
+    func closestTile(_ touch:CGPoint,cmp:[SKSpriteNode?]) -> Int?{
         
         var diff = CGFloat(10000)
-        var out = -1
-        for i in 0...cmp.count-1{
+        var out:Int?
+        for (i,node) in cmp.enumerated() {
+            if let tile = node?.position{
+                let tmp = hypot(touch.x-tile.x, touch.y-tile.y)
+                if tmp <= diff {
+                    diff = tmp
+                    out = i
+                }
+            }
+        }
+        
+        /*for i in 0...cmp.count-1{
             if let cTile = cmp[i]?.position {
             let tmp = sqrt(pow(touch.x-cTile.x,2)+pow(touch.y-cTile.y,2))
             if tmp <= diff {
@@ -160,8 +203,8 @@ class GameScene: SKScene {
                 out = i
                 }
             }
-        }
-        
+        }*/
+
         return out
     }
     
@@ -272,12 +315,13 @@ class GameScene: SKScene {
         
         
         //let label = SKLabelNode(fontNamed: "Chalkduster")
-        label.text = "Your turn"
-        label.fontSize = 15
-        label.fontColor = SKColor.blue
+        label.text = "start"
+        label.fontSize = 17
+        label.fontColor = SKColor.red
         label.position = places[0]
         label.setScale(1)
         addChild(label)
+        setTurnText()
         
     }
     
