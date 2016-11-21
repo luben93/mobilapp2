@@ -95,8 +95,18 @@ class rules {
         case place
         case remove
     }
+    
     var mode = Modes.select
+    
     private var selectedTile:Int?
+    
+    var latestTilePlaced:Int? = nil {
+        didSet{
+            if tile == nil {return}
+            place()
+        }
+    }
+    
     var tile:Int? = nil {
         didSet{
             if tile == nil {return}
@@ -132,6 +142,7 @@ class rules {
         for possibleMill in possibleMills {
             if(gameplan[possibleMill[0]] == player && gameplan[possibleMill[1]] == player && gameplan[possibleMill[2]] == player ){
                 mode = .remove
+                print("located mill for \(player)")
                 return true
             }
         }
@@ -140,35 +151,23 @@ class rules {
     
     func select()-> Bool{
         if (mode == .select){
-            mode = .place
+            //mode = .place
             if (currentPlayerTile == gameplan[tile!]){
                 selectedTile = tile
+                print("selected tile: \(selectedTile)")
                 return true
             }
         }
         return false
-        }
-    
-    func remove()-> Bool{
-       
-        var opponent = Tiles.Blue
-        if (isBluesTurn){ opponent = Tiles.Red }
-        if (mode == .remove ){
-            if (gameplan[tile!] == opponent ){
-                mode = .place
-                isBluesTurn = !isBluesTurn
-                return true
-            }
-        }
-        return false
-    
     }
     
     func place()-> Bool{
         let from = selectedTile
         if(gameplan[tile!] == .Empty){
+            
             //has mill should do something
-            mode = .select
+           // mode = .select
+            // should check for valid move before this
             if !hasMill(){
                 isBluesTurn = !isBluesTurn
             }
@@ -177,10 +176,49 @@ class rules {
             }else{
                 return isValidMove(to:tile!, from: from)
             }
+        } else {
+            print("invalid move, place not empty")
+            return false
         }
-        
-        return false
     }
+    
+    func remove()-> Bool{
+       
+        var opponent = Tiles.Blue
+        if (isBluesTurn){ opponent = Tiles.Red }
+        if (mode == .remove ){
+            if (gameplan[tile!] == opponent ){
+                
+                mode = .place // this does not seem right, sould be set to .select imo
+                isBluesTurn = !isBluesTurn
+                return true
+            }
+        }
+        return false
+    
+    }
+    
+    
+    // checks if the selected place is avaiable and in the case of game beeing in phase two also check  if the move is valid
+    func checkIfPlaceIsAvailable(placeIndex:Int, fromPlaceIndex:Int) -> Bool {
+        if phaseOne {
+            if gameplan[placeIndex] == .Empty {
+                isBluesTurn = !isBluesTurn
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return isValidMove(to: placeIndex, from: fromPlaceIndex)
+        }
+    }
+    
+    // getter for phase
+    func isPhaseOne() -> Bool {
+        return phaseOne
+    }
+
+    
     /* func redDoTurn()->Bool{
      if isBluesTurn{
      isBluesTurn = false
@@ -331,6 +369,8 @@ class rules {
             print("phase one")
             return true
         }
+        
+        //opional: if currentPlayer has 3 tiles left he/she may move to any empty space
         
         switch to {
         case 1:
