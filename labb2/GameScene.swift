@@ -72,7 +72,7 @@ class GameScene: SKScene {
         switch rule.mode{
         case .place: label.text = "place tile"
         //draw new tile here
-        
+        //move to notify func
         if let tileN = rule.selectedTile{
             print("iflet selected")
             if let tile = currentTiles[tileN] {
