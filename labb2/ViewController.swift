@@ -15,10 +15,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var redLabel: UILabel!
     @IBOutlet weak var gamePlane: gamePlan!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
         let scene = GameScene(size: view.bounds.size)
+        scene.initializeNotifiers()
         let skView = gameView as! SKView
         UserDefaults.standard.set(-1, forKey: "blue")
         UserDefaults.standard.set(-1, forKey: "red")
@@ -38,7 +40,7 @@ class ViewController: UIViewController {
         skView.allowsTransparency = true
         skView.presentScene(scene)
         print("reset turn was\(UserDefaults.standard.integer(forKey: "isBluesTurn"))")
-UserDefaults.standard.set(0, forKey: "isBluesTurn")
+        UserDefaults.standard.set(0, forKey: "isBluesTurn")
         UserDefaults.standard.set(-1, forKey: "blue")
         UserDefaults.standard.set(-1, forKey: "red")
        // [Int](count:25,repeatedValue:0)
