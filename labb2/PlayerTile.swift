@@ -6,10 +6,13 @@
 //  Copyright © 2016 lucas persson. All rights reserved.
 //
 
-import UIKit
+import SpriteKit
 
-class PlayerTile: UIView {
-
+class PlayerTile: SKSpriteNode{
+    
+    
+    
+    
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
