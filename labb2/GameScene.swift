@@ -37,22 +37,12 @@ class GameScene: SKScene {
     let rule = Rules()
     var currentTiles:[PlayerTile?]{
         get{
-            switch rule.currentPlayerTile { //flipped bool
-            case .Blue: return blueTiles
-            case .Red: return redTiles
-            case .Empty: print("currentTitle error"); return redTiles; //ajabaja
+            if rule.currentPlayerTile == .Blue {
+                return blueTiles
             }
+            return redTiles
         }
     }
-    /*var currentCan:SKSpriteNode{
-     get{
-     if rule.isBluesTurn {
-     return blueCan
-     }else{
-     return redCan
-     }
-     }
-     }*/
     
     
     override func didMove(to view: SKView) {
@@ -68,6 +58,8 @@ class GameScene: SKScene {
 
     func notifiedEventNextTurn(){
         setTurnText()
+        //currentTiles
+        
         //TODO more switched player
     }
     func notifiedEventPlaced(){
@@ -136,10 +128,12 @@ class GameScene: SKScene {
             if selectedPlace != -1{
                 // checking if selected place is available. Because of phase one we set from index to -1, it is not in use in this phase.
                 if let tile =  currentTiles[selectedNodeIndex]{
-                    if rule.checkIfPlaceIsAvailable(placeIndex: selectedPlace,fromPlaceIndex: -1){
+                    if rule.checkIfPlaceIsAvailable(to: selectedPlace,from: selectedNodeIndex){
                         // placing selected tile on selected place
                         placeTile(tile: tile, place: places[closestPlaces(touchLocation)])
-                        
+                        print("Placing to selectedPlace: \(selectedPlace) from selectedNodeIndex: \(selectedNodeIndex)")
+                        rule.place(to: selectedPlace, from: selectedNodeIndex)
+                        selectedNodeIndex = -1
                     } else {
                         print("Selected place was not available: \(selectedPlace)")
                     }
@@ -148,6 +142,7 @@ class GameScene: SKScene {
         }
     }
 
+    
     
     private func placeTile(tile:PlayerTile, place:CGPoint){
         // placing selected tile on selected place
@@ -158,9 +153,8 @@ class GameScene: SKScene {
         addChild(tile)
         
         // resetting selected node index
-        selectedNodeIndex = -1
+        
         // calling rule to decide what will be the consequence of this move
-        rule.placeIt()
         
     }
 
