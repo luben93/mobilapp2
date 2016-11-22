@@ -117,14 +117,23 @@ class Rules {
     
     func place(to:Int,from:Int)-> Bool{
         if(checkIfPlaceIsAvailable(to: to,from: from)){
-            gameplan[to] = gameplan[from]
+            if phaseOne {
+                gameplan[to] = currentPlayerTile
+            } else {
+                gameplan[to] = gameplan[from]
+            }
+            
+             //   gameplan[to] = currentPlayerTile
+            
 
+            
             if !hasMill(){
                 isBluesTurn = !isBluesTurn
 
             }
             NotificationCenter.default.post(name: Rules.placed, object: nil)
             return true
+            
         }
             print("invalid move")
             return false
@@ -150,7 +159,7 @@ class Rules {
     
     
     // checks if the selected place is avaiable and in the case of game beeing in phase two also check  if the move is valid
-    func checkIfPlaceIsAvailable(to:Int, from:Int) -> Bool {
+    func checkIfPlaceIsAvailable(to:Int, from:Int?) -> Bool {
         if gameplan[to] == .Empty {
             if phaseOne {
                 return true
@@ -170,7 +179,7 @@ class Rules {
         NotificationCenter.default.post(name: Rules.placed, object: nil)
     }
     
-    fileprivate func isValidMove(to:Int,from:Int)->Bool{
+    fileprivate func isValidMove(to:Int,from:Int?)->Bool{
         if(gameplan[to] != .Empty){
             return false
         }
