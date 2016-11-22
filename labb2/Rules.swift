@@ -85,19 +85,20 @@ class Rules {
             save.set(newValue, forKey: "isBluesTurn")
         }
     }
-     enum Tiles {
-        case Blue
-        case Red
-        case Empty
+    enum Tiles: String {
+        case Blue  = "b"
+        case Red   = "r"
+        case Empty = "e"
     }
     
-    enum Modes{
-        case select
-        case place
-        case remove
+    enum Modes: String {
+        case select = "s"
+        case place  = "p"
+        case remove = "r"
     }
     
     var mode = Modes.select
+<<<<<<< HEAD:labb2/Rules.swift
     
     private var selectedTile:Int?
     
@@ -108,14 +109,20 @@ class Rules {
         }
     }
     
+=======
+    var selectedTile:Int?
+>>>>>>> 9f5d36041381307b76540d76fd4cdac11f07219b:labb2/rules.swift
     var tile:Int? = nil {
         didSet{
             if tile == nil {return}
+            var out:Bool
+            let oldmode = mode
             switch mode{
-            case .select: select()
-            case .place: place()
-            case .remove: remove()
+            case .select: out = select()
+            case .place: out = place()
+            case .remove: out = remove()
             }
+            print("\(oldmode) \(out)")
         }
     }
     
@@ -153,10 +160,14 @@ class Rules {
     
     func select()-> Bool{
         if (mode == .select){
+            print("selcet \(tile!) \(gameplan[tile!]) \(currentPlayerTile)")
             mode = .place
             if (currentPlayerTile == gameplan[tile!]){
                 selectedTile = tile
                 print("selected tile: \(selectedTile)")
+                return true
+            }else if(phaseOne){
+                selectedTile = tile
                 return true
             }
         }
@@ -193,6 +204,8 @@ class Rules {
                 
                 mode = .place // this does not seem right, sould be set to .select imo
                 isBluesTurn = !isBluesTurn
+                gameplan[tile!] = .Empty
+
                 return true
             }
         }
@@ -206,9 +219,21 @@ class Rules {
         if phaseOne {
             if gameplan[placeIndex] == .Empty {
                 isBluesTurn = !isBluesTurn
+<<<<<<< HEAD:labb2/Rules.swift
                 return true
             } else {
                 return false
+=======
+            }
+            if(phaseOne){
+                gameplan[tile!] = currentPlayerTile
+                return true
+            }else{
+                if( isValidMove(to:tile!, from: from)){
+                    gameplan[tile!] = currentPlayerTile
+                }
+                
+>>>>>>> 9f5d36041381307b76540d76fd4cdac11f07219b:labb2/rules.swift
             }
         } else {
             return isValidMove(to: placeIndex, from: fromPlaceIndex)

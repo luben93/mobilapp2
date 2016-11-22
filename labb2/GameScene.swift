@@ -6,17 +6,17 @@
 //  Copyright (c) 2015 lucas persson. All rights reserved.
 //
 /*
-* The game board positions
-*
-* 03           06           09
-*     02       05       08
-*         01   04   07
-* 24  23  22   00   10  11  12
-*         19   16   13
-*     20       17       14
-* 21           18           15
-*
-*/
+ * The game board positions
+ *
+ * 03           06           09
+ *     02       05       08
+ *         01   04   07
+ * 24  23  22   00   10  11  12
+ *         19   16   13
+ *     20       17       14
+ * 21           18           15
+ *
+ */
 
 import SpriteKit
 
@@ -44,14 +44,14 @@ class GameScene: SKScene {
         }
     }
     /*var currentCan:SKSpriteNode{
-        get{
-            if rule.isBluesTurn {
-                return blueCan
-            }else{
-                return redCan
-            }
-        }
-    }*/
+     get{
+     if rule.isBluesTurn {
+     return blueCan
+     }else{
+     return redCan
+     }
+     }
+     }*/
     
     
     override func didMove(to view: SKView) {
@@ -88,9 +88,8 @@ class GameScene: SKScene {
             print("returning prematurely")
             return
         }
-        
         let touchLocation = touch.location(in: self)
-        
+
         // there might be some small defferencies between phase one and phase two
         if rule.isPhaseOne() {
             //check for closet tile, change selected tile if anotherone is selected.
@@ -134,6 +133,7 @@ class GameScene: SKScene {
                 }
             }
         }
+
     }
     private func placeTile(tile:SKSpriteNode, place:CGPoint){
         // placing selected tile on selected place
@@ -153,10 +153,10 @@ class GameScene: SKScene {
     
     private func setTurnText(){
         /*if tileSelected == nil {
-            label.text = "select tile"
-        }else{
-            label.text = "place tile"
-        }*/
+         label.text = "select tile"
+         }else{
+         label.text = "place tile"
+         }*/
         
         switch rule.currentPlayerTile { //was a flipped bool, now normal
         case .Blue:
@@ -166,23 +166,25 @@ class GameScene: SKScene {
             label.fontColor = SKColor.red
             label.zRotation = CGFloat(M_PI)
         case .Empty: print("labelsetter error error"); break;
-
+            
         }
     }
     
     
-//
-//    func moveFromPile(touchLocation:CGPoint,tileN:Int){
-////        let closestIndex = closestPlaces(touchLocation)
-//       //        let current = currentTiles[tile]
-//        if let tile =  currentTiles[tileN]{
-//           tile.removeFromParent()
-//            tile.position = places[closestPlaces(touchLocation)]
-//            addChild(tile)
-//        }
-//        
-//    }
+    //
+    //    func moveFromPile(touchLocation:CGPoint,tileN:Int){
+    ////        let closestIndex = closestPlaces(touchLocation)
+    //       //        let current = currentTiles[tile]
+    //        if let tile =  currentTiles[tileN]{
+    //           tile.removeFromParent()
+    //            tile.position = places[closestPlaces(touchLocation)]
+    //            addChild(tile)
+    //        }
+    //
+    //    }
     
+    
+    //TODO  merge closest place and closet tile to one function and verify that it finds the correct CGPoint, and move 10000 to a minimal distance that matters
     func closestPlaces(_ touch:CGPoint) -> Int{
         
         var diff = CGFloat(30)
@@ -197,6 +199,7 @@ class GameScene: SKScene {
         
         return out
     }
+    
     
     func closestTile(_ touch:CGPoint,cmp:[SKSpriteNode?]) -> Int?{
         
@@ -213,15 +216,15 @@ class GameScene: SKScene {
         }
         
         /*for i in 0...cmp.count-1{
-            if let cTile = cmp[i]?.position {
-            let tmp = sqrt(pow(touch.x-cTile.x,2)+pow(touch.y-cTile.y,2))
-            if tmp <= diff {
-                diff = tmp
-                out = i
-                }
-            }
-        }*/
-
+         if let cTile = cmp[i]?.position {
+         let tmp = sqrt(pow(touch.x-cTile.x,2)+pow(touch.y-cTile.y,2))
+         if tmp <= diff {
+         diff = tmp
+         out = i
+         }
+         }
+         }*/
+        
         return out
     }
     
@@ -294,7 +297,6 @@ class GameScene: SKScene {
         middle.addLine(to: places[8])
         middle.addLine(to: places[14])
         middle.addLine(to: places[20])
-
         drawRect(middle)
         
         let inner = CGMutablePath()
@@ -302,32 +304,26 @@ class GameScene: SKScene {
         inner.addLine(to: places[7])
         inner.addLine(to: places[13])
         inner.addLine(to: places[19])
-
-        
         drawRect(inner)
         
         let up = CGMutablePath()
         up.move(to: places[6])
         up.addLine(to: places[4])
-        
-            drawRect(up)
+        drawRect(up)
         
         let down = CGMutablePath()
         down.move(to: places[16])
         down.addLine(to: places[18])
-        
         drawRect(down)
         
         let rigth = CGMutablePath()
         rigth.move(to: places[12])
         rigth.addLine(to: places[10])
-        
         drawRect(rigth)
         
         let left = CGMutablePath()
         left.move(to:places[24])
         left.addLine(to: places[22])
-        
         drawRect(left)
         
         
@@ -363,7 +359,7 @@ class GameScene: SKScene {
     //        redTiles[1]?.position = point
     //        addChild(redTiles[1]!)
     //    }
-
+    
     
     
     //if no tile is selected continue
