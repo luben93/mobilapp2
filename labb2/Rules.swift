@@ -37,10 +37,20 @@ class Rules {
     private var phaseOne = true
     private var gameplan:[Tiles]{
         get{
-            return save.array(forKey: "newGameplan") as? [Tiles] ?? [Tiles](repeating: .Empty,count: 25)
+            //return save.array(forKey: "newGameplan") as? [Tiles] ?? [Tiles](repeating: .Empty,count: 25)
+            var out = [Tiles](repeating: .Empty,count: 25)
+            for (i,_) in out.enumerated() {
+                if let val =  Tiles.init(rawValue: save.string(forKey: "gameplan\(i)") ?? "Empty"){
+                    out[i] = val
+                }
+            }
+            return out
         }
         set{
-            save.set(newValue,forKey:"newGameplan")
+            //save.set(newValue,forKey:"newGameplan")
+            for (i,_) in newValue.enumerated() {
+                save.set(newValue[i].rawValue,forKey:"gameplan\(i)")
+            }
             phaseOne = !(gameplan.filter({$0 == .Blue}).count == 9 && gameplan.filter({$0 == .Red}).count == 9)
         }
     }
@@ -74,9 +84,9 @@ class Rules {
         }
     }
     enum Tiles: String {
-        case Blue  = "b"
-        case Red   = "r"
-        case Empty = "e"
+        case Blue
+        case Red
+        case Empty
     }
     
     var currentPlayerTile:Tiles  {
