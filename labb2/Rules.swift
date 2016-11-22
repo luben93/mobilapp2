@@ -22,7 +22,7 @@ import Foundation
 
 
 
-class rules {
+class Rules {
     /*
     let emptySpace = 0
     let blueMoves = 1
@@ -30,6 +30,7 @@ class rules {
     let blueMarker = 4
     let redMarker = 5
      */
+    static let notifyEvent = Notification.Name("notifyEvent")
     private let save = UserDefaults.standard
     private var phaseOne = true
     private var gameplan:[Tiles]{
@@ -117,6 +118,7 @@ class rules {
             }
         }
     }
+    
     private var possibleMills = [[3,6,9],[2,5,8],[1,4,7],[24,23,22],[10,11,12],[19,16,13],[20,17,14],[21,18,15],//horizontal
                                 [3,24,21],[2,23,20],[1,22,19],[6,5,4],[16,17,18],[7,10,13],[8,11,14],[9,12,15]] //vertical
    
@@ -151,7 +153,7 @@ class rules {
     
     func select()-> Bool{
         if (mode == .select){
-            //mode = .place
+            mode = .place
             if (currentPlayerTile == gameplan[tile!]){
                 selectedTile = tile
                 print("selected tile: \(selectedTile)")
@@ -166,7 +168,7 @@ class rules {
         if(gameplan[tile!] == .Empty){
             
             //has mill should do something
-           // mode = .select
+           mode = .select
             // should check for valid move before this
             if !hasMill(){
                 isBluesTurn = !isBluesTurn
@@ -217,7 +219,11 @@ class rules {
     func isPhaseOne() -> Bool {
         return phaseOne
     }
-
+    
+    func placeIt() {
+        mode = Modes.select
+        NotificationCenter.default.post(name: Rules.notifyEvent, object: nil)
+    }
     
     /* func redDoTurn()->Bool{
      if isBluesTurn{
