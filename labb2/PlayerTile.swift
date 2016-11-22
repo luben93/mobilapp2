@@ -10,7 +10,7 @@ import SpriteKit
 
 class PlayerTile: SKSpriteNode{
     
-    
+    var isPlaced = false
     
     
     /*

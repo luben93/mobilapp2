@@ -22,11 +22,12 @@ import SpriteKit
 
 class GameScene: SKScene {
     
+    //var blueTiles = [SKSpriteNode?](repeating: nil, count: 10)
+    var blueTiles = [PlayerTile?](repeating: nil, count: 10)
+    //var redTiles = [SKSpriteNode?](repeating: nil, count: 10)
+    var redTiles = [PlayerTile?](repeating: nil, count: 10)
     
     
-    
-    var blueTiles = [SKSpriteNode?](repeating: nil, count: 10)
-    var redTiles = [SKSpriteNode?](repeating: nil, count: 10)
     var selectedNodeIndex = -1
     var places = [CGPoint](repeating: CGPoint(), count: 25)
     //var tileSelected:Int?
@@ -34,7 +35,7 @@ class GameScene: SKScene {
     var redCan = SKSpriteNode()
     let label = SKLabelNode()
     let rule = Rules()
-    var currentTiles:[SKSpriteNode?]{
+    var currentTiles:[PlayerTile?]{
         get{
             switch rule.currentPlayerTile { //flipped bool
             case .Blue: return blueTiles
@@ -84,63 +85,77 @@ class GameScene: SKScene {
     
     // this method handles all touch events happening on screen
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        // internet told us to have this
         guard let touch = touches.first else {
             print("returning prematurely")
             return
         }
+        
         let touchLocation = touch.location(in: self)
-
-        // there might be some small defferencies between phase one and phase two
-        if rule.isPhaseOne() {
-            //check for closet tile, change selected tile if anotherone is selected.
-            let selectedTile = closestTile(touchLocation, cmp:currentTiles)!
-            print("Selected tile was: \(selectedTile)")
-            // if selected tile is bigger than 0 we have touched a tile
-            if  selectedTile > 0 {
-                // if there is
-                if selectedNodeIndex != -1{
-                    print("setting alpha = 1, nr1")
-                    currentTiles[selectedNodeIndex]?.alpha=1
+    
+    
+        // SELECTION OF TILES
+        //check for closet tileIndex
+        let selectedTileIndex = closestTile(touchLocation, cmp:currentTiles)!
+        
+        // if selectedTileIndex is bigger than 0 we have touched a tile
+        if  selectedTileIndex > 0 {
+            
+            if rule.isPhaseOne() {
+                // checking if the tile that we selected is allready placed, if phaseOne it's not valid to select tiles that has been placed
+                if (currentTiles[selectedTileIndex]?.isPlaced)! {
+                    print("Already placed")
+                    return
                 }
-                // if the selected tile is the previously selected one, we deselect it else
-                if selectedNodeIndex == selectedTile{
-                    print("setting alpha = 1, nr2")
-                    currentTiles[selectedNodeIndex]?.alpha=1
-                    selectedNodeIndex = -1
-                } else {
-                    currentTiles[selectedTile]?.alpha = 0.7
-                    selectedNodeIndex = selectedTile
-                }
+            }
+            
+            
+            if selectedNodeIndex != -1{
                 
-           }
-            //if tile is selected then also check for touch places
-            if selectedNodeIndex != -1 {
-                let selectedPlace = closestPlaces(touchLocation)
-                print("Selected place was: \(selectedPlace)")
-                
-                //if touch places was found, place tile and switch turn to next player
-                if selectedPlace != -1{
-                    // checking if selected place is available. Because of phase one we set from index to -1, it is not in use in this phase.
-                    if let tile =  currentTiles[selectedNodeIndex]{
-                        if rule.checkIfPlaceIsAvailable(placeIndex: selectedPlace,fromPlaceIndex: -1){
-                            // placing selected tile on selected place
-                            placeTile(tile: tile, place: places[closestPlaces(touchLocation)])
+                currentTiles[selectedNodeIndex]?.alpha=1
+            }
+            // if the selected tile is the previously selected one, we deselect it else
+            if selectedNodeIndex == selectedTileIndex{
+                currentTiles[selectedNodeIndex]?.alpha=1
+                selectedNodeIndex = -1
+            } else {
+                // change selected tile
+                currentTiles[selectedTileIndex]?.alpha = 0.7
+                selectedNodeIndex = selectedTileIndex
+            }
+        }
+        
+        
+        
+        
+        //if tile is selected then also check for touch places
+        if selectedNodeIndex != -1 {
+            let selectedPlace = closestPlaces(touchLocation)
+            print("Selected place was: \(selectedPlace)")
+            
+            //if touch places was found, place tile and switch turn to next player
+            if selectedPlace != -1{
+                // checking if selected place is available. Because of phase one we set from index to -1, it is not in use in this phase.
+                if let tile =  currentTiles[selectedNodeIndex]{
+                    if rule.checkIfPlaceIsAvailable(placeIndex: selectedPlace,fromPlaceIndex: -1){
+                        // placing selected tile on selected place
+                        placeTile(tile: tile, place: places[closestPlaces(touchLocation)])
                         
-                        } else {
-                            print("Selected place was not available: \(selectedPlace)")
-                        }
+                    } else {
+                        print("Selected place was not available: \(selectedPlace)")
                     }
                 }
             }
         }
-
     }
-    private func placeTile(tile:SKSpriteNode, place:CGPoint){
+
+    
+    private func placeTile(tile:PlayerTile, place:CGPoint){
         // placing selected tile on selected place
         tile.alpha = 1
         tile.removeFromParent()
         tile.position = place
+        tile.isPlaced = true
         addChild(tile)
         
         // resetting selected node index
@@ -242,8 +257,8 @@ class GameScene: SKScene {
         
         
         for i in 1...9 {
-            blueTiles[i] = SKSpriteNode(imageNamed: "blueTile")
-            redTiles[i] = SKSpriteNode(imageNamed: "redTile")
+            blueTiles[i] = PlayerTile(imageNamed: "blueTile")
+            redTiles[i] = PlayerTile(imageNamed: "redTile")
             blueTiles[i]!.position = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: size.height * 0.15)
             redTiles[i]!.position = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height * 0.85)
             addChild(blueTiles[i]!)
