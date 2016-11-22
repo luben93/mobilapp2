@@ -60,21 +60,20 @@ class GameScene: SKScene {
     }
     
     func initializeNotifiers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEvent), name: Rules.notifyEvent, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventPlaced), name: Rules.placed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventRemoved), name: Rules.removed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventNextTurn), name: Rules.nextTurn, object: nil)
     }
 
-    func notifiedEvent(){
-        switch rule.mode {
-        case .select:
-            // next player turn
-            print("event mode: select")
-            setTurnText()
-        case .place:
-            print("event mode: place")
-            
-        case .remove:
-            print("event mode: remove")
-        }
+    func notifiedEventNextTurn(){
+        setTurnText()
+        //TODO more switched player
+    }
+    func notifiedEventPlaced(){
+        //TODO place
+    }
+    func notifiedEventRemoved(){
+        //TODO remove
     }
     
     
@@ -123,7 +122,7 @@ class GameScene: SKScene {
                 if selectedPlace != -1{
                     // checking if selected place is available. Because of phase one we set from index to -1, it is not in use in this phase.
                     if let tile =  currentTiles[selectedNodeIndex]{
-                        if rule.checkIfPlaceIsAvailable(placeIndex: selectedPlace,fromPlaceIndex: -1){
+                        if rule.checkIfPlaceIsAvailable(to: selectedPlace,from: -1){
                             // placing selected tile on selected place
                             placeTile(tile: tile, place: places[closestPlaces(touchLocation)])
                         

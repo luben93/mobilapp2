@@ -21,7 +21,6 @@
 import Foundation
 
 
-
 class Rules {
     /*
      let emptySpace = 0
@@ -30,7 +29,10 @@ class Rules {
      let blueMarker = 4
      let redMarker = 5
      */
-    static let notifyEvent = Notification.Name("notifyEvent")
+    static let placed = Notification.Name("placed")
+    static let removed = Notification.Name("removed")
+    static let nextTurn = Notification.Name("nextTurn")
+   
     private let save = UserDefaults.standard
     private var phaseOne = true
     private var gameplan:[Tiles]{
@@ -40,21 +42,6 @@ class Rules {
         set{
             save.set(newValue,forKey:"newGameplan")
             phaseOne = !(gameplan.filter({$0 == .Blue}).count == 9 && gameplan.filter({$0 == .Red}).count == 9)
-        }
-    }
-    private var oldGameplan:[Int]{
-        get{
-            if let out = save.array(forKey: "gameplan") as? [Int]{
-                return out
-            }else{
-                print("as? [int] did not work")
-                let tmp = [Int](repeating: 0,count: 25)
-                save.set(tmp, forKey: "gameplan")
-                return tmp
-            }
-        }
-        set{
-            save.set(newValue, forKey: "gameplan")
         }
     }
     private var blue:Int{
@@ -83,44 +70,13 @@ class Rules {
         }
         set{
             save.set(newValue, forKey: "isBluesTurn")
+            NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
         }
     }
     enum Tiles: String {
         case Blue  = "b"
         case Red   = "r"
         case Empty = "e"
-    }
-    
-    enum Modes: String {
-        case select = "s"
-        case place  = "p"
-        case remove = "r"
-    }
-    
-    var mode = Modes.select
-    
-    private var selectedTile:Int?
-    
-    var latestTilePlaced:Int? = nil {
-        didSet{
-            if tile == nil {return}
-            place()
-        }
-    }
-    
-    var tile:Int? = nil {
-        didSet{
-            if tile == nil {return}
-            var out:Bool
-            let oldmode = mode
-            switch mode{
-            case .select: out = select()
-            case .place: out = place()
-            case .remove: out = remove()
-            }
-            print("\(oldmode) \(out)")
-        }
-        //send notify
     }
     
     var currentPlayerTile:Tiles  {
@@ -141,78 +97,55 @@ class Rules {
         let player = currentPlayerTile
         for possibleMill in possibleMills {
             if(gameplan[possibleMill[0]] == player && gameplan[possibleMill[1]] == player && gameplan[possibleMill[2]] == player ){
-                mode = .remove
-                print("located mill for \(player)")
+                               print("located mill for \(player)")
                 return true
             }
         }
         return false //todo
     }
     
-    func select()-> Bool{
-        if (mode == .select){
-            print("selcet \(tile!) \(gameplan[tile!]) \(currentPlayerTile)")
-            mode = .place
-            if (currentPlayerTile == gameplan[tile!]){
-                selectedTile = tile
-                print("selected tile: \(selectedTile)")
-                return true
-            }else if(phaseOne){
-                selectedTile = tile
-                return true
-            }
-        }
-        return false
-    }
     
-    func place()-> Bool{
-        let from = selectedTile
-        if(gameplan[tile!] == .Empty){
-            
-            //has mill should do something
-            mode = .select
-            // should check for valid move before this
+    func place(to:Int,from:Int)-> Bool{
+        if(checkIfPlaceIsAvailable(to: to,from: from)){
+            gameplan[to] = gameplan[from]
+
             if !hasMill(){
                 isBluesTurn = !isBluesTurn
+
             }
-            if(phaseOne){
-                return true
-            }else{
-                return isValidMove(to:tile!, from: from)
-            }
-        } else {
-            print("invalid move, place not empty")
-            return false
+            NotificationCenter.default.post(name: Rules.placed, object: nil)
+            return true
         }
+            print("invalid move")
+            return false
+        
     }
     
-    func remove()-> Bool{
+    func remove(tile:Int)-> Bool{
         
         var opponent = Tiles.Blue
         if (isBluesTurn){ opponent = Tiles.Red }
-        if (mode == .remove ){
-            if (gameplan[tile!] == opponent ){
+        
+            if (gameplan[tile] == opponent ){
                 
-                mode = .place // this does not seem right, sould be set to .select imo
                 isBluesTurn = !isBluesTurn
-                gameplan[tile!] = .Empty
-                
+                gameplan[tile] = .Empty
+                NotificationCenter.default.post(name: Rules.removed, object: nil)
                 return true
             }
-        }
+        
         return false
         
     }
     
     
     // checks if the selected place is avaiable and in the case of game beeing in phase two also check  if the move is valid
-    func checkIfPlaceIsAvailable(placeIndex:Int, fromPlaceIndex:Int) -> Bool {
-        if phaseOne {
-            if gameplan[placeIndex] == .Empty {
-                isBluesTurn = !isBluesTurn
+    func checkIfPlaceIsAvailable(to:Int, from:Int) -> Bool {
+        if gameplan[to] == .Empty {
+            if phaseOne {
                 return true
             }else{
-                return isValidMove(to: placeIndex, from: fromPlaceIndex)
+                return isValidMove(to: to, from: from)
             }
         }
         return false
@@ -224,19 +157,12 @@ class Rules {
     }
     
     func placeIt() {
-        mode = Modes.select
-        NotificationCenter.default.post(name: Rules.notifyEvent, object: nil)
+        NotificationCenter.default.post(name: Rules.placed, object: nil)
     }
     
-    fileprivate func isValidMove(to:Int,from:Int?)->Bool{
+    fileprivate func isValidMove(to:Int,from:Int)->Bool{
         if(gameplan[to] != .Empty){
             return false
-        }
-        
-        
-        if from == nil {
-            print("phase one")
-            return true
         }
         
         //opional: if currentPlayer has 3 tiles left he/she may move to any empty space
