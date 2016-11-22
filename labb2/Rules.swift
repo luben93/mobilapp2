@@ -120,6 +120,7 @@ class Rules {
             }
             print("\(oldmode) \(out)")
         }
+        //send notify
     }
     
     private var possibleMills = [[3,6,9],[2,5,8],[1,4,7],[24,23,22],[10,11,12],[19,16,13],[20,17,14],[21,18,15],//horizontal

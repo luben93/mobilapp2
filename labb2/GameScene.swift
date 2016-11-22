@@ -113,7 +113,7 @@ class GameScene: SKScene {
                     selectedNodeIndex = selectedTile
                 }
                 
-            }
+           }
             //if tile is selected then also check for touch places
             if selectedNodeIndex != -1 {
                 let selectedPlace = closestPlaces(touchLocation)
