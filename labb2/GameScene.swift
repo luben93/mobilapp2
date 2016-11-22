@@ -66,8 +66,9 @@ class GameScene: SKScene {
     func notifiedEvent(){
         switch rule.mode {
         case .select:
-            print("event mode: select")
             // next player turn
+            print("event mode: select")
+            setTurnText()
         case .place:
             print("event mode: place")
             

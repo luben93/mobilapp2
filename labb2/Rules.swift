@@ -98,7 +98,6 @@ class Rules {
     }
     
     var mode = Modes.select
-<<<<<<< HEAD:labb2/Rules.swift
     
     private var selectedTile:Int?
     
@@ -109,9 +108,6 @@ class Rules {
         }
     }
     
-=======
-    var selectedTile:Int?
->>>>>>> 9f5d36041381307b76540d76fd4cdac11f07219b:labb2/rules.swift
     var tile:Int? = nil {
         didSet{
             if tile == nil {return}
@@ -219,25 +215,12 @@ class Rules {
         if phaseOne {
             if gameplan[placeIndex] == .Empty {
                 isBluesTurn = !isBluesTurn
-<<<<<<< HEAD:labb2/Rules.swift
-                return true
-            } else {
-                return false
-=======
-            }
-            if(phaseOne){
-                gameplan[tile!] = currentPlayerTile
                 return true
             }else{
-                if( isValidMove(to:tile!, from: from)){
-                    gameplan[tile!] = currentPlayerTile
-                }
-                
->>>>>>> 9f5d36041381307b76540d76fd4cdac11f07219b:labb2/rules.swift
+                return isValidMove(to: placeIndex, from: fromPlaceIndex)
             }
-        } else {
-            return isValidMove(to: placeIndex, from: fromPlaceIndex)
         }
+        return false
     }
     
     // getter for phase
