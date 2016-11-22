@@ -61,21 +61,20 @@ class GameScene: SKScene {
     }
     
     func initializeNotifiers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEvent), name: Rules.notifyEvent, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventPlaced), name: Rules.placed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventRemoved), name: Rules.removed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventNextTurn), name: Rules.nextTurn, object: nil)
     }
 
-    func notifiedEvent(){
-        switch rule.mode {
-        case .select:
-            // next player turn
-            print("event mode: select")
-            setTurnText()
-        case .place:
-            print("event mode: place")
-            
-        case .remove:
-            print("event mode: remove")
-        }
+    func notifiedEventNextTurn(){
+        setTurnText()
+        //TODO more switched player
+    }
+    func notifiedEventPlaced(){
+        //TODO place
+    }
+    func notifiedEventRemoved(){
+        //TODO remove
     }
     
     
