@@ -24,11 +24,11 @@ import Foundation
 
 class Rules {
     /*
-    let emptySpace = 0
-    let blueMoves = 1
-    let redMoves = 2
-    let blueMarker = 4
-    let redMarker = 5
+     let emptySpace = 0
+     let blueMoves = 1
+     let redMoves = 2
+     let blueMarker = 4
+     let redMarker = 5
      */
     static let notifyEvent = Notification.Name("notifyEvent")
     private let save = UserDefaults.standard
@@ -123,24 +123,18 @@ class Rules {
         //send notify
     }
     
-    private var possibleMills = [[3,6,9],[2,5,8],[1,4,7],[24,23,22],[10,11,12],[19,16,13],[20,17,14],[21,18,15],//horizontal
-                                [3,24,21],[2,23,20],[1,22,19],[6,5,4],[16,17,18],[7,10,13],[8,11,14],[9,12,15]] //vertical
-   
-    //end of model
-    // ====================================
-    // rules
-    
-    
-   // func board(_ from:Int)->Int?{
-   //     return gameplan[from]
-   //}
-    
-     var currentPlayerTile:Tiles  {
+    var currentPlayerTile:Tiles  {
         get{
             if isBluesTurn{return .Blue}
             return .Red
         }
     }
+    private var possibleMills = [[3,6,9],[2,5,8],[1,4,7],[24,23,22],[10,11,12],[19,16,13],[20,17,14],[21,18,15],//horizontal
+        [3,24,21],[2,23,20],[1,22,19],[6,5,4],[16,17,18],[7,10,13],[8,11,14],[9,12,15]] //vertical
+    
+    //end of model
+    // ====================================
+    // rules
     
     
     private func hasMill()-> Bool{
@@ -176,7 +170,7 @@ class Rules {
         if(gameplan[tile!] == .Empty){
             
             //has mill should do something
-           mode = .select
+            mode = .select
             // should check for valid move before this
             if !hasMill(){
                 isBluesTurn = !isBluesTurn
@@ -193,7 +187,7 @@ class Rules {
     }
     
     func remove()-> Bool{
-       
+        
         var opponent = Tiles.Blue
         if (isBluesTurn){ opponent = Tiles.Red }
         if (mode == .remove ){
@@ -202,12 +196,12 @@ class Rules {
                 mode = .place // this does not seem right, sould be set to .select imo
                 isBluesTurn = !isBluesTurn
                 gameplan[tile!] = .Empty
-
+                
                 return true
             }
         }
         return false
-    
+        
     }
     
     
@@ -233,146 +227,6 @@ class Rules {
         mode = Modes.select
         NotificationCenter.default.post(name: Rules.notifyEvent, object: nil)
     }
-    
-    /* func redDoTurn()->Bool{
-     if isBluesTurn{
-     isBluesTurn = false
-     return true
-     }
-     isBluesTurn = true
-     return false
-     }
- 
-    func win(_ color:Int)->Bool{
-        var markers = 0
-        for count in 0...23{
-            if gameplan[count] != 0 && gameplan[count] != color{
-                markers += 1
-            }
-        }
-        if(blue <= 0 && red <= 0 && markers < 3){
-            return true
-        }
-        return false
-    }
-    
-    
-    func remove(_ from:Int,color:Int) -> Bool{
-        if gameplan[from] == color {
-            gameplan[from] = 0
-            return true
-        }
-        return false
-    }*/
-    
-    
-   
-    
-    /*
-     func legalMove(_ to:Int,from:Int) -> Bool {
-     print("before first isBlue \(isBluesTurn)")
-     if !isBluesTurn {
-     if red >= 0 {
-     print("r>=0")
-     if gameplan[to] == emptySpace {
-     print("gameplan empty")
-     gameplan[to] = redMarker
-     red -= 1
-     isBluesTurn = true
-     return true
-     }
-     }
-     if gameplan[to] == emptySpace {
-     print("gameplan empty")
-     if let tmp = isValidMove(to,from:from){
-     print("ris valid \(tmp)")
-     
-     gameplan[to] = redMarker
-     isBluesTurn = true
-     blue -= 1
-     return true
-     }
-     }
-     }else{
-     if blue >= 0 {
-     print("b<=0")
-     if gameplan[to] == emptySpace {
-     print("gameplan empty")
-     gameplan[to] = blueMarker
-     blue -= 1
-     isBluesTurn = false
-     return true
-     }
-     }
-     
-     if gameplan[to] == emptySpace{
-     print("bgameplan empty")
-     if let tmp = isValidMove(to,from:from){
-     print("is valid \(tmp )")
-     gameplan[to] = blueMarker
-     isBluesTurn = false
-     return true
-     }
-     }
-     }
-     return false
-     }*/
-    
-    /*
-    func remove(_ to:Int) -> Bool? {
-        
-        if ((to == 1 || to == 4 || to == 7) && gameplan[1] == gameplan[4]
-            && gameplan[4] == gameplan[7]) {
-            return true;
-        } else if ((to == 2 || to == 5 || to == 8)
-            && gameplan[2] == gameplan[5] && gameplan[5] == gameplan[8]) {
-            return true;
-        } else if ((to == 3 || to == 6 || to == 9)
-            && gameplan[3] == gameplan[6] && gameplan[6] == gameplan[9]) {
-            return true;
-        } else if ((to == 7 || to == 10 || to == 13)
-            && gameplan[7] == gameplan[10] && gameplan[10] == gameplan[13]) {
-            return true;
-        } else if ((to == 8 || to == 11 || to == 14)
-            && gameplan[8] == gameplan[11] && gameplan[11] == gameplan[14]) {
-            return true;
-        } else if ((to == 9 || to == 12 || to == 15)
-            && gameplan[9] == gameplan[12] && gameplan[12] == gameplan[15]) {
-            return true;
-        } else if ((to == 13 || to == 16 || to == 19)
-            && gameplan[13] == gameplan[16] && gameplan[16] == gameplan[19]) {
-            return true;
-        } else if ((to == 14 || to == 17 || to == 20)
-            && gameplan[14] == gameplan[17] && gameplan[17] == gameplan[20]) {
-            return true;
-        } else if ((to == 15 || to == 18 || to == 21)
-            && gameplan[15] == gameplan[18] && gameplan[18] == gameplan[21]) {
-            return true;
-        } else if ((to == 1 || to == 22 || to == 19)
-            && gameplan[1] == gameplan[22] && gameplan[22] == gameplan[19]) {
-            return true;
-        } else if ((to == 2 || to == 23 || to == 20)
-            && gameplan[2] == gameplan[23] && gameplan[23] == gameplan[20]) {
-            return true;
-        } else if ((to == 3 || to == 24 || to == 21)
-            && gameplan[3] == gameplan[24] && gameplan[24] == gameplan[21]) {
-            return true;
-        } else if ((to == 22 || to == 23 || to == 24)
-            && gameplan[22] == gameplan[23] && gameplan[23] == gameplan[24]) {
-            return true;
-        } else if ((to == 4 || to == 5 || to == 6)
-            && gameplan[4] == gameplan[5] && gameplan[5] == gameplan[6]) {
-            return true;
-        } else if ((to == 10 || to == 11 || to == 12)
-            && gameplan[10] == gameplan[11] && gameplan[11] == gameplan[12]) {
-            return true;
-        } else if ((to == 16 || to == 17 || to == 18)
-            && gameplan[16] == gameplan[17] && gameplan[17] == gameplan[18]) {
-            return true;
-        }
-        return nil;
-    }
- */
     
     fileprivate func isValidMove(to:Int,from:Int?)->Bool{
         if(gameplan[to] != .Empty){
@@ -438,6 +292,6 @@ class Rules {
             return (from == 3 || from == 21 || from == 23)
         default: return false
         }
-     }
+    }
     
 }
