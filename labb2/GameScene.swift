@@ -35,7 +35,9 @@ class GameScene: SKScene {
     var redCan = SKSpriteNode()
     let label = SKLabelNode()
     let rule = Rules()
-    var currentTiles:[PlayerTile?]{
+    var eventMode = Event.normal
+    
+    var playerTiles:[PlayerTile?]{
         get{
             if rule.currentPlayerTile == .Blue {
                 return blueTiles
@@ -43,7 +45,19 @@ class GameScene: SKScene {
             return redTiles
         }
     }
+    var opponentTiles:[PlayerTile?] {
+        get{
+            if rule.currentPlayerTile == .Blue {
+                return redTiles
+            }
+            return blueTiles
+        }
+    }
     
+    enum Event {
+        case normal
+        case mill
+    }
     
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.clear
@@ -52,24 +66,25 @@ class GameScene: SKScene {
     
     func initializeNotifiers() {
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventPlaced), name: Rules.placed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventMill), name: Rules.mill, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventRemoved), name: Rules.removed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventNextTurn), name: Rules.nextTurn, object: nil)
-    }
+            }
 
     func notifiedEventNextTurn(){
+        eventMode = .normal
         setTurnText()
-        //currentTiles
-        
-        //TODO more switched player
     }
     func notifiedEventPlaced(){
         //TODO place
     }
     func notifiedEventRemoved(){
-        //TODO remove
+        //eventMode = .normal
+        //setTurnText()
     }
-    
-    
+    func notifiedEventMill(){
+        eventMode = .mill
+    }
 
     
     
@@ -84,25 +99,43 @@ class GameScene: SKScene {
         
         let touchLocation = touch.location(in: self)
     
-    
+        var selectedTileIndex = 0
+        var currentTiles:[PlayerTile?]
         // SELECTION OF TILES
         //check for closet tileIndex
-        let selectedTileIndex = closestTile(touchLocation, cmp:currentTiles)!
+        
+        switch eventMode {
+        case .normal:
+            currentTiles = playerTiles
+            selectedTileIndex = closestTile(touchLocation, cmp: playerTiles)!
+        case .mill:
+            currentTiles = opponentTiles
+            selectedTileIndex = closestTile(touchLocation, cmp:opponentTiles)!
+        }
         
         // if selectedTileIndex is bigger than 0 we have touched a tile
         if  selectedTileIndex > 0 {
+            if (currentTiles[selectedTileIndex]?.isDeleted)! {return}
+            print("Selected tile: \(selectedTileIndex)")
             
-            if rule.isPhaseOne() {
+            switch eventMode {
+            case .normal:
                 // checking if the tile that we selected is allready placed, if phaseOne it's not valid to select tiles that has been placed
-                if (currentTiles[selectedTileIndex]?.isPlaced)! {
-                    print("Already placed")
+                if rule.isPhaseOne() {
+                    if (currentTiles[selectedTileIndex]?.isPlaced)! {
+                        print("Already placed")
+                        return
+                    }
+                }
+            case .mill:
+                // if mill we can only select tiles that are already placed
+                if !(currentTiles[selectedTileIndex]?.isPlaced)! {
+                    print("not a placed tile")
                     return
                 }
             }
             
-            
             if selectedNodeIndex != -1{
-                
                 currentTiles[selectedNodeIndex]?.alpha=1
             }
             // if the selected tile is the previously selected one, we deselect it else
@@ -117,32 +150,49 @@ class GameScene: SKScene {
         }
         
         
-        
-        
         //if tile is selected then also check for touch places
         if selectedNodeIndex != -1 {
             let selectedPlace = closestPlaces(touchLocation)
             print("Selected place was: \(selectedPlace)")
-            
-            //if touch places was found, place tile and switch turn to next player
-            if selectedPlace != -1{
-                // checking if selected place is available. Because of phase one we set from index to -1, it is not in use in this phase.
-                if let tile =  currentTiles[selectedNodeIndex]{
-                    if rule.checkIfPlaceIsAvailable(to: selectedPlace,from: selectedNodeIndex){
-                        // placing selected tile on selected place
-                        placeTile(tile: tile, place: places[closestPlaces(touchLocation)])
-                        print("Placing to selectedPlace: \(selectedPlace) from selectedNodeIndex: \(selectedNodeIndex)")
-                        rule.place(to: selectedPlace, from: selectedNodeIndex)
-                        selectedNodeIndex = -1
-                    } else {
-                        print("Selected place was not available: \(selectedPlace)")
+            switch eventMode {
+            case .normal:
+                //if touch places was found, place tile and switch turn to next player
+                if selectedPlace != -1{
+                    // checking if selected place is available. Because of phase one we set from index to -1, it is not in use in this phase.
+                    if let tile =  currentTiles[selectedNodeIndex]{
+                        if rule.checkIfPlaceIsAvailable(to: selectedPlace,from: selectedNodeIndex){
+                            // placing selected tile on selected place
+                            placeTile(tile: tile, place: places[closestPlaces(touchLocation)])
+                            rule.place(to: selectedPlace, from: selectedNodeIndex)
+                            selectedNodeIndex = -1
+                        } else {
+                            print("Selected place was not available: \(selectedPlace)")
+                        }
                     }
                 }
+                
+            case .mill:
+                // implement something nice where the user gets to remove opponents tile
+                removeTile(tile: currentTiles.remove(at: selectedNodeIndex)!)
+                rule.remove(tile: selectedPlace)
+                selectedNodeIndex = -1
             }
         }
-    }
+    }  
 
     
+    
+    
+    
+    
+    private func removeTile(tile:PlayerTile){
+        //tile.removeFromParent()
+        tile.isDeleted = true
+        tile.isPlaced = false
+        tile.alpha = 0.3
+        placeDeletedTile(tile: tile)
+        
+    }
     
     private func placeTile(tile:PlayerTile, place:CGPoint){
         // placing selected tile on selected place
@@ -210,11 +260,12 @@ class GameScene: SKScene {
     }
     
     
-    func closestTile(_ touch:CGPoint,cmp:[SKSpriteNode?]) -> Int?{
+    func closestTile(_ touch:CGPoint,cmp:[PlayerTile?]) -> Int?{
         
         var diff = CGFloat(30)
         var out:Int? = 0
         for (i,node) in cmp.enumerated() {
+            //print("Tile:\(i), \(node), isPlaced: \(node?.isPlaced)")
             if let tile = node?.position{
                 let tmp = hypot(touch.x-tile.x, touch.y-tile.y)
                 if tmp <= diff {
@@ -236,7 +287,14 @@ class GameScene: SKScene {
         
         return out
     }
-    
+    func placeDeletedTile(tile:PlayerTile) {
+        if tile.isBlue {
+            tile.position = CGPoint(x: size.width * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ), y: size.height * 0.05)
+            
+        } else {
+            tile.position = CGPoint(x: size.width * CGFloat(Double( tile.number ) * 0.1  ), y: size.height * 0.95)
+        }
+    }
     
     func alotOfStuff(){
         blueCan=SKSpriteNode(imageNamed: "blueCan")
@@ -251,9 +309,16 @@ class GameScene: SKScene {
         
         for i in 1...9 {
             blueTiles[i] = PlayerTile(imageNamed: "blueTile")
+            blueTiles[i]?.number = i
+            blueTiles[i]?.isBlue = true
+            
             redTiles[i] = PlayerTile(imageNamed: "redTile")
+            redTiles[i]?.number = i
+            redTiles[i]?.isBlue = false
+            
             blueTiles[i]!.position = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: size.height * 0.15)
             redTiles[i]!.position = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height * 0.85)
+            
             addChild(blueTiles[i]!)
             addChild(redTiles[i]!)
         }
