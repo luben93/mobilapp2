@@ -27,7 +27,7 @@ class GameScene: SKScene {
     //var redTiles = [SKSpriteNode?](repeating: nil, count: 10)
     var redTiles = [PlayerTile?](repeating: nil, count: 10)
     
-    
+    var tileDefaultOffset:CGFloat = 10
     var selectedNodeIndex = -1
     var places = [CGPoint](repeating: CGPoint(), count: 25)
     //var tileSelected:Int?
@@ -272,48 +272,29 @@ class GameScene: SKScene {
         return out
     }
     func placeDeletedTile(tile:PlayerTile) -> CGPoint {
+        let tileRemoveOffset = tileDefaultOffset * 0.4
         if tile.isBlue {
-           return CGPoint(x: size.width * CGFloat(Double( tile.number ) * 0.1  ), y: size.height * 0.95)
+            return CGPoint(x: size.width * CGFloat(Double( tile.number ) * 0.1  ), y: size.height - tileRemoveOffset)
         } else {
-           return CGPoint(x: size.width * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ), y: size.height * 0.05)
+            return CGPoint(x: size.width * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ), y: tileRemoveOffset)
         }
     }
     
     func alotOfStuff(){
         
         
-        for i in 1...9 {
-            blueTiles[i] = PlayerTile(imageNamed: "blueTile")
-            blueTiles[i]?.number = i
-            blueTiles[i]?.isBlue = true
-            
-            redTiles[i] = PlayerTile(imageNamed: "redTile")
-
-            redTiles[i]?.number = i
-            redTiles[i]?.isBlue = false
-            
-            blueTiles[i]!.position = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: size.height * 0.15)
-            redTiles[i]!.position = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height * 0.85)
-            
-            addChild(blueTiles[i]!)
-            addChild(redTiles[i]!)
-        }
         
         
         
-        let scaleX:CGFloat =   1.0
-        let scaleY:CGFloat =   1.0
+        let innerX:CGFloat = 0.1
+        let middleX:CGFloat = 0.25
+        let outerX:CGFloat = 0.4
+        let halfX:CGFloat = 0.5
         
-        let innerX:CGFloat = 0.02 * scaleX //scaleX / 0.05
-        let middleX:CGFloat = 0.2 * scaleX //scaleX / 0.5
-        let outerX:CGFloat = 0.35 * scaleX //(scaleX/2.5)-0.05
-        let halfX:CGFloat = 0.5 * scaleX
-        
-        let innerY:CGFloat = 0.9 * scaleY
-        let middleY:CGFloat = 0.6 * scaleY
-        let outerY:CGFloat = 0.25 * scaleY
-        let halfY:CGFloat = 0.5 * scaleY
-
+        let innerY:CGFloat = 0.9
+        let middleY:CGFloat = 0.6
+        let outerY:CGFloat = 0.25
+        let halfY:CGFloat = 0.5
         
         places[0] = CGPoint(x:size.width/2,y:size.height/2)
         
@@ -345,9 +326,9 @@ class GameScene: SKScene {
         places[20] = CGPoint(x:size.width * middleX,y:size.height/2 - size.width/2 * middleY)
         places[19] = CGPoint(x:size.width * outerX,y:size.height/2 - size.width/2 * outerY)
         
-        places[24] = CGPoint(x:size.width * innerX,y:size.height/2 * (halfY + halfY) )
-        places[23] = CGPoint(x:size.width * middleX,y:size.height/2 * (halfY + halfY))
-        places[22] = CGPoint(x:size.width * outerX,y:size.height/2 * (halfY + halfY))
+        places[24] = CGPoint(x:size.width * innerX,y:size.height/2  )
+        places[23] = CGPoint(x:size.width * middleX,y:size.height/2 )
+        places[22] = CGPoint(x:size.width * outerX,y:size.height/2 )
         
         
         
@@ -401,6 +382,27 @@ class GameScene: SKScene {
         label.setScale(1)
         addChild(label)
         setTurnText()
+        
+         tileDefaultOffset =  places[21].y  * 0.6
+        
+        for i in 1...9 {
+            blueTiles[i] = PlayerTile(imageNamed: "blueTile")
+            blueTiles[i]?.number = i
+            blueTiles[i]?.isBlue = true
+            
+            redTiles[i] = PlayerTile(imageNamed: "redTile")
+            redTiles[i]?.number = i
+            redTiles[i]?.isBlue = false
+            
+            blueTiles[i]!.position = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: tileDefaultOffset)
+            redTiles[i]!.position = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height - tileDefaultOffset )
+            blueTiles[i]?.zPosition = 2
+            redTiles[i]?.zPosition = 2
+                
+            addChild(blueTiles[i]!)
+            addChild(redTiles[i]!)
+        }
+
         
     }
     
