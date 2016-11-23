@@ -22,34 +22,20 @@ import Foundation
 
 
 class Rules {
-    /*
-     let emptySpace = 0
-     let blueMoves = 1
-     let redMoves = 2
-     let blueMarker = 4
-     let redMarker = 5
-     */
+
     static let placed = Notification.Name("placed")
     static let removed = Notification.Name("removed")
     static let mill = Notification.Name("mill")
     static let nextTurn = Notification.Name("nextTurn")
    
-    private let save = UserDefaults.standard
+    //private let save = UserDefaults.standard
     private var playerDefaultTiles:[Tiles:Int]{
         get{
-           // return save.object(forKey: "playerDefaultTiles") as? [Rules.Tiles : Int] ??  [Tiles.Blue:9,.Red:9]
-            var Tblue = save.integer(forKey: "playerDefaultTilesBlue")
-            var Tred = save.integer(forKey: "playerDefaultTilesRed")
-            if Tblue == -1 && Tred == -1 {
-                Tred = 9
-                Tblue = 9
-            }
-            return [.Blue:Tblue,.Red:Tred]
+            //TODO get from gameinfo
+            return [.Blue:9,.Red:9]
         }
         set{
-            save.set(newValue[.Blue],forKey:"playerDefaultTilesBlue")
-            save.set(newValue[.Red],forKey:"playerDefaultTilesRed")
-           // phaseOne = newValue[.Blue]! <= 0 && newValue[.Red]! <= 0
+            //TODO set in gameinfo
         }
     }
     private var phaseOne:Bool{
@@ -59,52 +45,22 @@ class Rules {
     }
     private var gameplan:[Tiles]{
         get{
-            //return save.array(forKey: "newGameplan") as? [Tiles] ?? [Tiles](repeating: .Empty,count: 25)
-            var out = [Tiles](repeating: .Empty,count: 25)
-            for (i,_) in out.enumerated() {
-                if let val =  Tiles.init(rawValue: save.string(forKey: "gameplan\(i)") ?? "Empty"){
-                    out[i] = val
-                }
-            }
-            return out
+            //TODO get from gameinfo
+            return [Tiles](repeating: .Empty,count: 25)
         }
         set{
-            //save.set(newValue,forKey:"newGameplan")
-            for (i,_) in newValue.enumerated() {
-                save.set(newValue[i].rawValue,forKey:"gameplan\(i)")
-            }
-           // phaseOne = !(gameplan.filter({$0 == .Blue}).count == 9 && gameplan.filter({$0 == .Red}).count == 9)
-         //TODO detect phase two correclty and dected wins
+            //TODO set in gameinfo
             didWin()
-            
         }
     }
-    private var blue:Int{
-        get{
-            var out = save.integer(forKey: "blue")
-            if out == -1{out = 9}
-            return out
-        }
-        set{
-            save.set(newValue, forKey: "blue")
-        }
-    }
-    private var red:Int{
-        get{
-            var out = save.integer(forKey: "red")
-            if out == -1{out = 9}
-            return out
-        }
-        set{
-            save.set(newValue, forKey: "red")
-        }
-    }
+   
     private var isBluesTurn:Bool{
         get{
-            return save.bool(forKey: "isBluesTurn")
+            //TODO get from gameinfo   
+            return true
         }
         set{
-            save.set(newValue, forKey: "isBluesTurn")
+            //TODO set in gameinfo
             NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
         }
     }
@@ -127,9 +83,7 @@ class Rules {
     // ====================================
     // rules
     
-    private func didPhaseTwo(){
-        //TODO
-    }
+   
     private func didWin(){
         //TODO
     }
