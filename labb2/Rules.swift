@@ -35,7 +35,28 @@ class Rules {
     static let nextTurn = Notification.Name("nextTurn")
    
     private let save = UserDefaults.standard
-    private var phaseOne = true
+    private var playerDefaultTiles:[Tiles:Int]{
+        get{
+           // return save.object(forKey: "playerDefaultTiles") as? [Rules.Tiles : Int] ??  [Tiles.Blue:9,.Red:9]
+            var Tblue = save.integer(forKey: "playerDefaultTilesBlue")
+            var Tred = save.integer(forKey: "playerDefaultTilesRed")?
+            if Tblue == -1 && Tred == -1 {
+                Tred = 9
+                Tblue = 9
+            }
+            return [.Blue:Tblue,.Red:Tred]
+        }
+        set{
+            save.set(newValue[.Blue],forKey:"playerDefaultTilesBlue")
+            save.set(newValue[.Red],forKey:"playerDefaultTilesRed")
+           // phaseOne = newValue[.Blue]! <= 0 && newValue[.Red]! <= 0
+        }
+    }
+    private var phaseOne:Bool{
+        get{
+            return playerDefaultTiles[.Blue]! <= 0 && playerDefaultTiles[.Red]! <= 0
+        }
+    }
     private var gameplan:[Tiles]{
         get{
             //return save.array(forKey: "newGameplan") as? [Tiles] ?? [Tiles](repeating: .Empty,count: 25)
@@ -52,7 +73,10 @@ class Rules {
             for (i,_) in newValue.enumerated() {
                 save.set(newValue[i].rawValue,forKey:"gameplan\(i)")
             }
-            phaseOne = !(gameplan.filter({$0 == .Blue}).count == 9 && gameplan.filter({$0 == .Red}).count == 9)
+           // phaseOne = !(gameplan.filter({$0 == .Blue}).count == 9 && gameplan.filter({$0 == .Red}).count == 9)
+         //TODO detect phase two correclty and dected wins
+            didWin()
+            
         }
     }
     private var blue:Int{
@@ -103,6 +127,12 @@ class Rules {
     // ====================================
     // rules
     
+    private func didPhaseTwo(){
+        //TODO
+    }
+    private func didWin(){
+        //TODO
+    }
     
     private func hasMill(place:Int)-> Bool{
         let player = currentPlayerTile
@@ -124,6 +154,7 @@ class Rules {
         if(checkIfPlaceIsAvailable(to: to,from: from)){
             if phaseOne {
                 gameplan[to] = currentPlayerTile
+                playerDefaultTiles[currentPlayerTile]! -= 1
             } else {
                 gameplan[to] = gameplan[from]
             }
