@@ -162,7 +162,7 @@ class GameScene: SKScene {
                     if let tile =  currentTiles[selectedNodeIndex]{
                         if rule.checkIfPlaceIsAvailable(to: selectedPlace,from: selectedNodeIndex){
                             // placing selected tile on selected place
-                            placeTile(tile: tile, place: places[closestPlaces(touchLocation)])
+                            moveTile(tile: tile, place: places[closestPlaces(touchLocation)])
                             rule.place(to: selectedPlace, from: selectedNodeIndex)
                             selectedNodeIndex = -1
                         } else {
@@ -192,11 +192,11 @@ class GameScene: SKScene {
         tile.alpha = 1.0
     
         let place = placeDeletedTile(tile: tile)
-        placeTile(tile: tile, place: place)
+        moveTile(tile: tile, place: place)
         
     }
     
-    private func placeTile(tile:PlayerTile, place:CGPoint){
+    private func moveTile(tile:PlayerTile, place:CGPoint){
         // placing selected tile on selected place
         tile.alpha = 1.0
         tile.isPlaced = true
