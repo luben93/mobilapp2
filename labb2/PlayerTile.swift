@@ -10,7 +10,10 @@ import SpriteKit
 
 class PlayerTile: SKSpriteNode{
     
+    var isBlue = false
     var isPlaced = false
+    var isDeleted = false
+    var number = 0
     
     
     /*

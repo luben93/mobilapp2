@@ -31,6 +31,7 @@ class Rules {
      */
     static let placed = Notification.Name("placed")
     static let removed = Notification.Name("removed")
+    static let mill = Notification.Name("mill")
     static let nextTurn = Notification.Name("nextTurn")
    
     private let save = UserDefaults.standard
@@ -103,12 +104,16 @@ class Rules {
     // rules
     
     
-    private func hasMill()-> Bool{
+    private func hasMill(place:Int)-> Bool{
         let player = currentPlayerTile
         for possibleMill in possibleMills {
-            if(gameplan[possibleMill[0]] == player && gameplan[possibleMill[1]] == player && gameplan[possibleMill[2]] == player ){
-                               print("located mill for \(player)")
-                return true
+            if(possibleMill[0] == place || possibleMill[1] == place || possibleMill[2] == place ){
+                if(gameplan[possibleMill[0]] == player && gameplan[possibleMill[1]] == player && gameplan[possibleMill[2]] == player ){
+                    
+                    print("located mill for \(player)")
+                    NotificationCenter.default.post(name: Rules.mill, object: nil)
+                    return true
+                }
             }
         }
         return false //todo
@@ -127,10 +132,11 @@ class Rules {
             
 
             
-            if !hasMill(){
+            if !hasMill(place: to){
                 isBluesTurn = !isBluesTurn
 
             }
+            //print("gameplan: \(gameplan)")
             NotificationCenter.default.post(name: Rules.placed, object: nil)
             return true
             
@@ -144,15 +150,19 @@ class Rules {
         
         var opponent = Tiles.Blue
         if (isBluesTurn){ opponent = Tiles.Red }
+            print("Opponent: \(opponent)")
+            print("GamePlan.Tiel: \(gameplan[tile])")
+        
         
             if (gameplan[tile] == opponent ){
                 
                 isBluesTurn = !isBluesTurn
                 gameplan[tile] = .Empty
                 NotificationCenter.default.post(name: Rules.removed, object: nil)
+                print("remove returning true")
                 return true
             }
-        
+        print("remove returning false")
         return false
         
     }
@@ -161,7 +171,9 @@ class Rules {
     // checks if the selected place is avaiable and in the case of game beeing in phase two also check  if the move is valid
     func checkIfPlaceIsAvailable(to:Int, from:Int?) -> Bool {
         if gameplan[to] == .Empty {
+            
             if phaseOne {
+                
                 return true
             }else{
                 return isValidMove(to: to, from: from)

@@ -28,12 +28,20 @@ class ViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
         skView.presentScene(scene)
+
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.notifiedEventNextTurn), name: Rules.nextTurn, object: nil)
+
+    }
     
+    func notifiedEventNextTurn() {
+        print("ViewController:notifiedEventNextTurn")
     }
      
     
     @IBAction func restart(_ sender: UIButton) {
         let scene = GameScene(size: view.bounds.size)
+        scene.initializeNotifiers()
         let skView = gameView as! SKView
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
@@ -41,6 +49,12 @@ class ViewController: UIViewController {
         print("reset turn was\(UserDefaults.standard.integer(forKey: "isBluesTurn"))")
         UserDefaults.standard.set(0, forKey: "isBluesTurn")
         UserDefaults.standard.set(-1, forKey: "blue")
+        UserDefaults.standard.set(-1, forKey: "red")
+        
+        for i in 0..<25 {
+            UserDefaults.standard.set("Empty", forKey: "gameplan\(i)")
+        }
+
         UserDefaults.standard.set(-1, forKey: "red")
        // [Int](count:25,repeatedValue:0)
         UserDefaults.standard.set([Int](repeating: 0,count: 25), forKey: "gameplan")
