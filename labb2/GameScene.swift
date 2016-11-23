@@ -324,13 +324,12 @@ class GameScene: SKScene {
         let innerX:CGFloat = 0.02 * scaleX //scaleX / 0.05
         let middleX:CGFloat = 0.2 * scaleX //scaleX / 0.5
         let outerX:CGFloat = 0.35 * scaleX //(scaleX/2.5)-0.05
-        let halfX:CGFloat = 0.5 * scaleX
+        let halfX:CGFloat = 0.5
         
         let innerY:CGFloat = 0.9 * scaleY
         let middleY:CGFloat = 0.6 * scaleY
         let outerY:CGFloat = 0.25 * scaleY
-        let halfY:CGFloat = 0.5 * scaleY
-
+        let halfY:CGFloat = 0.5
         
         places[0] = CGPoint(x:size.width/2,y:size.height/2)
         
@@ -362,9 +361,9 @@ class GameScene: SKScene {
         places[20] = CGPoint(x:size.width * middleX,y:size.height/2 - size.width/2 * middleY)
         places[19] = CGPoint(x:size.width * outerX,y:size.height/2 - size.width/2 * outerY)
         
-        places[24] = CGPoint(x:size.width * innerX,y:size.height/2 * (halfY + halfY) )
-        places[23] = CGPoint(x:size.width * middleX,y:size.height/2 * (halfY + halfY))
-        places[22] = CGPoint(x:size.width * outerX,y:size.height/2 * (halfY + halfY))
+        places[24] = CGPoint(x:size.width * innerX,y:size.height/2  )
+        places[23] = CGPoint(x:size.width * middleX,y:size.height/2 )
+        places[22] = CGPoint(x:size.width * outerX,y:size.height/2 )
         
         
         
