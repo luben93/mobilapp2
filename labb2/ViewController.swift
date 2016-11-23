@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var blueLabel: UILabel!
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var redLabel: UILabel!
-    @IBOutlet weak var gamePlane: gamePlan!
+    //@IBOutlet weak var gamePlane: gamePlan!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +28,7 @@ class ViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
         skView.presentScene(scene)
+
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.notifiedEventNextTurn), name: Rules.nextTurn, object: nil)
 

@@ -316,14 +316,6 @@ class GameScene: SKScene {
     }
     
     func alotOfStuff(){
-        blueCan=SKSpriteNode(imageNamed: "blueCan")
-        blueCan.position=CGPoint(x:size.width*0.9,y:size.height*0.05)
-        addChild(blueCan)
-        
-        redCan=SKSpriteNode(imageNamed: "redCan")
-        redCan.position=CGPoint(x:size.width*0.1,y:size.height*0.95)
-        addChild(redCan)
-        
         
         
         for i in 1...9 {
@@ -332,6 +324,7 @@ class GameScene: SKScene {
             blueTiles[i]?.isBlue = true
             
             redTiles[i] = PlayerTile(imageNamed: "redTile")
+
             redTiles[i]?.number = i
             redTiles[i]?.isBlue = false
             
@@ -342,39 +335,55 @@ class GameScene: SKScene {
             addChild(redTiles[i]!)
         }
         
+        
+        
+        let scaleX:CGFloat =   1.0
+        let scaleY:CGFloat =   1.0
+        
+        let innerX:CGFloat = 0.02 * scaleX //scaleX / 0.05
+        let middleX:CGFloat = 0.2 * scaleX //scaleX / 0.5
+        let outerX:CGFloat = 0.35 * scaleX //(scaleX/2.5)-0.05
+        let halfX:CGFloat = 0.5 * scaleX
+        
+        let innerY:CGFloat = 0.9 * scaleY
+        let middleY:CGFloat = 0.6 * scaleY
+        let outerY:CGFloat = 0.25 * scaleY
+        let halfY:CGFloat = 0.5 * scaleY
+
+        
         places[0] = CGPoint(x:size.width/2,y:size.height/2)
         
-        places[3] = CGPoint(x:size.width * 0.02,y:size.height/2 + size.width/2 * 0.9)
-        places[2] = CGPoint(x:size.width * 0.2,y:size.height/2 + size.width/2 * 0.6)
-        places[1] = CGPoint(x:size.width * 0.35,y:size.height/2 + size.width/2 * 0.25)
+        places[3] = CGPoint(x:size.width * innerX,y:size.height/2 + size.width/2 * innerY)
+        places[2] = CGPoint(x:size.width * middleX,y:size.height/2 + size.width/2 * middleY)
+        places[1] = CGPoint(x:size.width * outerX,y:size.height/2 + size.width/2 * outerY)
         
-        places[6] = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.9)
-        places[5] = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.6)
-        places[4] = CGPoint(x:size.width * 0.5,y:size.height/2 + size.width/2 * 0.25)
+        places[6] = CGPoint(x:size.width * halfX,y:size.height/2 + size.width/2 * innerY)
+        places[5] = CGPoint(x:size.width * halfX,y:size.height/2 + size.width/2 * middleY)
+        places[4] = CGPoint(x:size.width * halfX,y:size.height/2 + size.width/2 * outerY)
         
-        places[9] = CGPoint(x:size.width * 0.98,y:size.height/2 + size.width/2 * 0.9)
-        places[8] = CGPoint(x:size.width * 0.8,y:size.height/2 + size.width/2 * 0.6)
-        places[7] = CGPoint(x:size.width * 0.65,y:size.height/2 + size.width/2 * 0.25)
+        places[9] = CGPoint(x:size.width * (1 - innerX),y:size.height/2 + size.width/2 * innerY)
+        places[8] = CGPoint(x:size.width * (1 - middleX),y:size.height/2 + size.width/2 * middleY)
+        places[7] = CGPoint(x:size.width * (1 - outerX),y:size.height/2 + size.width/2 * outerY)
         
-        places[12] = CGPoint(x:size.width * 0.98,y:size.height * 0.5 )
-        places[11] = CGPoint(x:size.width * 0.8,y:size.height * 0.5 )
-        places[10] = CGPoint(x:size.width * 0.65,y:size.height * 0.5 )
+        places[12] = CGPoint(x:size.width * (1 - innerX),y:size.height * halfY )
+        places[11] = CGPoint(x:size.width * (1 - middleX),y:size.height * halfY )
+        places[10] = CGPoint(x:size.width * (1 - outerX),y:size.height * halfY )
         
-        places[15] = CGPoint(x:size.width * 0.98, y:size.height/2 - size.width/2 * 0.9)
-        places[14] = CGPoint(x:size.width * 0.8, y:size.height/2 - size.width/2 * 0.6)
-        places[13] = CGPoint(x:size.width * 0.65, y:size.height/2 - size.width/2 * 0.25)
+        places[15] = CGPoint(x:size.width * (1 - innerX), y:size.height/2 - size.width/2 * innerY)
+        places[14] = CGPoint(x:size.width * (1 - middleX), y:size.height/2 - size.width/2 * middleY)
+        places[13] = CGPoint(x:size.width * (1 - outerX), y:size.height/2 - size.width/2 * outerY)
         
-        places[18] = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.9)
-        places[17] = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.6)
-        places[16] = CGPoint(x:size.width * 0.5, y:size.height/2 - size.width/2 * 0.25)
+        places[18] = CGPoint(x:size.width * halfX, y:size.height/2 - size.width/2 * innerY)
+        places[17] = CGPoint(x:size.width * halfX, y:size.height/2 - size.width/2 * middleY)
+        places[16] = CGPoint(x:size.width * halfX, y:size.height/2 - size.width/2 * outerY)
         
-        places[21] = CGPoint(x:size.width * 0.02,y:size.height/2 - size.width/2 * 0.9)
-        places[20] = CGPoint(x:size.width * 0.2,y:size.height/2 - size.width/2 * 0.6)
-        places[19] = CGPoint(x:size.width * 0.35,y:size.height/2 - size.width/2 * 0.25)
+        places[21] = CGPoint(x:size.width * innerX,y:size.height/2 - size.width/2 * innerY)
+        places[20] = CGPoint(x:size.width * middleX,y:size.height/2 - size.width/2 * middleY)
+        places[19] = CGPoint(x:size.width * outerX,y:size.height/2 - size.width/2 * outerY)
         
-        places[24] = CGPoint(x:size.width * 0.02,y:size.height/2 )
-        places[23] = CGPoint(x:size.width * 0.2,y:size.height/2)
-        places[22] = CGPoint(x:size.width * 0.35,y:size.height/2 )
+        places[24] = CGPoint(x:size.width * innerX,y:size.height/2 * (halfY + halfY) )
+        places[23] = CGPoint(x:size.width * middleX,y:size.height/2 * (halfY + halfY))
+        places[22] = CGPoint(x:size.width * outerX,y:size.height/2 * (halfY + halfY))
         
         
         
