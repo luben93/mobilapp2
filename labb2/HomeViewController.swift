@@ -19,8 +19,7 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     override func viewDidLoad() {
         for i in 1...5 {
             let g = GameInfo()
-            print("\(i)")
-            g.name = "game nr \(i)"
+            g.date = Date()
             savedGames.append(g)
         }
         print("Number Of Games: \(savedGames.count)")
@@ -69,7 +68,7 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
         
         let value: GameInfo = savedGames[row]
         
-        return NSAttributedString(string: value.name)
+        return NSAttributedString(string: value.date.description)
     }
     
     // action, user selected a row
