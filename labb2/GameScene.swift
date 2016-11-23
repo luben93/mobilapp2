@@ -191,7 +191,7 @@ class GameScene: SKScene {
         tile.isDeleted = true
         tile.isPlaced = false
         tile.alpha = 1.0
-        tile.run(SKAction.fadeOut(withDuration: 2.0))
+        //tile.run(SKAction.fadeOut(withDuration: 2.0))
         
         let place = placeDeletedTile(tile: tile)
         placeTile(tile: tile, place: place)
