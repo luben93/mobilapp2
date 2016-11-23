@@ -39,7 +39,7 @@ class Rules {
         get{
            // return save.object(forKey: "playerDefaultTiles") as? [Rules.Tiles : Int] ??  [Tiles.Blue:9,.Red:9]
             var Tblue = save.integer(forKey: "playerDefaultTilesBlue")
-            var Tred = save.integer(forKey: "playerDefaultTilesRed")?
+            var Tred = save.integer(forKey: "playerDefaultTilesRed")
             if Tblue == -1 && Tred == -1 {
                 Tred = 9
                 Tblue = 9
