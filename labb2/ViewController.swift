@@ -10,7 +10,10 @@ import UIKit
 import SpriteKit
 
 class ViewController: UIViewController {
-
+    
+    var newGame = true
+    var gameId = 0
+    
     @IBOutlet weak var blueLabel: UILabel!
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var redLabel: UILabel!
@@ -29,14 +32,12 @@ class ViewController: UIViewController {
         skView.allowsTransparency = true
         skView.presentScene(scene)
 
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.notifiedEventNextTurn), name: Rules.nextTurn, object: nil)
-
+        if  newGame {
+            restart(UIButton())
+        }
     }
     
-    func notifiedEventNextTurn() {
-        print("ViewController:notifiedEventNextTurn")
-    }
+
      
     
     @IBAction func restart(_ sender: UIButton) {
