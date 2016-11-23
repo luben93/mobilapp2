@@ -187,25 +187,44 @@ class GameScene: SKScene {
     
     private func removeTile(tile:PlayerTile){
         //tile.removeFromParent()
+        //tile.removeFromParent()
         tile.isDeleted = true
         tile.isPlaced = false
-        tile.alpha = 0.3
-        placeDeletedTile(tile: tile)
+        tile.alpha = 1.0
+        //tile.run(SKAction.fadeOut(withDuration: 2.0))
+        
+        let place = placeDeletedTile(tile: tile)
+        placeTile(tile: tile, place: place)
         
     }
     
     private func placeTile(tile:PlayerTile, place:CGPoint){
         // placing selected tile on selected place
-        tile.alpha = 1
+        tile.alpha = 1.0
         tile.removeFromParent()
         tile.position = place
         tile.isPlaced = true
-        addChild(tile)
+        //tile.run(SKAction.fadeIn(withDuration: 2.0))
+        
         
         // resetting selected node index
         
         // calling rule to decide what will be the consequence of this move
         
+        
+        
+        //get the distance between the destination position and the node's position
+        let distance:Double = sqrt(pow(Double((place.x - tile.position.x)), 2.0) + pow(Double((place.y - tile.position.y)), 2.0));
+        
+        //calculate your new duration based on the distance
+        let moveDuration = Float(40*distance);
+        
+        //move the node
+        let move = SKAction.move(to: place, duration: TimeInterval(moveDuration))
+        
+    
+        tile.run(move)
+        addChild(tile)
     }
 
     
@@ -287,12 +306,12 @@ class GameScene: SKScene {
         
         return out
     }
-    func placeDeletedTile(tile:PlayerTile) {
+    func placeDeletedTile(tile:PlayerTile) -> CGPoint {
         if tile.isBlue {
-            tile.position = CGPoint(x: size.width * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ), y: size.height * 0.05)
             
+           return CGPoint(x: size.width * CGFloat(Double( tile.number ) * 0.1  ), y: size.height * 0.95)
         } else {
-            tile.position = CGPoint(x: size.width * CGFloat(Double( tile.number ) * 0.1  ), y: size.height * 0.95)
+           return CGPoint(x: size.width * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ), y: size.height * 0.05)
         }
     }
     
