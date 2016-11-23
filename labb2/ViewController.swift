@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     
     var newGame = true
     var gameId = 0
+    var gameInfo = GameInfo()
     
     @IBOutlet weak var blueLabel: UILabel!
     @IBOutlet weak var gameView: UIView!
@@ -23,6 +24,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
         let scene = GameScene(size: view.bounds.size)
+        
         scene.initializeNotifiers()
         let skView = gameView as! SKView
         UserDefaults.standard.set(-1, forKey: "blue")
@@ -33,6 +35,7 @@ class ViewController: UIViewController {
         skView.presentScene(scene)
 
         if  newGame {
+            
             restart(UIButton())
         }
     }
