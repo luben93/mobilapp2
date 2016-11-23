@@ -186,13 +186,11 @@ class GameScene: SKScene {
     
     
     private func removeTile(tile:PlayerTile){
-        //tile.removeFromParent()
-        //tile.removeFromParent()
+    
         tile.isDeleted = true
         tile.isPlaced = false
         tile.alpha = 1.0
-        //tile.run(SKAction.fadeOut(withDuration: 2.0))
-        
+    
         let place = placeDeletedTile(tile: tile)
         placeTile(tile: tile, place: place)
         
@@ -201,30 +199,19 @@ class GameScene: SKScene {
     private func placeTile(tile:PlayerTile, place:CGPoint){
         // placing selected tile on selected place
         tile.alpha = 1.0
-        tile.removeFromParent()
-        tile.position = place
         tile.isPlaced = true
-        //tile.run(SKAction.fadeIn(withDuration: 2.0))
-        
-        
-        // resetting selected node index
-        
-        // calling rule to decide what will be the consequence of this move
-        
-        
-        
+    
         //get the distance between the destination position and the node's position
         let distance:Double = sqrt(pow(Double((place.x - tile.position.x)), 2.0) + pow(Double((place.y - tile.position.y)), 2.0));
         
         //calculate your new duration based on the distance
-        let moveDuration = Float(40*distance);
+        let moveDuration = Float(0.001*distance);
         
         //move the node
         let move = SKAction.move(to: place, duration: TimeInterval(moveDuration))
-        
     
         tile.run(move)
-        addChild(tile)
+        
     }
 
     
@@ -248,18 +235,6 @@ class GameScene: SKScene {
         }
     }
     
-    
-    //
-    //    func moveFromPile(touchLocation:CGPoint,tileN:Int){
-    ////        let closestIndex = closestPlaces(touchLocation)
-    //       //        let current = currentTiles[tile]
-    //        if let tile =  currentTiles[tileN]{
-    //           tile.removeFromParent()
-    //            tile.position = places[closestPlaces(touchLocation)]
-    //            addChild(tile)
-    //        }
-    //
-    //    }
     
     
     //TODO  merge closest place and closet tile to one function and verify that it finds the correct CGPoint, and move 10000 to a minimal distance that matters
@@ -293,23 +268,12 @@ class GameScene: SKScene {
                 }
             }
         }
-        
-        /*for i in 0...cmp.count-1{
-         if let cTile = cmp[i]?.position {
-         let tmp = sqrt(pow(touch.x-cTile.x,2)+pow(touch.y-cTile.y,2))
-         if tmp <= diff {
-         diff = tmp
-         out = i
-         }
-         }
-         }*/
-        
+
         return out
     }
     func placeDeletedTile(tile:PlayerTile) -> CGPoint {
         let tileRemoveOffset = tileDefaultOffset * 0.4
         if tile.isBlue {
-            
             return CGPoint(x: size.width * CGFloat(Double( tile.number ) * 0.1  ), y: size.height - tileRemoveOffset)
         } else {
             return CGPoint(x: size.width * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ), y: tileRemoveOffset)
