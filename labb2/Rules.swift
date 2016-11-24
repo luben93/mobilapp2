@@ -28,48 +28,58 @@ class Rules {
     static let mill = Notification.Name("mill")
     static let nextTurn = Notification.Name("nextTurn")
    
-    //private let save = UserDefaults.standard
+    private let save = UserDefaults.standard
     private var playerDefaultTiles:[Tiles:Int]{
         get{
-            //TODO get from gameinfo
-            return [.Blue:9,.Red:9]
+            return [.Blue:info.playerDetailsBlue,.Red:info.playerDetailsRed]
         }
         set{
-            //TODO set in gameinfo
+            info.playerDetailsBlue = newValue[.Blue]!
+            info.playerDetailsRed = newValue[.Red]!
+            save.set(info,forKey:"gameInfo\(id!)")
         }
     }
     private var phaseOne:Bool{
         get{
-            return playerDefaultTiles[.Blue]! <= 0 && playerDefaultTiles[.Red]! <= 0
+            return playerDefaultTiles[.Blue]! >= 0 && playerDefaultTiles[.Red]! >= 0
         }
     }
     private var gameplan:[Tiles]{
         get{
-            //TODO get from gameinfo
-            return [Tiles](repeating: .Empty,count: 25)
+            
+            return info.gamePlan
         }
         set{
-            //TODO set in gameinfo
+            print("gameplan set")
+            info.gamePlan = newValue
+            print("newVal settetd ")
+
+            save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
             didWin()
+            print("WHOHOOOO")
+
         }
     }
    
-    private var isBluesTurn:Bool{
+    
+    private var isBluesTurn:Bool {
         get{
-            //TODO get from gameinfo   
-            return true
+            return info.isBlueTurn
         }
         set{
-            //TODO set in gameinfo
+            info.isBlueTurn = newValue
+            save.set(info,forKey:"gameInfo\(id!)")
             NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
         }
     }
-    enum Tiles: String {
-        case Blue
-        case Red
-        case Empty
-    }
     
+    var id:Int? = nil
+    var info:GameInfo =  GameInfo(){
+        didSet{
+            print("setting gInfo")
+            info = save.object(forKey: "gameInfo\(id!)")! as! GameInfo
+        }
+    }
     var currentPlayerTile:Tiles  {
         get{
             if isBluesTurn{return .Blue}
@@ -79,7 +89,8 @@ class Rules {
     private var possibleMills = [[3,6,9],[2,5,8],[1,4,7],[24,23,22],[10,11,12],[19,16,13],[20,17,14],[21,18,15],//horizontal
         [3,24,21],[2,23,20],[1,22,19],[6,5,4],[16,17,18],[7,10,13],[8,11,14],[9,12,15]] //vertical
     
-    //end of model
+    
+    // end of model
     // ====================================
     // rules
     
@@ -93,13 +104,14 @@ class Rules {
         for possibleMill in possibleMills {
             if(possibleMill[0] == place || possibleMill[1] == place || possibleMill[2] == place ){
                 if(gameplan[possibleMill[0]] == player && gameplan[possibleMill[1]] == player && gameplan[possibleMill[2]] == player ){
-                    
+                    //TODO only detect new mills!!!!
                     print("located mill for \(player)")
                     NotificationCenter.default.post(name: Rules.mill, object: nil)
                     return true
                 }
             }
         }
+        
         return false //todo
     }
     

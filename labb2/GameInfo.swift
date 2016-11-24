@@ -7,21 +7,23 @@
 //
 
 import Foundation
+
+enum Tiles: String {
+    case Blue
+    case Red
+    case Empty
+}
+
 class GameInfo: NSObject, NSCoding {
     var id = 0
     var name:String = ""
-    var gamePlan:[Tiles] = []
+    var gamePlan:[Tiles] = [Tiles](repeating: .Empty, count:25)
     var playerDetailsBlue:Int = 9
     var playerDetailsRed:Int = 9
     var isBlueTurn:Bool = true
     var date:Date = Date()
     
     
-    enum Tiles:String {
-        case Blue
-        case Red
-        case Empty
-    }
     
     override init() {
         
@@ -79,9 +81,7 @@ class GameInfo: NSObject, NSCoding {
         }
         
         if let nGamePlan = aDecoder.decodeObject(forKey: PropertyKey.gamePlanKey) as? [String] {
-            cGamePlan = nGamePlan.map({ (t) -> Tiles in
-                return Tiles.init(rawValue: t)!
-            })
+            cGamePlan = nGamePlan.map({ Tiles.init(rawValue: $0)! })
         }
         if let nPlayerDetailsBlue = aDecoder.decodeObject(forKey: PropertyKey.playerDetailsBlueKey) as? Int {
             cPlayerDetailsBlue = nPlayerDetailsBlue

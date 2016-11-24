@@ -23,21 +23,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
-        let scene = GameScene(size: view.bounds.size)
         
-        scene.initializeNotifiers()
-        let skView = gameView as! SKView
-        UserDefaults.standard.set(-1, forKey: "blue")
-        UserDefaults.standard.set(-1, forKey: "red")
-       //let skView:SKView = gameView
-        skView.ignoresSiblingOrder = true
-        skView.allowsTransparency = true
-        skView.presentScene(scene)
-
-        if  newGame {
-            
-            restart(UIButton())
-        }
+        restart(UIButton())
+        
     }
     
 
@@ -45,26 +33,12 @@ class ViewController: UIViewController {
     
     @IBAction func restart(_ sender: UIButton) {
         let scene = GameScene(size: view.bounds.size)
+        scene.rule.id = gameId
         scene.initializeNotifiers()
         let skView = gameView as! SKView
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
         skView.presentScene(scene)
-        print("reset turn was\(UserDefaults.standard.integer(forKey: "isBluesTurn"))")
-        UserDefaults.standard.set(0, forKey: "isBluesTurn")
-        UserDefaults.standard.set(-1, forKey: "blue")
-        UserDefaults.standard.set(-1, forKey: "red")
-        
-        for i in 0..<25 {
-            UserDefaults.standard.set("Empty", forKey: "gameplan\(i)")
-        }
-
-        UserDefaults.standard.set(-1, forKey: "red")
-       // [Int](count:25,repeatedValue:0)
-        UserDefaults.standard.set([Int](repeating: 0,count: 25), forKey: "gameplan")
-
-//        NSUserDefaults.resetStandardUserDefaults()
-        print("reset turn is\(UserDefaults.standard.integer(forKey: "isBluesTurn"))")
-    }
+            }
 }
 
