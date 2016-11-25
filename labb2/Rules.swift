@@ -25,6 +25,7 @@ class Rules {
 
     static let placed = Notification.Name("placed")
     static let removed = Notification.Name("removed")
+    static let win = Notification.Name("win")
     static let mill = Notification.Name("mill")
     static let nextTurn = Notification.Name("nextTurn")
    
@@ -39,9 +40,12 @@ class Rules {
             save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
         }
     }
-    private var phaseOne:Bool{
+    var phaseOne:Bool{
         get{
-            return playerDefaultTiles[.Blue]! >= 0 && playerDefaultTiles[.Red]! >= 0
+            let out = playerDefaultTiles[.Blue]! >= 0 && playerDefaultTiles[.Red]! >= 0
+            print("phase one is \(out)")
+            return out
+
         }
     }
     private var gameplan:[Tiles]{
@@ -97,6 +101,11 @@ class Rules {
    
     private func didWin(){
         //TODO
+        var opponent = Tiles.Blue
+        if(isBluesTurn){ opponent = Tiles.Red}
+        if(phaseOne && gameplan.filter({opponent == $0}).count <= 3){
+            NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
+        }
     }
     
     private func hasMill(place:Int)-> Bool{
@@ -180,9 +189,7 @@ class Rules {
     }
     
     // getter for phase
-    func isPhaseOne() -> Bool {
-        return phaseOne
-    }
+  
     
     func placeIt() {
         NotificationCenter.default.post(name: Rules.placed, object: nil)

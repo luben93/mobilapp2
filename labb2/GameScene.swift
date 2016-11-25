@@ -121,7 +121,7 @@ class GameScene: SKScene {
             switch eventMode {
             case .normal:
                 // checking if the tile that we selected is allready placed, if phaseOne it's not valid to select tiles that has been placed
-                if rule.isPhaseOne() {
+                if rule.phaseOne {
                     if (currentTiles[selectedTileIndex]?.isPlaced)! {
                         print("Already placed")
                         return
