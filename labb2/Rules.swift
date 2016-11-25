@@ -36,7 +36,7 @@ class Rules {
         set{
             info.playerDetailsBlue = newValue[.Blue]!
             info.playerDetailsRed = newValue[.Red]!
-            save.set(info,forKey:"gameInfo\(id!)")
+            save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
         }
     }
     private var phaseOne:Bool{
@@ -68,7 +68,7 @@ class Rules {
         }
         set{
             info.isBlueTurn = newValue
-            save.set(info,forKey:"gameInfo\(id!)")
+            save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
             NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
         }
     }
