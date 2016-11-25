@@ -42,8 +42,9 @@ class Rules {
     }
     var phaseOne:Bool{
         get{
-            let out = playerDefaultTiles[.Blue]! >= 0 && playerDefaultTiles[.Red]! >= 0
-            print("phase one is \(out)")
+            //TODO fix does not work, thinks phase one ends if only one player have 0 left
+            let out = (playerDefaultTiles[.Blue]! != 0 && playerDefaultTiles[.Red]! != 0)
+            print("phase one is \(out) blue left = \( playerDefaultTiles[.Blue]!)  red left = \( playerDefaultTiles[.Red]!)")
             return out
 
         }
@@ -109,6 +110,7 @@ class Rules {
     }
     
     private func hasMill(place:Int)-> Bool{
+        //TODO does not detect multiple mills correctly
         let player = currentPlayerTile
         for possibleMill in possibleMills {
             if(possibleMill[0] == place || possibleMill[1] == place || possibleMill[2] == place ){
