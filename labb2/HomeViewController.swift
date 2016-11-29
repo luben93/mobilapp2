@@ -12,6 +12,7 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     
     var newGame = true
     var gameId = 0
+    var selectedGame = GameInfo()
     
     @IBOutlet weak var gamePickerView: UIPickerView!
     var savedGames:[GameInfo] = []
@@ -42,6 +43,7 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
         destinationView.savedGames = self.savedGames
         if !newGame {
             destinationView.gameId = self.gameId
+            destinationView.activeGameInfo = selectedGame
         }
     }
     
@@ -76,9 +78,9 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     // responsible to print out the values for each item in the columns
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         
-        let value: GameInfo = savedGames[row]
+        selectedGame = savedGames[row]
         
-        return NSAttributedString(string: value.date.description)
+        return NSAttributedString(string: selectedGame.date.description)
     }
     
     // action, user selected a row

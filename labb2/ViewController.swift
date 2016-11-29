@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     
     var newGame = true
     var gameId = 0
-    var gameInfo = GameInfo()
+    var activeGameInfo = GameInfo()
     var savedGames: [GameInfo] = []
     
     @IBOutlet weak var blueLabel: UILabel!
@@ -32,6 +32,7 @@ class ViewController: UIViewController {
             
         } else {
             print("old game choosen")
+            loadGame()
         }
         
         
@@ -58,11 +59,24 @@ class ViewController: UIViewController {
     }
     
     func loadGame() {
+        let scene = GameScene(size: view.bounds.size)
+        let rules = Rules(gameInfo: activeGameInfo)
         
+        scene.rule = rules
+        scene.gameInfo = activeGameInfo
+        scene.initializeNotifiers()
+        
+        let skView = gameView as! SKView
+        skView.ignoresSiblingOrder = true
+        skView.allowsTransparency = true
+        skView.presentScene(scene)
+
     }
     
     
     @IBAction func restart(_ sender: UIButton) {
+        savedGames.remove(at: savedGames.index(of: activeGameInfo)!)
+        startNewGame()
         
     }
 }

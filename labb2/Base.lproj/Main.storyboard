@@ -101,10 +101,15 @@
                                     <constraint firstAttribute="width" constant="33" id="1JA-Rv-XSz"/>
                                     <constraint firstAttribute="height" constant="33" id="SOB-fn-Tg5"/>
                                 </constraints>
-                                <state key="normal" image="settings-2"/>
+                                <state key="normal" image="restart"/>
                                 <connections>
                                     <action selector="restart:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yuX-9m-eM1"/>
                                 </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QdR-Tj-CLU">
+                                <rect key="frame" x="278" y="620" width="33" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="home"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -134,6 +139,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="settings-2" width="128" height="128"/>
+        <image name="home" width="128" height="128"/>
+        <image name="restart" width="128" height="128"/>
     </resources>
 </document>
