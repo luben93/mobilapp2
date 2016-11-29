@@ -39,16 +39,16 @@ class ViewController: UIViewController {
     
     func startNewGame() {
         let scene = GameScene(size: view.bounds.size)
-        let rules = Rules()
+        let rule = Rules()
         let gameInfo = GameInfo()
         savedGames.append(gameInfo)
-        
         NSKeyedArchiver.archiveRootObject(savedGames, toFile: GameInfo.ArchiveURL.path)
         
-        scene.rule.id = gameId
-        scene.initializeNotifiers()
-        rules.setGameInfo(info: gameInfo)
+        rule.setGameInfo(info: gameInfo)
         
+        scene.rule = rule
+        scene.initializeNotifiers()
+
         let skView = gameView as! SKView
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
@@ -62,13 +62,7 @@ class ViewController: UIViewController {
     
     
     @IBAction func restart(_ sender: UIButton) {
-        let scene = GameScene(size: view.bounds.size)
-        scene.rule.id = gameId
-        scene.initializeNotifiers()
-        let skView = gameView as! SKView
-        skView.ignoresSiblingOrder = true
-        skView.allowsTransparency = true
-        skView.presentScene(scene)
+        
     }
 }
 

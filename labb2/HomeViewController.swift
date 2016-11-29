@@ -49,13 +49,11 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
         var loadedGames: [GameInfo]
         if let loadedData = NSKeyedUnarchiver.unarchiveObject(withFile: GameInfo.ArchiveURL.path){
             loadedGames = loadedData as! [GameInfo]
-            
             print("Loading data was succesful")
             print("Games: \(loadedGames)")
             savedGames = loadedGames
             
         } else {
-            
             savedGames = []
             if NSKeyedArchiver.archiveRootObject(savedGames, toFile: GameInfo.ArchiveURL.path){
                 print("Saved Games was succesfully initiated")
