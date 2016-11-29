@@ -39,14 +39,14 @@ class ViewController: UIViewController {
     
     func startNewGame() {
         let scene = GameScene(size: view.bounds.size)
-        let rule = Rules()
         let gameInfo = GameInfo()
+        let rules = Rules(gameInfo: gameInfo)
+        
         savedGames.append(gameInfo)
         NSKeyedArchiver.archiveRootObject(savedGames, toFile: GameInfo.ArchiveURL.path)
+    
         
-        rule.setGameInfo(info: gameInfo)
-        
-        scene.rule = rule
+        scene.rule = rules
         scene.gameInfo = gameInfo
         scene.initializeNotifiers()
 
