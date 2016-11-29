@@ -88,9 +88,7 @@ class Rules {
     }
     
     // please make this more beautifully set
-    func setGameInfo(info:GameInfo){
-        self.info = info
-    }
+    
     var currentPlayerTile:Tiles  {
         get{
             if isBluesTurn{return .Blue}
@@ -99,7 +97,9 @@ class Rules {
     }
     private var possibleMills = [[3,6,9],[2,5,8],[1,4,7],[24,23,22],[10,11,12],[19,16,13],[20,17,14],[21,18,15],//horizontal
         [3,24,21],[2,23,20],[1,22,19],[6,5,4],[16,17,18],[7,10,13],[8,11,14],[9,12,15]] //vertical
-    
+    init(gameInfo: GameInfo){
+        info = gameInfo
+    }
     
     // end of model
     // ====================================
@@ -138,6 +138,7 @@ class Rules {
             if phaseOne {
                 gameplan[to] = currentPlayerTile
                 playerDefaultTiles[currentPlayerTile]! -= 1
+                //is this phase one
             } else {
                 gameplan[to] = gameplan[from]
             }

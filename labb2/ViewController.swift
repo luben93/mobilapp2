@@ -39,15 +39,15 @@ class ViewController: UIViewController {
     
     func startNewGame() {
         let scene = GameScene(size: view.bounds.size)
-        let rules = Rules()
         let gameInfo = GameInfo()
+        let rules = Rules(gameInfo: gameInfo)
         savedGames.append(gameInfo)
         
         NSKeyedArchiver.archiveRootObject(savedGames, toFile: GameInfo.ArchiveURL.path)
         
         scene.rule.id = gameId
         scene.initializeNotifiers()
-        rules.setGameInfo(info: gameInfo)
+        //rules.setGameInfo(info: gameInfo)
         
         let skView = gameView as! SKView
         skView.ignoresSiblingOrder = true
