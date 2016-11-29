@@ -47,6 +47,7 @@ class ViewController: UIViewController {
         rule.setGameInfo(info: gameInfo)
         
         scene.rule = rule
+        scene.gameInfo = gameInfo
         scene.initializeNotifiers()
 
         let skView = gameView as! SKView

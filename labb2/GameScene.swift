@@ -32,6 +32,7 @@ class GameScene: SKScene {
     var redCan = SKSpriteNode()
     let label = SKLabelNode()
     var rule = Rules()
+    var gameInfo = GameInfo()
     var eventMode = Event.normal
     
     var playerTiles:[PlayerTile?]{
