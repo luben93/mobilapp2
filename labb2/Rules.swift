@@ -22,13 +22,14 @@ import Foundation
 
 
 class Rules {
-
+    
     static let placed = Notification.Name("placed")
     static let removed = Notification.Name("removed")
     static let win = Notification.Name("win")
     static let mill = Notification.Name("mill")
+    static let phaseTwo = Notification.Name("phaseTwo")
     static let nextTurn = Notification.Name("nextTurn")
-   
+    
     //private let save = UserDefaults.standard
     private var playerDefaultTiles:[Tiles:Int]{
         get{
@@ -39,16 +40,17 @@ class Rules {
             info.playerDetailsRed = newValue[.Red]!
             //save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
             NSKeyedArchiver.archiveRootObject(info, toFile: "\(info.timeStamp)")
-
+            
         }
     }
     var phaseOne:Bool{
         get{
-            //TODO fix does not work, thinks phase one ends if only one player have 0 left
-            let out = (playerDefaultTiles[.Blue]! != 0 && playerDefaultTiles[.Red]! != 0)
-            print("phase one is \(out) blue left = \( playerDefaultTiles[.Blue]!)  red left = \( playerDefaultTiles[.Red]!)")
+            let out = !(playerDefaultTiles[.Blue]! <= 0 && playerDefaultTiles[.Red]! <= 0)
+            if !out {
+                NotificationCenter.default.post(name: Rules.phaseTwo, object: nil)
+            }
             return out
-
+            
         }
     }
     private var gameplan:[Tiles]{
@@ -57,18 +59,12 @@ class Rules {
             return info.gamePlan
         }
         set{
-            print("gameplan set")
             info.gamePlan = newValue
-            print("newVal settetd ")
-            
             NSKeyedArchiver.archiveRootObject(info, toFile: "\(info.timeStamp)")
-            //save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
             didWin()
-            print("WHOHOOOO")
-
         }
     }
-   
+    
     
     private var isBluesTurn:Bool {
         get{
@@ -76,10 +72,9 @@ class Rules {
         }
         set{
             info.isBlueTurn = newValue
-            //save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
             NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
             NSKeyedArchiver.archiveRootObject(info, toFile: "\(info.timeStamp)")
-
+            
         }
     }
     
@@ -88,11 +83,9 @@ class Rules {
     var info:GameInfo = GameInfo(){
         didSet{
             print("setting gInfo")
-            //info = save.object(forKey: "gameInfo\(info.timeStamp)")! as! GameInfo
         }
     }
     
-    // please make this more beautifully set
     
     var currentPlayerTile:Tiles  {
         get{
@@ -114,7 +107,7 @@ class Rules {
     // ====================================
     // rules
     
-   
+    
     private func didWin(){
         //TODO
         var opponent = Tiles.Blue
@@ -131,7 +124,6 @@ class Rules {
             if(possibleMill[0] == place || possibleMill[1] == place || possibleMill[2] == place ){
                 if(gameplan[possibleMill[0]] == player && gameplan[possibleMill[1]] == player && gameplan[possibleMill[2]] == player ){
                     //TODO only detect new mills!!!!
-                    print("located mill for \(player)")
                     NotificationCenter.default.post(name: Rules.mill, object: nil)
                     return true
                 }
@@ -147,26 +139,20 @@ class Rules {
             if phaseOne {
                 gameplan[to] = currentPlayerTile
                 playerDefaultTiles[currentPlayerTile]! -= 1
-                //is this phase one
             } else {
                 gameplan[to] = gameplan[from]
             }
             
-             //   gameplan[to] = currentPlayerTile
-            
-
-            
             if !hasMill(place: to){
                 isBluesTurn = !isBluesTurn
-
+                
             }
-            //print("gameplan: \(gameplan)")
             NotificationCenter.default.post(name: Rules.placed, object: nil)
             return true
             
         }
-            print("invalid move")
-            return false
+        print("invalid move")
+        return false
         
     }
     
@@ -174,51 +160,46 @@ class Rules {
         
         var opponent = Tiles.Blue
         if (isBluesTurn){ opponent = Tiles.Red }
-            print("Opponent: \(opponent)")
-            print("GamePlan.Tiel: \(gameplan[tile])")
         
-        
-            if (gameplan[tile] == opponent ){
-                
-                isBluesTurn = !isBluesTurn
-                gameplan[tile] = .Empty
-                NotificationCenter.default.post(name: Rules.removed, object: nil)
-                print("remove returning true")
-                return true
-            }
-        print("remove returning false")
+        if (gameplan[tile] == opponent ){
+            
+            isBluesTurn = !isBluesTurn
+            gameplan[tile] = .Empty
+            NotificationCenter.default.post(name: Rules.removed, object: nil)
+            return true
+        }
         return false
         
     }
     
     
     // checks if the selected place is avaiable and in the case of game beeing in phase two also check  if the move is valid
-    func checkIfPlaceIsAvailable(to:Int, from:Int?) -> Bool {
+    func checkIfPlaceIsAvailable(to:Int, from fromOptional:Int?) -> Bool {
         if gameplan[to] == .Empty {
-            
             if phaseOne {
-                
                 return true
             }else{
-                return isValidMove(to: to, from: from)
+                if let from = fromOptional{
+                    let out = isValidMove(to: to, from: from)
+                    print("to:\(to) from:\(from) isValid:\(out)")
+                    return out
+                }
             }
         }
         return false
     }
     
-    // getter for phase
-  
+    
     
     func placeIt() {
         NotificationCenter.default.post(name: Rules.placed, object: nil)
     }
     
-    fileprivate func isValidMove(to:Int,from:Int?)->Bool{
+    fileprivate func isValidMove(to:Int,from:Int)->Bool{
         if(gameplan[to] != .Empty){
             return false
         }
         
-        //opional: if currentPlayer has 3 tiles left he/she may move to any empty space
         
         switch to {
         case 1:
