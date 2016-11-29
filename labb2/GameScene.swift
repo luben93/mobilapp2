@@ -22,15 +22,12 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    //var blueTiles = [SKSpriteNode?](repeating: nil, count: 10)
     var blueTiles = [PlayerTile?](repeating: nil, count: 10)
-    //var redTiles = [SKSpriteNode?](repeating: nil, count: 10)
     var redTiles = [PlayerTile?](repeating: nil, count: 10)
     
     var tileDefaultOffset:CGFloat = 10
     var selectedNodeIndex = -1
     var places = [CGPoint](repeating: CGPoint(), count: 25)
-    //var tileSelected:Int?
     var blueCan = SKSpriteNode()
     var redCan = SKSpriteNode()
     let label = SKLabelNode()

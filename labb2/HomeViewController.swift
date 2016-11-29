@@ -17,16 +17,11 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     var savedGames:[GameInfo] = []
     
     override func viewDidLoad() {
-        for i in 1...5 {
-            let g = GameInfo()
-            g.date = Date()
-            savedGames.append(g)
-        }
         print("Number Of Games: \(savedGames.count)")
         gamePickerView.delegate = self
-        
-        gameId = savedGames[gamePickerView.selectedRow(inComponent: 0)].id
-        gamePickerView.reloadAllComponents()
+        loadGames()
+        //gameId = savedGames[gamePickerView.selectedRow(inComponent: 0)].id
+        //gamePickerView.reloadAllComponents()
     }
     
     @IBAction func newGamePressed(_ sender: UIButton) {
@@ -44,12 +39,29 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
         
         let destinationView = segue.destination as! ViewController
         destinationView.newGame = self.newGame
+        destinationView.savedGames = self.savedGames
         if !newGame {
             destinationView.gameId = self.gameId
         }
     }
-
     
+    func loadGames(){
+        var loadedGames: [GameInfo]
+        if let loadedData = NSKeyedUnarchiver.unarchiveObject(withFile: GameInfo.ArchiveURL.path){
+            loadedGames = loadedData as! [GameInfo]
+            
+            print("Loading data was succesful")
+            print("Games: \(loadedGames)")
+            savedGames = loadedGames
+            
+        } else {
+            
+            savedGames = []
+            if NSKeyedArchiver.archiveRootObject(savedGames, toFile: GameInfo.ArchiveURL.path){
+                print("Saved Games was succesfully initiated")
+            }
+        }
+    }
     
     
     // calculating the number of rows for each component in the picker view

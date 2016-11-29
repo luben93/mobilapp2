@@ -78,12 +78,18 @@ class Rules {
         }
     }
     
+    
     var id:Int? = nil
-    var info:GameInfo =  GameInfo(){
+    var info:GameInfo = GameInfo(){
         didSet{
             print("setting gInfo")
-            info = save.object(forKey: "gameInfo\(id!)")! as! GameInfo
+            //info = save.object(forKey: "gameInfo\(info.timeStamp)")! as! GameInfo
         }
+    }
+    
+    // please make this more beautifully set
+    func setGameInfo(info:GameInfo){
+        self.info = info
     }
     var currentPlayerTile:Tiles  {
         get{

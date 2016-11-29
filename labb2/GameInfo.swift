@@ -22,14 +22,15 @@ class GameInfo: NSObject, NSCoding {
     var playerDetailsRed:Int = 9
     var isBlueTurn:Bool = true
     var date:Date = Date()
-    
+    var timeStamp = Date().timeIntervalSince1970
+    //override var description: String
     
     
     override init() {
         
     }
     
-    init?(id:Int, gamePlan:[Tiles],playerDetailsBlue:Int, playerDetailsRed:Int, isBlueTurn:Bool, date:Date) {
+    init?(id:Int, gamePlan:[Tiles],playerDetailsBlue:Int, playerDetailsRed:Int, isBlueTurn:Bool, date:Date, timeStamp:TimeInterval) {
         // Initialize stored properties.
         self.id = id
         self.gamePlan = gamePlan
@@ -37,7 +38,8 @@ class GameInfo: NSObject, NSCoding {
         self.playerDetailsRed = playerDetailsRed
         self.isBlueTurn = isBlueTurn
         self.date = date
-        
+        self.timeStamp = timeStamp
+        //self.description = "TimeStamp: \(timeStamp), Id: \(id), playerDetailsBlue: \(playerDetailsBlue)"
         // Initialization should fail if there is no name or if the rating is negative.
       
     }
@@ -52,6 +54,7 @@ class GameInfo: NSObject, NSCoding {
         static let playerDetailsRedKey = "detailRed"
         static let isBlueKey = "isBlue"
         static let dateKey = "date"
+        static let timeStamp = "timeStamp"
         
     }
     
@@ -64,6 +67,7 @@ class GameInfo: NSObject, NSCoding {
         aCoder.encode(playerDetailsRed, forKey: PropertyKey.playerDetailsRedKey)
         aCoder.encode(isBlueTurn, forKey: PropertyKey.isBlueKey)
         aCoder.encode(date, forKey: PropertyKey.dateKey)
+        aCoder.encode(timeStamp, forKey: PropertyKey.timeStamp)
         
         
     }
@@ -75,6 +79,7 @@ class GameInfo: NSObject, NSCoding {
         var cPlayerDetailsRed:Int = 9
         var cIsBlueTurn:Bool = true
         var cDate:Date = Date()
+        var cTimeStamp:TimeInterval = Date().timeIntervalSince1970
         
         if let nId = aDecoder.decodeObject(forKey: PropertyKey.idKey) as? Int {
             cId = nId
@@ -97,10 +102,13 @@ class GameInfo: NSObject, NSCoding {
         if let nDate = aDecoder.decodeObject(forKey: PropertyKey.dateKey) as? Date {
             cDate = nDate
         }
-
+        if let nTimeStamp = aDecoder.decodeObject(forKey: PropertyKey.timeStamp) as? TimeInterval {
+            cTimeStamp = nTimeStamp
+        }
+        
         
         // Must call designated initializer.
-        self.init(id:cId,gamePlan:cGamePlan,playerDetailsBlue:cPlayerDetailsBlue,playerDetailsRed:cPlayerDetailsRed,isBlueTurn:cIsBlueTurn, date:cDate)
+        self.init(id:cId,gamePlan:cGamePlan,playerDetailsBlue:cPlayerDetailsBlue,playerDetailsRed:cPlayerDetailsRed,isBlueTurn:cIsBlueTurn, date:cDate, timeStamp:cTimeStamp)
     }
     
     // MARK: Archiving Paths

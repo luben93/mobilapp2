@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     var newGame = true
     var gameId = 0
     var gameInfo = GameInfo()
+    var savedGames: [GameInfo] = []
     
     @IBOutlet weak var blueLabel: UILabel!
     @IBOutlet weak var gameView: UIView!
@@ -24,12 +25,41 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
         
-        restart(UIButton())
+        if newGame == true {
+            print("New Game choosen")
+            startNewGame()
+            
+            
+        } else {
+            print("old game choosen")
+        }
+        
         
     }
     
-
-     
+    func startNewGame() {
+        let scene = GameScene(size: view.bounds.size)
+        let rules = Rules()
+        let gameInfo = GameInfo()
+        savedGames.append(gameInfo)
+        
+        NSKeyedArchiver.archiveRootObject(savedGames, toFile: GameInfo.ArchiveURL.path)
+        
+        scene.rule.id = gameId
+        scene.initializeNotifiers()
+        rules.setGameInfo(info: gameInfo)
+        
+        let skView = gameView as! SKView
+        skView.ignoresSiblingOrder = true
+        skView.allowsTransparency = true
+        skView.presentScene(scene)
+        
+    }
+    
+    func loadGame() {
+        
+    }
+    
     
     @IBAction func restart(_ sender: UIButton) {
         let scene = GameScene(size: view.bounds.size)
@@ -39,6 +69,6 @@ class ViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         skView.allowsTransparency = true
         skView.presentScene(scene)
-            }
+    }
 }
 
