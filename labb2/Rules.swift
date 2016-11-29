@@ -29,7 +29,7 @@ class Rules {
     static let mill = Notification.Name("mill")
     static let nextTurn = Notification.Name("nextTurn")
    
-    private let save = UserDefaults.standard
+    //private let save = UserDefaults.standard
     private var playerDefaultTiles:[Tiles:Int]{
         get{
             return [.Blue:info.playerDetailsBlue,.Red:info.playerDetailsRed]
@@ -37,7 +37,9 @@ class Rules {
         set{
             info.playerDetailsBlue = newValue[.Blue]!
             info.playerDetailsRed = newValue[.Red]!
-            save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
+            //save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
+            NSKeyedArchiver.archiveRootObject(info, toFile: "\(info.timeStamp)")
+
         }
     }
     var phaseOne:Bool{
@@ -58,8 +60,9 @@ class Rules {
             print("gameplan set")
             info.gamePlan = newValue
             print("newVal settetd ")
-
-            save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
+            
+            NSKeyedArchiver.archiveRootObject(info, toFile: "\(info.timeStamp)")
+            //save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
             didWin()
             print("WHOHOOOO")
 
@@ -73,8 +76,10 @@ class Rules {
         }
         set{
             info.isBlueTurn = newValue
-            save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
+            //save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
             NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
+            NSKeyedArchiver.archiveRootObject(info, toFile: "\(info.timeStamp)")
+
         }
     }
     
