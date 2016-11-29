@@ -118,9 +118,10 @@ class Rules {
     }
     
     private func hasMill(place:Int)-> Bool{
+        var hadMill = false
         //TODO does not detect multiple mills correctly
         let player = currentPlayerTile
-        for possibleMill in possibleMills {
+        /*for possibleMill in possibleMills {
             if(possibleMill[0] == place || possibleMill[1] == place || possibleMill[2] == place ){
                 if(gameplan[possibleMill[0]] == player && gameplan[possibleMill[1]] == player && gameplan[possibleMill[2]] == player ){
                     //TODO only detect new mills!!!!
@@ -128,9 +129,15 @@ class Rules {
                     return true
                 }
             }
+        }*/
+        for relaventMill in possibleMills.filter({$0.contains(place)}){
+            if(gameplan[relaventMill[0]] == player && gameplan[relaventMill[1]] == player && gameplan[relaventMill[2]] == player ){
+                NotificationCenter.default.post(name: Rules.mill, object: nil)
+                hadMill = true
+            }
         }
         
-        return false //todo
+        return hadMill //todo
     }
     
     
