@@ -21,12 +21,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var redLabel: UILabel!
     //@IBOutlet weak var gamePlane: gamePlan!
-    
-   
+    var sceneOptional:GameScene?
+    override func didRotate(from: UIInterfaceOrientation) {
+        print("did rotate")
+        if let tmp = sceneOptional{
+            tmp.size = view.bounds.size
+            tmp.removeAllChildren()
+            tmp.alotOfStuff()
+            
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
+        //self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.notifiedEventWin), name: Rules.win, object: nil)
         
         if newGame == true {
@@ -68,7 +76,9 @@ class ViewController: UIViewController {
     }
     
     func startNewGame() {
-        let scene = GameScene(size: view.bounds.size)
+        
+       let scene = GameScene(size: view.bounds.size)
+        sceneOptional = scene
         let gameInfo = GameInfo()
         self.rules = Rules(gameInfo: gameInfo)
         
@@ -98,6 +108,8 @@ class ViewController: UIViewController {
     
     func loadGame() {
         let scene = GameScene(size: view.bounds.size)
+        sceneOptional = scene
+
         self.rules = Rules(gameInfo: activeGameInfo)
         scene.rule = rules
         scene.gameInfo = activeGameInfo
