@@ -24,21 +24,21 @@ class GameScene: SKScene {
     
     var blueTiles = [PlayerTile?](repeating: nil, count: 10)
     var redTiles = [PlayerTile?](repeating: nil, count: 10)
-    var xo:CGFloat?
-    var yo:CGFloat?
+   /* var oriationX = "x"
+    var oriationY = "y"
     var oriation = UIDevice.current.orientation{
         didSet{
-            print("size.h\(size.height)")
+            print("oriation \(oriationX)")
             alotOfStuff()
         }
         willSet{
-            if let tmp = xo{
-                xo = yo
-                yo = tmp
+                let tmp = oriationX
+                oriationX = oriationY
+                oriationY = tmp
                 self.removeAllChildren()
-            }
+            
         }
-    }
+    }*/
     var tileDefaultOffset:CGFloat = 10
     var selectedNodeIndex = -1
     var places = [CGPoint](repeating: CGPoint(), count: 25)
@@ -74,10 +74,7 @@ class GameScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        backgroundColor = SKColor.clear
-       // didShow = true
-        xo = size.width
-        yo = size.height
+        backgroundColor = SKColor.clear        
         alotOfStuff()
     }
     
@@ -86,15 +83,9 @@ class GameScene: SKScene {
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventMill), name: Rules.mill, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventRemoved), name: Rules.removed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventNextTurn), name: Rules.nextTurn, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-            }
+                 }
 
-    func rotated(){
-        let tmp = UIDevice.current.orientation
-        if tmp != oriation{
-            oriation = tmp
-        }
-    }
+
     func notifiedEventNextTurn(){
         print("Notified: Next Player turn")
         eventMode = .normal
@@ -362,40 +353,91 @@ class GameScene: SKScene {
         let middleY:CGFloat = 0.6
         let outerY:CGFloat = 0.25
         let halfY:CGFloat = 0.5
+
         
-        places[0] = CGPoint(x:x/2,y:y/2)
+        let portait=[0:["x":x/2,"y":y/2],
+                     3	:["x":x * innerX,             "y":y/2 + x/2 * innerY ],
+                     2	:["x":x * middleX,            "y":y/2 + x/2 * middleY],
+                     1	:["x":x * outerX,             "y":y/2 + x/2 * outerY ],
+                     6	:["x":x * halfX,             "y":y/2 + x/2 * innerY ],
+                     5	:["x":x * halfX,             "y":y/2 + x/2 * middleY],
+                     4	:["x":x * halfX,             "y":y/2 + x/2 * outerY ],
+                     9	:["x":x * (1 - innerX),      "y":y/2 + x/2 * innerY ],
+                     8	:["x":x * (1 - middleX),     "y":y/2 + x/2 * middleY],
+                     7	:["x":x * (1 - outerX),      "y":y/2 + x/2 * outerY ],
+                     12	:["x":x * (1 - innerX),       "y":y * halfY          ],
+                     11	:["x":x * (1 - middleX),      "y":y * halfY          ],
+                     10	:["x":x * (1 - outerX),       "y":y * halfY          ],
+                     15	:["x":x * (1 - innerX),       "y":y/2 - x/2 * innerY ],
+                     14	:["x":x * (1 - middleX),      "y":y/2 - x/2 * middleY],
+                     13	:["x":x * (1 - outerX),       "y":y/2 - x/2 * outerY ],
+                     18	:["x":x * halfX,              "y":y/2 - x/2 * innerY ],
+                     17	:["x":x * halfX,              "y":y/2 - x/2 * middleY],
+                     16	:["x":x * halfX,              "y":y/2 - x/2 * outerY ],
+                     21	:["x":x * innerX,             "y":y/2 - x/2 * innerY ],
+                     20	:["x":x * middleX,            "y":y/2 - x/2 * middleY],
+                     19	:["x":x * outerX,             "y":y/2 - x/2 * outerY ],
+                     24	:["x":x * innerX,             "y":y/2                ],
+                     23	:["x":x * middleX,            "y":y/2                ],
+                     22	:["x":x * outerX,             "y":y/2                ]
+            , ]
         
-        places[3] = CGPoint(x:x * innerX,y:y/2 + x/2 * innerY)
-        places[2] = CGPoint(x:x * middleX,y:y/2 + x/2 * middleY)
-        places[1] = CGPoint(x:x * outerX,y:y/2 + x/2 * outerY)
+        let innerXL:CGFloat = 0.12   //1
+        let middleXL:CGFloat = 0.25 //25
+        let outerXL:CGFloat = 0.4   //4
+        let halfXL:CGFloat = 0.5    //5
+
+        let innerYL:CGFloat = 0.9   //9
+        let middleYL:CGFloat = 0.6  //6
+        let outerYL:CGFloat = 0.25 //25
+        let halfYL:CGFloat = 0.5    //5
+        let landscape=[
+            0      :["x":y/2,"y":x/2],
+            3      :["x":y * innerXL,             "y":x/2 + y/2 * innerYL ],
+            2      :["x":y * middleXL,            "y":x/2 + y/2 * middleYL],
+            1      :["x":y * outerXL,             "y":x/2 + y/2 * outerYL ],
+            6      :["x":y * halfXL,              "y":x/2 + y/2 * innerYL ],
+            5      :["x":y * halfXL,              "y":x/2 + y/2 * middleYL],
+            4      :["x":y * halfXL,              "y":x/2 + y/2 * outerYL ],
+            9      :["x":y * (1 - innerXL),       "y":x/2 + y/2 * innerYL ],
+            8      :["x":y * (1 - middleXL),      "y":x/2 + y/2 * middleYL],
+            7      :["x":y * (1 - outerXL),       "y":x/2 + y/2 * outerYL ],
+            12     :["x":y * (1 - innerXL),       "y":x * halfYL          ],
+            11     :["x":y * (1 - middleXL),      "y":x * halfYL          ],
+            10     :["x":y * (1 - outerXL),       "y":x * halfYL          ],
+            15     :["x":y * (1 - innerXL),       "y":x/2 - y/2 * innerYL ],
+            14     :["x":y * (1 - middleXL),      "y":x/2 - y/2 * middleYL],
+            13     :["x":y * (1 - outerXL),       "y":x/2 - y/2 * outerYL ],
+            18     :["x":y * halfXL,              "y":x/2 - y/2 * innerYL ],
+            17     :["x":y * halfXL,              "y":x/2 - y/2 * middleYL],
+            16     :["x":y * halfXL,              "y":x/2 - y/2 * outerYL ],
+            21     :["x":y * innerXL,             "y":x/2 - y/2 * innerYL ],
+            20     :["x":y * middleXL,            "y":x/2 - y/2 * middleYL],
+            19     :["x":y * outerXL,             "y":x/2 - y/2 * outerYL ],
+            24     :["x":y * innerXL,             "y":x/2                ],
+            23     :["x":y * middleXL,            "y":x/2                ],
+            22     :["x":y * outerXL,             "y":x/2                ]
+            , ]
         
-        places[6]  = CGPoint(x:x * halfX,y:y/2 + x/2 * innerY)
-        places[5]  = CGPoint(x:x * halfX,y:y/2 + x/2 * middleY)
-        places[4]  = CGPoint(x:x * halfX,y:y/2 + x/2 * outerY)
         
-        places[9]  = CGPoint(x:x * (1 - innerX),y:y/2 + x/2 * innerY)
-        places[8]  = CGPoint(x:x * (1 - middleX),y:y/2 + x/2 * middleY)
-        places[7]  = CGPoint(x:x * (1 - outerX),y:y/2 + x/2 * outerY)
         
-        places[12] = CGPoint(x:x * (1 - innerX),y:y * halfY )
-        places[11] = CGPoint(x:x * (1 - middleX),y:y * halfY )
-        places[10] = CGPoint(x:x * (1 - outerX),y:y * halfY )
+        var orientation = ("x","y")
+        var tmpPlace = portait
+        var landscaped = false
+        if UIDevice.current.orientation.isLandscape {
+            orientation = ("y","x")
+            tmpPlace = landscape
+            landscaped = true
+        }
+        print(orientation)
         
-        places[15] = CGPoint(x:x * (1 - innerX), y:y/2 - x/2 * innerY)
-        places[14] = CGPoint(x:x * (1 - middleX), y:y/2 - x/2 * middleY)
-        places[13] = CGPoint(x:x * (1 - outerX), y:y/2 - x/2 * outerY)
-        
-        places[18] = CGPoint(x:x * halfX, y:y/2 - x/2 * innerY)
-        places[17] = CGPoint(x:x * halfX, y:y/2 - x/2 * middleY)
-        places[16] = CGPoint(x:x * halfX, y:y/2 - x/2 * outerY)
-        
-        places[21] = CGPoint(x:x * innerX,y:y/2 - x/2 * innerY)
-        places[20] = CGPoint(x:x * middleX,y:y/2 - x/2 * middleY)
-        places[19] = CGPoint(x:x * outerX,y:y/2 - x/2 * outerY)
-        
-        places[24] = CGPoint(x:x * innerX,y:y/2  )
-        places[23] = CGPoint(x:x * middleX,y:y/2 )
-        places[22] = CGPoint(x:x * outerX,y:y/2  )
+        for i in 0...24{
+            if let tmpX:CGFloat = tmpPlace[i]?[orientation.0]{
+                if let tmpY:CGFloat = tmpPlace[i]?[orientation.1]{
+                    places[i] = CGPoint(x:tmpX,y:tmpY)
+                }
+            }
+        }
         
         
         
@@ -461,8 +503,19 @@ class GameScene: SKScene {
             redTiles[i]?.number = i
             redTiles[i]?.isBlue = false
             
-            blueTiles[i]!.position = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: tileDefaultOffset)
-            redTiles[i]!.position = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height - tileDefaultOffset )
+            var blueTilesPosition = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: tileDefaultOffset)
+            var redTilesPosition = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height - tileDefaultOffset )
+            
+            if landscaped{
+                blueTilesPosition = CGPoint(x:size.width*0.15, y:  size.height * (CGFloat( abs( Double( i ) * 0.1 - 1)) ))
+                redTilesPosition = CGPoint(x:size.width * 0.85 , y: size.height  * CGFloat(Double( i ) * 0.1  )  )
+
+            }
+            
+            
+            
+            blueTiles[i]!.position = blueTilesPosition
+            redTiles[i]!.position = redTilesPosition
             blueTiles[i]?.zPosition = 2
             redTiles[i]?.zPosition = 2
                 
@@ -474,7 +527,7 @@ class GameScene: SKScene {
         
     }
     
-   
+
 
     
     func drawRect(_ rect:CGMutablePath){
