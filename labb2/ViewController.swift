@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         if let tmp = sceneOptional{
             tmp.size = view.bounds.size
             tmp.removeAllChildren()
-            tmp.alotOfStuff()
+            tmp.alotOfStuff() //todo
             
         }
     }
