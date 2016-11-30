@@ -61,7 +61,8 @@ class Rules {
         }
         set{
             info.gamePlan = newValue
-            NSKeyedArchiver.archiveRootObject(info, toFile: GameInfo.ArchiveURL.path + info.timeStamp.description)
+            let back = NSKeyedArchiver.archiveRootObject(info, toFile: GameInfo.ArchiveURL.path + info.timeStamp.description)
+            print("did save gameplan: \(back) \(FileManager.default.contents(atPath:GameInfo.ArchiveURL.path + info.timeStamp.description))")
             didWin()
         }
     }
@@ -110,7 +111,12 @@ class Rules {
     // ====================================
     // rules
     
-    
+    func getPlayerTilesDefault() -> [Tiles:Int]{
+        return playerDefaultTiles
+    }
+    func getGamePlan() -> [Tiles]{
+        return gameplan
+    }
     private func didWin() -> Bool{
         //TODO
         var opponent = Tiles.Blue

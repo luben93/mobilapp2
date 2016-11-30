@@ -312,11 +312,20 @@ class GameScene: SKScene {
         return out
     }
     func placeDeletedTile(tile:PlayerTile) -> CGPoint {
-        let tileRemoveOffset = tileDefaultOffset * 0.4
+        
+        
+        if size.height * 1.2 < size.width {
         if tile.isBlue {
-            return CGPoint(x: size.width * CGFloat(Double( tile.number ) * 0.1  ), y: size.height - tileRemoveOffset)
+            return CGPoint(x:  size.width * 0.95, y: size.height  * CGFloat(Double( tile.number ) * 0.1  ))
         } else {
-            return CGPoint(x: size.width * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ), y: tileRemoveOffset)
+            return CGPoint(x:size.width * 0.05 , y: size.height * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ))
+        }
+        }else{
+            if tile.isBlue {
+                return CGPoint(x: size.width * CGFloat(Double( tile.number ) * 0.1  ), y: size.height - tileDefaultOffset * 0.4)
+            } else {
+                return CGPoint(x: size.width * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ), y: tileDefaultOffset * 0.4)
+            }
         }
     }
     
@@ -479,6 +488,8 @@ class GameScene: SKScene {
         
          tileDefaultOffset =  places[21].y  * 0.6
         
+        let back =  rule.getPlayerTilesDefault()
+        
         for i in 1...9 {
             blueTiles[i] = PlayerTile(imageNamed: "blueTile")
             blueTiles[i]?.number = i
@@ -491,9 +502,8 @@ class GameScene: SKScene {
             var blueTilesPosition = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: tileDefaultOffset)
             var redTilesPosition = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height - tileDefaultOffset )
             
-            print("size h\(size.height) w\(size.width)")
             
-            if landscaped && size.height > size.width{
+            if landscaped && size.height * 1.2 < size.width{
                 blueTilesPosition = CGPoint(x:size.width*0.15, y:  size.height * (CGFloat( abs( Double( i ) * 0.1 - 1)) ))
                 redTilesPosition = CGPoint(x:size.width * 0.85 , y: size.height  * CGFloat(Double( i ) * 0.1  )  )
             }
@@ -502,11 +512,37 @@ class GameScene: SKScene {
             
             blueTiles[i]!.position = blueTilesPosition
             redTiles[i]!.position = redTilesPosition
+            
             blueTiles[i]?.zPosition = 2
             redTiles[i]?.zPosition = 2
                 
             addChild(blueTiles[i]!)
             addChild(redTiles[i]!)
+        }
+        
+        if back[.Blue]! != 9 && back[.Red]! != 9{
+            var b = 0
+            var r = 0
+            for (i,gamePlace) in rule.getGamePlan().enumerated() {
+                if gamePlace == .Blue {
+                    if let tile = blueTiles[b]{
+                        tile.removeFromParent()
+                        tile.position = places[i]
+                        addChild(tile)
+                    }
+                    b += 1
+                }
+                if gamePlace == .Red {
+                    if let tile = redTiles[b]{
+                        tile.removeFromParent()
+                        tile.position = places[i]
+                        addChild(tile)
+                    }
+                    r += 1
+                }
+            }
+        }else{
+            print("back \(back[.Blue]) \( back[.Red])")
         }
         print("did allot of stuff  in portait: \(UIDevice.current.orientation.isPortrait)")
 
