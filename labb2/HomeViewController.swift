@@ -11,15 +11,15 @@ import UIKit
 class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewDelegate  {
     
     var newGame = true
-    var gameId = 0
-    var selectedGame = GameInfo()
+    //var gameId = 0
+    var selectedGame=""
     
     @IBOutlet weak var gamePickerView: UIPickerView!
-    var savedGames:[GameInfo] = []
+    //var savedGames:[GameInfo] = []
     var savedGameTags:[String] = []
     
     override func viewDidLoad() {
-        print("Number Of Games: \(savedGames.count)")
+        print("Number Of Games: \(savedGameTags.count)")
         gamePickerView.delegate = self
         loadGames()
         //gameId = savedGames[gamePickerView.selectedRow(inComponent: 0)].id
@@ -28,66 +28,85 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     
     @IBAction func newGamePressed(_ sender: UIButton) {
         newGame = true
+        updateUI()
         performSegue(withIdentifier: "toGame", sender: nil)
     }
     
     @IBAction func loadGamePressed(_ sender: UIButton) {
-        if savedGames.count > 0 {
+        if savedGameTags.count > 0 {
             
             newGame = false
             performSegue(withIdentifier: "toGame", sender: nil)
             
         }
+        updateUI()
     }
 
+    private func updateUI(){
+        loadGames()
+        //gamePickerView.delegate = self
+       
+        gamePickerView.reloadAllComponents()
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let destinationView = segue.destination as! ViewController
         destinationView.newGame = self.newGame
-        destinationView.savedGames = self.savedGames
+        //destinationView.savedGames = self.savedGames
         destinationView.savedGameTags = self.savedGameTags
         if !newGame {
-            destinationView.gameId = self.gameId
-            destinationView.activeGameInfo = selectedGame
+            //destinationView.gameId = self.gameId
+            
+            if let game = NSKeyedUnarchiver.unarchiveObject(withFile: GameInfo.ArchiveURL.path + selectedGame){
+                print("loaded Game: \(selectedGame)")
+                let tmpGame = game as! GameInfo
+                destinationView.activeGameInfo = tmpGame
+            } else {
+                print("could not load Game for tag: \(selectedGame)")
+            }
         }
     }
     
     func loadGames(){
-        var loadedGameTags: [String] = []
+        savedGameTags = []
         if let loadedTags = UserDefaults.standard.array(forKey: GameInfo.Tags){
-            
-            loadedGameTags = loadedTags as! [String]
-            savedGameTags = loadedGameTags
-            
+            savedGameTags = loadedTags as! [String]
             print("Loading data was succesful")
-            print("Games: \(loadedGameTags)")
-            
-            var tmpGame: GameInfo
-            for tag in loadedGameTags {
-                if let game = NSKeyedUnarchiver.unarchiveObject(withFile: GameInfo.ArchiveURL.path + tag){
-                    print("loaded Game: \(tag)")
-                    tmpGame = game as! GameInfo
-                    savedGames.append(tmpGame)
-                } else {
-                    print("could not load Game for tag: \(tag)")
-                    
-                }
-            }
+            print("Games: \(savedGameTags)")
+           
         } else {
-            UserDefaults.standard.setValue(loadedGameTags, forKey: GameInfo.Tags)
+            UserDefaults.standard.setValue(savedGameTags, forKey: GameInfo.Tags)
             UserDefaults.standard.synchronize()
             print("Saved Games was succesfully initiated")
-            savedGames = []
+            
             
         }
         
     }
     
+    @IBAction func deletegame(_ sender: UIBarButtonItem) {
+        do {
+            if savedGameTags.count == 0 {
+                print("empty array")
+                return
+            }
+            savedGameTags.remove(at: savedGameTags.index(of: selectedGame)!)
+            UserDefaults.standard.setValue(savedGameTags, forKey: GameInfo.Tags)
+            UserDefaults.standard.synchronize()
+            let path = URL(fileURLWithPath:GameInfo.ArchiveURL.path + selectedGame)
+            print("less: \(FileManager.default.contents(atPath: path.absoluteString)) \n ls \(path)")
+            try FileManager.default.removeItem(at:path)
+            updateUI()
+
+        } catch {
+            print("error did not delete")
+        }
+    }
     
     // calculating the number of rows for each component in the picker view
     internal func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return savedGames.count
+        return savedGameTags.count
     }
 
    
@@ -99,14 +118,14 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     // responsible to print out the values for each item in the columns
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         
-        selectedGame = savedGames[row]
+        selectedGame = savedGameTags[row]
         
-        return NSAttributedString(string: selectedGame.date.description)
+        return NSAttributedString(string: Date(timeIntervalSince1970: Double(selectedGame)!).description)
     }
     
     // action, user selected a row
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if savedGames.count > 0 {
+        if savedGameTags.count > 0 {
             //gameId = savedGames[row].id
         }
        
