@@ -101,6 +101,11 @@
                                     <action selector="settings:" destination="7s1-vy-1k5" id="5Yh-LO-lEh"/>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem image="settings" id="1Fo-P0-x3T">
+                                <connections>
+                                    <action selector="goToSettings:" destination="7s1-vy-1k5" id="ySU-tQ-Tyh"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
@@ -164,10 +169,10 @@
             </objects>
             <point key="canvasLocation" x="-298.39999999999998" y="362.96851574212894"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="EQ4-MH-p5q">
             <objects>
-                <viewController id="jZu-h0-syA" sceneMemberID="viewController">
+                <viewController id="jZu-h0-syA" customClass="SettingsViewController" customModule="labb2" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yy9-W6-ntJ"/>
                         <viewControllerLayoutGuide type="bottom" id="CBs-oD-BTn"/>
@@ -189,9 +194,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qca-dB-4TJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="759" y="-231"/>
+            <point key="canvasLocation" x="769" y="-388"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="settings" width="32" height="32"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="RSD-yH-KCX"/>
     </inferredMetricsTieBreakers>
