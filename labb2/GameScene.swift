@@ -24,7 +24,21 @@ class GameScene: SKScene {
     
     var blueTiles = [PlayerTile?](repeating: nil, count: 10)
     var redTiles = [PlayerTile?](repeating: nil, count: 10)
-    
+    var xo:CGFloat?
+    var yo:CGFloat?
+    var oriation = UIDevice.current.orientation{
+        didSet{
+            print("size.h\(size.height)")
+            alotOfStuff()
+        }
+        willSet{
+            if let tmp = xo{
+                xo = yo
+                yo = tmp
+                self.removeAllChildren()
+            }
+        }
+    }
     var tileDefaultOffset:CGFloat = 10
     var selectedNodeIndex = -1
     var places = [CGPoint](repeating: CGPoint(), count: 25)
@@ -61,6 +75,9 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.clear
+       // didShow = true
+        xo = size.width
+        yo = size.height
         alotOfStuff()
     }
     
@@ -69,9 +86,15 @@ class GameScene: SKScene {
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventMill), name: Rules.mill, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventRemoved), name: Rules.removed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventNextTurn), name: Rules.nextTurn, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
             }
 
+    func rotated(){
+        let tmp = UIDevice.current.orientation
+        if tmp != oriation{
+            oriation = tmp
+        }
+    }
     func notifiedEventNextTurn(){
         print("Notified: Next Player turn")
         eventMode = .normal
@@ -92,7 +115,6 @@ class GameScene: SKScene {
     }
     
 
-    
     
     
     // this method handles all touch events happening on screen
@@ -326,8 +348,11 @@ class GameScene: SKScene {
         
         
         
-        
-        
+        //let x =  xo!
+        //let y =  yo!
+        let x = size.width
+        let y = size.height
+       
         let innerX:CGFloat = 0.1
         let middleX:CGFloat = 0.25
         let outerX:CGFloat = 0.4
@@ -338,39 +363,39 @@ class GameScene: SKScene {
         let outerY:CGFloat = 0.25
         let halfY:CGFloat = 0.5
         
-        places[0] = CGPoint(x:size.width/2,y:size.height/2)
+        places[0] = CGPoint(x:x/2,y:y/2)
         
-        places[3] = CGPoint(x:size.width * innerX,y:size.height/2 + size.width/2 * innerY)
-        places[2] = CGPoint(x:size.width * middleX,y:size.height/2 + size.width/2 * middleY)
-        places[1] = CGPoint(x:size.width * outerX,y:size.height/2 + size.width/2 * outerY)
+        places[3] = CGPoint(x:x * innerX,y:y/2 + x/2 * innerY)
+        places[2] = CGPoint(x:x * middleX,y:y/2 + x/2 * middleY)
+        places[1] = CGPoint(x:x * outerX,y:y/2 + x/2 * outerY)
         
-        places[6] = CGPoint(x:size.width * halfX,y:size.height/2 + size.width/2 * innerY)
-        places[5] = CGPoint(x:size.width * halfX,y:size.height/2 + size.width/2 * middleY)
-        places[4] = CGPoint(x:size.width * halfX,y:size.height/2 + size.width/2 * outerY)
+        places[6]  = CGPoint(x:x * halfX,y:y/2 + x/2 * innerY)
+        places[5]  = CGPoint(x:x * halfX,y:y/2 + x/2 * middleY)
+        places[4]  = CGPoint(x:x * halfX,y:y/2 + x/2 * outerY)
         
-        places[9] = CGPoint(x:size.width * (1 - innerX),y:size.height/2 + size.width/2 * innerY)
-        places[8] = CGPoint(x:size.width * (1 - middleX),y:size.height/2 + size.width/2 * middleY)
-        places[7] = CGPoint(x:size.width * (1 - outerX),y:size.height/2 + size.width/2 * outerY)
+        places[9]  = CGPoint(x:x * (1 - innerX),y:y/2 + x/2 * innerY)
+        places[8]  = CGPoint(x:x * (1 - middleX),y:y/2 + x/2 * middleY)
+        places[7]  = CGPoint(x:x * (1 - outerX),y:y/2 + x/2 * outerY)
         
-        places[12] = CGPoint(x:size.width * (1 - innerX),y:size.height * halfY )
-        places[11] = CGPoint(x:size.width * (1 - middleX),y:size.height * halfY )
-        places[10] = CGPoint(x:size.width * (1 - outerX),y:size.height * halfY )
+        places[12] = CGPoint(x:x * (1 - innerX),y:y * halfY )
+        places[11] = CGPoint(x:x * (1 - middleX),y:y * halfY )
+        places[10] = CGPoint(x:x * (1 - outerX),y:y * halfY )
         
-        places[15] = CGPoint(x:size.width * (1 - innerX), y:size.height/2 - size.width/2 * innerY)
-        places[14] = CGPoint(x:size.width * (1 - middleX), y:size.height/2 - size.width/2 * middleY)
-        places[13] = CGPoint(x:size.width * (1 - outerX), y:size.height/2 - size.width/2 * outerY)
+        places[15] = CGPoint(x:x * (1 - innerX), y:y/2 - x/2 * innerY)
+        places[14] = CGPoint(x:x * (1 - middleX), y:y/2 - x/2 * middleY)
+        places[13] = CGPoint(x:x * (1 - outerX), y:y/2 - x/2 * outerY)
         
-        places[18] = CGPoint(x:size.width * halfX, y:size.height/2 - size.width/2 * innerY)
-        places[17] = CGPoint(x:size.width * halfX, y:size.height/2 - size.width/2 * middleY)
-        places[16] = CGPoint(x:size.width * halfX, y:size.height/2 - size.width/2 * outerY)
+        places[18] = CGPoint(x:x * halfX, y:y/2 - x/2 * innerY)
+        places[17] = CGPoint(x:x * halfX, y:y/2 - x/2 * middleY)
+        places[16] = CGPoint(x:x * halfX, y:y/2 - x/2 * outerY)
         
-        places[21] = CGPoint(x:size.width * innerX,y:size.height/2 - size.width/2 * innerY)
-        places[20] = CGPoint(x:size.width * middleX,y:size.height/2 - size.width/2 * middleY)
-        places[19] = CGPoint(x:size.width * outerX,y:size.height/2 - size.width/2 * outerY)
+        places[21] = CGPoint(x:x * innerX,y:y/2 - x/2 * innerY)
+        places[20] = CGPoint(x:x * middleX,y:y/2 - x/2 * middleY)
+        places[19] = CGPoint(x:x * outerX,y:y/2 - x/2 * outerY)
         
-        places[24] = CGPoint(x:size.width * innerX,y:size.height/2  )
-        places[23] = CGPoint(x:size.width * middleX,y:size.height/2 )
-        places[22] = CGPoint(x:size.width * outerX,y:size.height/2 )
+        places[24] = CGPoint(x:x * innerX,y:y/2  )
+        places[23] = CGPoint(x:x * middleX,y:y/2 )
+        places[22] = CGPoint(x:x * outerX,y:y/2  )
         
         
         
@@ -444,15 +469,17 @@ class GameScene: SKScene {
             addChild(blueTiles[i]!)
             addChild(redTiles[i]!)
         }
+        print("did allot of stuff  in portait: \(UIDevice.current.orientation.isPortrait)")
 
         
     }
     
+   
+
+    
     func drawRect(_ rect:CGMutablePath){
         
         rect.closeSubpath()
-        
-        
         let shapeNode = SKShapeNode()
         shapeNode.path = rect
         //        shapeNode.name = rect

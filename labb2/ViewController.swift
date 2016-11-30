@@ -17,11 +17,12 @@ class ViewController: UIViewController {
     var savedGames: [GameInfo] = []
     var savedGameTags: [String] = []
     var rules = Rules()
-    
     @IBOutlet weak var blueLabel: UILabel!
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var redLabel: UILabel!
     //@IBOutlet weak var gamePlane: gamePlan!
+    
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,6 +87,7 @@ class ViewController: UIViewController {
         scene.rule = rules
         scene.gameInfo = gameInfo
         scene.initializeNotifiers()
+//        gameView.contentMode = .redraw
 
         let skView = gameView as! SKView
         skView.ignoresSiblingOrder = true
@@ -97,7 +99,6 @@ class ViewController: UIViewController {
     func loadGame() {
         let scene = GameScene(size: view.bounds.size)
         self.rules = Rules(gameInfo: activeGameInfo)
-        
         scene.rule = rules
         scene.gameInfo = activeGameInfo
         scene.initializeNotifiers()
