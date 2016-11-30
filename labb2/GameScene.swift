@@ -159,13 +159,31 @@ class GameScene: SKScene {
                 if selectedPlace != -1{
                     // checking if selected place is available. Because of phase one we set from index to -1, it is not in use in this phase.
                     if let tile =  currentTiles[selectedNodeIndex]{
-                        if rule.checkIfPlaceIsAvailable(to: selectedPlace,from: selectedNodeIndex){
-                            // placing selected tile on selected place
-                            moveTile(tile: tile, place: places[closestPlaces(touchLocation)])
-                            rule.place(to: selectedPlace, from: selectedNodeIndex)
-                            selectedNodeIndex = -1
+                        if rule.phaseOne {
+                            // phase one
+                            if rule.checkIfPlaceIsAvailable(to: selectedPlace,from: 0){
+                                // placing selected tile on selected place
+                                
+                                tile.currentPlace = selectedPlace
+                                moveTile(tile: tile, place: places[closestPlaces(touchLocation)])
+                                rule.place(to: selectedPlace, from: 0)
+                                selectedNodeIndex = -1
+                                
+                            }else {
+                                print("Selected place was not available: \(selectedPlace)")
+                            }
                         } else {
-                            print("Selected place was not available: \(selectedPlace)")
+                            // phase two
+                            if rule.checkIfPlaceIsAvailable(to: selectedPlace,from: tile.currentPlace){
+                                // placing selected tile on selected place
+                                
+                                tile.currentPlace = selectedPlace
+                                moveTile(tile: tile, place: places[closestPlaces(touchLocation)])
+                                rule.place(to: selectedPlace, from: tile.currentPlace)
+                                selectedNodeIndex = -1
+                            }else {
+                                print("Selected place was not available: \(selectedPlace)")
+                            }
                         }
                     }
                 }
@@ -188,6 +206,7 @@ class GameScene: SKScene {
     
         tile.isDeleted = true
         tile.isPlaced = false
+        tile.currentPlace = 0
         tile.alpha = 1.0
     
         let place = placeDeletedTile(tile: tile)
@@ -199,6 +218,7 @@ class GameScene: SKScene {
         // placing selected tile on selected place
         tile.alpha = 1.0
         tile.isPlaced = true
+        
     
         //get the distance between the destination position and the node's position
         let distance:Double = sqrt(pow(Double((place.x - tile.position.x)), 2.0) + pow(Double((place.y - tile.position.y)), 2.0));
