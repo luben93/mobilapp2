@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -163,39 +164,52 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uFc-CL-4Eo">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uFc-CL-4Eo">
                                 <rect key="frame" x="322" y="39" width="21" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.50042306209999998" green="1" blue="0.91691470109999995" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lo4-Gm-Cdz">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lo4-Gm-Cdz">
                                 <rect key="frame" x="113" y="39" width="21" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.50042306209999998" green="1" blue="0.91691470109999995" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uv7-iQ-6xT">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uv7-iQ-6xT">
                                 <rect key="frame" x="27" y="34" width="66" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="LineColor"/>
                                 <connections>
                                     <action selector="lineColorSelected:" destination="jZu-h0-syA" eventType="touchUpInside" id="bzK-aZ-wZd"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifz-OW-B9y">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifz-OW-B9y">
                                 <rect key="frame" x="177" y="34" width="122" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="BackGroundColor"/>
                                 <connections>
                                     <action selector="backColorSelected:" destination="jZu-h0-syA" eventType="touchUpInside" id="8hp-Nn-T1G"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U9C-FA-QzX">
-                                <rect key="frame" x="20" y="143" width="374" height="585"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U9C-FA-QzX">
+                                <rect key="frame" x="20" y="204" width="374" height="524"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ifz-OW-B9y" firstAttribute="leading" secondItem="Lo4-Gm-Cdz" secondAttribute="trailing" constant="43" id="0fr-2I-xQ3"/>
+                            <constraint firstItem="Uv7-iQ-6xT" firstAttribute="centerY" secondItem="Lo4-Gm-Cdz" secondAttribute="centerY" id="1sk-bv-lu6"/>
+                            <constraint firstItem="Lo4-Gm-Cdz" firstAttribute="leading" secondItem="Uv7-iQ-6xT" secondAttribute="trailing" constant="20" id="2ao-kc-75b"/>
+                            <constraint firstItem="uFc-CL-4Eo" firstAttribute="leading" secondItem="Ifz-OW-B9y" secondAttribute="trailing" constant="23" id="9h4-PI-qLt"/>
+                            <constraint firstItem="Lo4-Gm-Cdz" firstAttribute="bottom" secondItem="uFc-CL-4Eo" secondAttribute="bottom" id="BAi-GX-hUw"/>
+                            <constraint firstItem="U9C-FA-QzX" firstAttribute="leading" secondItem="u4p-sH-mQJ" secondAttribute="leadingMargin" id="Hno-xk-S5W"/>
+                            <constraint firstItem="Uv7-iQ-6xT" firstAttribute="top" secondItem="yy9-W6-ntJ" secondAttribute="bottom" constant="14" id="IMW-jZ-fo8"/>
+                            <constraint firstItem="Lo4-Gm-Cdz" firstAttribute="top" secondItem="yy9-W6-ntJ" secondAttribute="bottom" constant="19" id="NS2-4g-Au8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="uFc-CL-4Eo" secondAttribute="trailing" constant="51" id="OGC-sG-xci"/>
+                            <constraint firstItem="U9C-FA-QzX" firstAttribute="trailing" secondItem="u4p-sH-mQJ" secondAttribute="trailingMargin" id="OdE-RW-pc9"/>
+                            <constraint firstItem="U9C-FA-QzX" firstAttribute="top" secondItem="u4p-sH-mQJ" secondAttribute="top" constant="204" id="OqB-8d-Upo"/>
+                            <constraint firstItem="Lo4-Gm-Cdz" firstAttribute="top" secondItem="uFc-CL-4Eo" secondAttribute="top" id="fZS-IO-q3t"/>
+                            <constraint firstItem="Uv7-iQ-6xT" firstAttribute="leading" secondItem="u4p-sH-mQJ" secondAttribute="leadingMargin" constant="7" id="gIv-fy-1ax"/>
+                            <constraint firstItem="CBs-oD-BTn" firstAttribute="top" secondItem="U9C-FA-QzX" secondAttribute="bottom" constant="8" symbolic="YES" id="gLv-tR-v58"/>
+                            <constraint firstItem="Uv7-iQ-6xT" firstAttribute="baseline" secondItem="Ifz-OW-B9y" secondAttribute="baseline" id="wzP-oa-mrn"/>
+                            <constraint firstItem="Ifz-OW-B9y" firstAttribute="leading" secondItem="u4p-sH-mQJ" secondAttribute="leading" constant="177" id="zLf-ts-DcW"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="backColorBox" destination="uFc-CL-4Eo" id="C9A-2U-EAX"/>
