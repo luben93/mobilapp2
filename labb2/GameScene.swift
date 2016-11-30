@@ -24,21 +24,6 @@ class GameScene: SKScene {
     
     var blueTiles = [PlayerTile?](repeating: nil, count: 10)
     var redTiles = [PlayerTile?](repeating: nil, count: 10)
-   /* var oriationX = "x"
-    var oriationY = "y"
-    var oriation = UIDevice.current.orientation{
-        didSet{
-            print("oriation \(oriationX)")
-            alotOfStuff()
-        }
-        willSet{
-                let tmp = oriationX
-                oriationX = oriationY
-                oriationY = tmp
-                self.removeAllChildren()
-            
-        }
-    }*/
     var tileDefaultOffset:CGFloat = 10
     var selectedNodeIndex = -1
     var places = [CGPoint](repeating: CGPoint(), count: 25)
@@ -74,7 +59,7 @@ class GameScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        backgroundColor = SKColor.clear        
+        backgroundColor = SKColor.clear
         alotOfStuff()
     }
     
@@ -506,10 +491,11 @@ class GameScene: SKScene {
             var blueTilesPosition = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: tileDefaultOffset)
             var redTilesPosition = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height - tileDefaultOffset )
             
-            if landscaped{
+            print("size h\(size.height) w\(size.width)")
+            
+            if landscaped && size.height > size.width{
                 blueTilesPosition = CGPoint(x:size.width*0.15, y:  size.height * (CGFloat( abs( Double( i ) * 0.1 - 1)) ))
                 redTilesPosition = CGPoint(x:size.width * 0.85 , y: size.height  * CGFloat(Double( i ) * 0.1  )  )
-
             }
             
             
