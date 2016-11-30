@@ -54,6 +54,7 @@ class GameScene: SKScene {
     }
     
     enum Event {
+        case waiting
         case normal
         case mill
     }
@@ -68,22 +69,28 @@ class GameScene: SKScene {
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventMill), name: Rules.mill, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventRemoved), name: Rules.removed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameScene.notifiedEventNextTurn), name: Rules.nextTurn, object: nil)
+        
             }
 
     func notifiedEventNextTurn(){
+        print("Notified: Next Player turn")
         eventMode = .normal
         setTurnText()
     }
     func notifiedEventPlaced(){
+        print("Notified: Placed")
         //TODO place
     }
     func notifiedEventRemoved(){
+        print("Notified: Removed")
         //eventMode = .normal
         //setTurnText()
     }
     func notifiedEventMill(){
+        print("Notified: Mill")
         eventMode = .mill
     }
+    
 
     
     
@@ -110,6 +117,9 @@ class GameScene: SKScene {
         case .mill:
             currentTiles = opponentTiles
             selectedTileIndex = closestTile(touchLocation, cmp:opponentTiles)!
+        case .waiting:
+            print("Waiting for consequence")
+            return
         }
         
         // if selectedTileIndex is bigger than 0 we have touched a tile
@@ -132,6 +142,9 @@ class GameScene: SKScene {
                     print("not a placed tile")
                     return
                 }
+                
+            case .waiting:
+                return
             }
             
             if selectedNodeIndex != -1{
@@ -157,16 +170,19 @@ class GameScene: SKScene {
             case .normal:
                 //if touch places was found, place tile and switch turn to next player
                 if selectedPlace != -1{
-                    // checking if selected place is available. Because of phase one we set from index to -1, it is not in use in this phase.
                     if let tile =  currentTiles[selectedNodeIndex]{
                         if rule.phaseOne {
                             // phase one
+                            // checking if selected place is available. Because of phase one we set from index to 0, it is not in use in this phase.
                             if rule.checkIfPlaceIsAvailable(to: selectedPlace,from: 0){
-                                // placing selected tile on selected place
+                                eventMode = .waiting
+                                print("Waiting for consequece from normal move, phase one")
                                 
-                                tile.currentPlace = selectedPlace
                                 moveTile(tile: tile, place: places[closestPlaces(touchLocation)])
+                                
+                                // placing selected tile on selected place
                                 rule.place(to: selectedPlace, from: 0)
+                                tile.currentPlace = selectedPlace
                                 selectedNodeIndex = -1
                                 
                             }else {
@@ -175,11 +191,13 @@ class GameScene: SKScene {
                         } else {
                             // phase two
                             if rule.checkIfPlaceIsAvailable(to: selectedPlace,from: tile.currentPlace){
-                                // placing selected tile on selected place
+                                eventMode = .waiting
+                                print("Waiting for consequece from normal move, phase two")
                                 
-                                tile.currentPlace = selectedPlace
                                 moveTile(tile: tile, place: places[closestPlaces(touchLocation)])
+                                // placing selected tile on selected place
                                 rule.place(to: selectedPlace, from: tile.currentPlace)
+                                tile.currentPlace = selectedPlace
                                 selectedNodeIndex = -1
                             }else {
                                 print("Selected place was not available: \(selectedPlace)")
@@ -190,9 +208,14 @@ class GameScene: SKScene {
                 
             case .mill:
                 // implement something nice where the user gets to remove opponents tile
+                eventMode = .waiting
+                print("Waiting for consequece from mill move")
                 removeTile(tile: currentTiles.remove(at: selectedNodeIndex)!)
                 rule.remove(tile: selectedPlace)
                 selectedNodeIndex = -1
+            
+            case .waiting:
+                return
             }
         }
     }  

@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     var activeGameInfo = GameInfo()
     var savedGames: [GameInfo] = []
     var savedGameTags: [String] = []
+    var rules = Rules()
     
     @IBOutlet weak var blueLabel: UILabel!
     @IBOutlet weak var gameView: UIView!
@@ -25,6 +26,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.notifiedEventWin), name: Rules.win, object: nil)
         
         if newGame == true {
             print("New Game choosen")
@@ -39,10 +41,35 @@ class ViewController: UIViewController {
         
     }
     
+    func notifiedEventWin(){
+        print("Notified: Win")
+        // alertbox
+        var playerThatWonTheMatch = "RED"
+        if rules.isBluesTurn{
+            playerThatWonTheMatch = "BLUE"
+        }
+        let alert = UIAlertController(title: playerThatWonTheMatch + " WON!", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Dissmiss", style: UIAlertActionStyle.default, handler: { action in
+            switch action.style{
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+            }
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
     func startNewGame() {
         let scene = GameScene(size: view.bounds.size)
         let gameInfo = GameInfo()
-        let rules = Rules(gameInfo: gameInfo)
+        self.rules = Rules(gameInfo: gameInfo)
         
         
         print("TimeStamp: \(gameInfo.timeStamp.description)")
@@ -69,7 +96,7 @@ class ViewController: UIViewController {
     
     func loadGame() {
         let scene = GameScene(size: view.bounds.size)
-        let rules = Rules(gameInfo: activeGameInfo)
+        self.rules = Rules(gameInfo: activeGameInfo)
         
         scene.rule = rules
         scene.gameInfo = activeGameInfo

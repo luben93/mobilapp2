@@ -38,7 +38,7 @@ class Rules {
         set{
             info.playerDetailsBlue = newValue[.Blue]!
             info.playerDetailsRed = newValue[.Red]!
-            //save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
+            
             NSKeyedArchiver.archiveRootObject(info, toFile: GameInfo.ArchiveURL.path + info.timeStamp.description)
             
         }
@@ -66,13 +66,13 @@ class Rules {
     }
     
     
-    private var isBluesTurn:Bool {
+    var isBluesTurn:Bool {
         get{
             return info.isBlueTurn
         }
         set{
             info.isBlueTurn = newValue
-            NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
+            //NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
 
             NSKeyedArchiver.archiveRootObject(info, toFile: GameInfo.ArchiveURL.path + info.timeStamp.description)
             
@@ -110,34 +110,38 @@ class Rules {
     // rules
     
     
-    private func didWin(){
+    private func didWin() -> Bool{
         //TODO
         var opponent = Tiles.Blue
         if(isBluesTurn){ opponent = Tiles.Red}
-        if(phaseOne && gameplan.filter({opponent == $0}).count <= 3){
-            NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
+        if(!phaseOne && gameplan.filter({opponent == $0}).count < 3){
+            return true
         }
+        return false
     }
     
     private func hasMill(place:Int)-> Bool{
         var hadMill = false
         //TODO does not detect multiple mills correctly
         let player = currentPlayerTile
-        /*for possibleMill in possibleMills {
+        for possibleMill in possibleMills {
             if(possibleMill[0] == place || possibleMill[1] == place || possibleMill[2] == place ){
                 if(gameplan[possibleMill[0]] == player && gameplan[possibleMill[1]] == player && gameplan[possibleMill[2]] == player ){
                     //TODO only detect new mills!!!!
-                    NotificationCenter.default.post(name: Rules.mill, object: nil)
+                    //NotificationCenter.default.post(name: Rules.mill, object: nil)
+                   
                     return true
                 }
             }
-        }*/
+        }
+        /*
         for relaventMill in possibleMills.filter({$0.contains(place)}){
             if(gameplan[relaventMill[0]] == player && gameplan[relaventMill[1]] == player && gameplan[relaventMill[2]] == player ){
                 NotificationCenter.default.post(name: Rules.mill, object: nil)
                 hadMill = true
             }
         }
+            */
         
         return hadMill //todo
     }
@@ -150,14 +154,18 @@ class Rules {
                 playerDefaultTiles[currentPlayerTile]! -= 1
             } else {
                 gameplan[to] = gameplan[from]
+                gameplan[from] = .Empty
             }
             
             if !hasMill(place: to){
                 isBluesTurn = !isBluesTurn
+                NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
+                return true
                 
+            } else {
+                NotificationCenter.default.post(name: Rules.mill, object: nil)
+                return true
             }
-            NotificationCenter.default.post(name: Rules.placed, object: nil)
-            return true
             
         }
         print("invalid move")
@@ -172,10 +180,18 @@ class Rules {
         
         if (gameplan[tile] == opponent ){
             
-            isBluesTurn = !isBluesTurn
+            // TODO check for mills, if has more mills, let player remove more.
             gameplan[tile] = .Empty
-            NotificationCenter.default.post(name: Rules.removed, object: nil)
-            return true
+            if didWin() {
+                print("player did win")
+                NotificationCenter.default.post(name: Rules.win, object: nil)
+                return true
+            } else {
+                print("remove done, next turn")
+                isBluesTurn = !isBluesTurn
+                NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
+                return true
+            }
         }
         return false
         
@@ -185,9 +201,17 @@ class Rules {
     // checks if the selected place is avaiable and in the case of game beeing in phase two also check  if the move is valid
     func checkIfPlaceIsAvailable(to:Int, from fromOptional:Int?) -> Bool {
         if gameplan[to] == .Empty {
-            if phaseOne {
+            var currentPlayer = Tiles.Red
+            if(isBluesTurn){
+                currentPlayer = Tiles.Blue
+                print("Current player tiles on board: \(gameplan.filter({currentPlayer == $0}).count)")
+            }
+            
+            if (phaseOne || (gameplan.filter({currentPlayer == $0}).count == 3)) {
+                print("move to:\(to) isValid)")
                 return true
-            }else{
+            } else {
+  
                 if let from = fromOptional{
                     let out = isValidMove(to: to, from: from)
                     print("to:\(to) from:\(from) isValid:\(out)")
@@ -195,11 +219,12 @@ class Rules {
                 }
             }
         }
+        
         return false
     }
-    
-    
-    
+
+
+
     func placeIt() {
         NotificationCenter.default.post(name: Rules.placed, object: nil)
     }
