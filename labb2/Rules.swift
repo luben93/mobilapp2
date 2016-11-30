@@ -78,6 +78,7 @@ class Rules {
             info.isBlueTurn = newValue
             //save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
             NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
+            
             NSKeyedArchiver.archiveRootObject(info, toFile: "\(info.timeStamp)")
 
         }

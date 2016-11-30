@@ -106,10 +106,12 @@
                                     <action selector="restart:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yuX-9m-eM1"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QdR-Tj-CLU">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QdR-Tj-CLU">
                                 <rect key="frame" x="278" y="620" width="33" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="home"/>
+                                <connections>
+                                    <action selector="goToHome:" destination="BYZ-38-t0r" eventType="touchUpInside" id="icl-uX-gGK"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -119,11 +121,15 @@
                             <constraint firstItem="Mvf-KZ-xbD" firstAttribute="top" secondItem="k6a-rK-QSO" secondAttribute="bottom" constant="8" symbolic="YES" id="AcS-8h-53j"/>
                             <constraint firstItem="k6a-rK-QSO" firstAttribute="centerX" secondItem="Mvf-KZ-xbD" secondAttribute="centerX" id="Akf-Ic-3DF"/>
                             <constraint firstItem="k6a-rK-QSO" firstAttribute="top" secondItem="S5c-2h-don" secondAttribute="bottom" constant="8" symbolic="YES" id="L5s-Me-4Cn"/>
+                            <constraint firstItem="QdR-Tj-CLU" firstAttribute="leading" secondItem="Mvf-KZ-xbD" secondAttribute="trailing" constant="69" id="PFI-aN-MEw"/>
                             <constraint firstItem="k6a-rK-QSO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="QUX-sy-9iM"/>
                             <constraint firstAttribute="bottom" secondItem="Mvf-KZ-xbD" secondAttribute="bottom" constant="20" symbolic="YES" id="SOG-Ng-Hpt"/>
                             <constraint firstAttribute="trailing" secondItem="k6a-rK-QSO" secondAttribute="trailing" id="XKj-mi-s4x"/>
                             <constraint firstItem="ipE-Cn-TrU" firstAttribute="centerY" secondItem="Mvf-KZ-xbD" secondAttribute="centerY" id="aUJ-q5-4Vz"/>
+                            <constraint firstItem="QdR-Tj-CLU" firstAttribute="bottom" secondItem="ipE-Cn-TrU" secondAttribute="bottom" id="eet-kL-CDm"/>
+                            <constraint firstItem="QdR-Tj-CLU" firstAttribute="top" secondItem="ipE-Cn-TrU" secondAttribute="top" id="iF1-ig-8wy"/>
                             <constraint firstItem="ipE-Cn-TrU" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="ifq-dA-Kpb"/>
+                            <constraint firstItem="ipE-Cn-TrU" firstAttribute="leading" secondItem="QdR-Tj-CLU" secondAttribute="trailing" constant="15" id="l34-4E-ZKS"/>
                         </constraints>
                     </view>
                     <connections>

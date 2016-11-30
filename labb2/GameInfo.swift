@@ -115,5 +115,6 @@ class GameInfo: NSObject, NSCoding {
     
     static let DocumentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.appendingPathComponent("gameInfos")
+    static let Tags = "gameTags"
 
 }

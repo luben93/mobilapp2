@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     var gameId = 0
     var activeGameInfo = GameInfo()
     var savedGames: [GameInfo] = []
+    var savedGameTags: [String] = []
     
     @IBOutlet weak var blueLabel: UILabel!
     @IBOutlet weak var gameView: UIView!
@@ -43,8 +44,16 @@ class ViewController: UIViewController {
         let gameInfo = GameInfo()
         let rules = Rules(gameInfo: gameInfo)
         
-        savedGames.append(gameInfo)
-        NSKeyedArchiver.archiveRootObject(savedGames, toFile: GameInfo.ArchiveURL.path)
+        
+        print("TimeStamp: \(gameInfo.timeStamp.description)")
+        
+        savedGameTags.append(gameInfo.timeStamp.description)
+        print("gameTagsAfterAppend: \(savedGameTags) ")
+        
+        UserDefaults.standard.set(savedGameTags, forKey: GameInfo.Tags)
+        UserDefaults.standard.synchronize()
+        
+        NSKeyedArchiver.archiveRootObject(gameInfo, toFile: GameInfo.ArchiveURL.path + gameInfo.timeStamp.description)
     
         
         scene.rule = rules
@@ -73,11 +82,18 @@ class ViewController: UIViewController {
 
     }
     
+    @IBAction func goToHome(_ sender: UIButton) {
+        performSegue(withIdentifier: "toHome", sender: nil)
+    }
     
     @IBAction func restart(_ sender: UIButton) {
-        savedGames.remove(at: savedGames.index(of: activeGameInfo)!)
-        startNewGame()
+        var loadedGameTags: [String] = []
+        if let loadedTags = UserDefaults.standard.value(forKey: GameInfo.Tags){
+            loadedGameTags = loadedTags as! [String]
+            loadedGameTags.remove(at: loadedGameTags.index(of: activeGameInfo.timeStamp.description)!)
         
+            startNewGame()
+        }
     }
 }
 
