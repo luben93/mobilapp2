@@ -39,7 +39,7 @@ class Rules {
             info.playerDetailsBlue = newValue[.Blue]!
             info.playerDetailsRed = newValue[.Red]!
             //save.set(NSKeyedArchiver.archivedData(withRootObject: info),forKey:"gameInfo\(id!)")
-            NSKeyedArchiver.archiveRootObject(info, toFile: "\(info.timeStamp)")
+            NSKeyedArchiver.archiveRootObject(info, toFile: "\(GameInfo.ArchiveURL.path)\(info.timeStamp)")
             
         }
     }
@@ -60,7 +60,7 @@ class Rules {
         }
         set{
             info.gamePlan = newValue
-            NSKeyedArchiver.archiveRootObject(info, toFile: "\(info.timeStamp)")
+            NSKeyedArchiver.archiveRootObject(info, toFile: "\(GameInfo.ArchiveURL.path)\(info.timeStamp)")
             didWin()
         }
     }
@@ -73,7 +73,7 @@ class Rules {
         set{
             info.isBlueTurn = newValue
             NotificationCenter.default.post(name: Rules.nextTurn, object: nil)
-            NSKeyedArchiver.archiveRootObject(info, toFile: "\(info.timeStamp)")
+            NSKeyedArchiver.archiveRootObject(info, toFile: "\(GameInfo.ArchiveURL.path)\(info.timeStamp)")
             
         }
     }
