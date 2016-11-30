@@ -13,6 +13,7 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     var newGame = true
     //var gameId = 0
     var selectedGame=""
+    var settings = false
     
     @IBOutlet weak var gamePickerView: UIPickerView!
     //var savedGames:[GameInfo] = []
@@ -50,21 +51,25 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    
-        let destinationView = segue.destination as! ViewController
-        destinationView.newGame = self.newGame
-        //destinationView.savedGames = self.savedGames
-        destinationView.savedGameTags = self.savedGameTags
-        if !newGame {
-            //destinationView.gameId = self.gameId
+        if !self.settings {
             
-            if let game = NSKeyedUnarchiver.unarchiveObject(withFile: GameInfo.ArchiveURL.path + selectedGame){
-                print("loaded Game: \(selectedGame)")
-                let tmpGame = game as! GameInfo
-                destinationView.activeGameInfo = tmpGame
-            } else {
-                print("could not load Game for tag: \(selectedGame)")
+            let destinationView = segue.destination as! ViewController
+            destinationView.newGame = self.newGame
+            //destinationView.savedGames = self.savedGames
+            destinationView.savedGameTags = self.savedGameTags
+            if !newGame {
+                //destinationView.gameId = self.gameId
+                
+                if let game = NSKeyedUnarchiver.unarchiveObject(withFile: GameInfo.ArchiveURL.path + selectedGame){
+                    print("loaded Game: \(selectedGame)")
+                    let tmpGame = game as! GameInfo
+                    destinationView.activeGameInfo = tmpGame
+                } else {
+                    print("could not load Game for tag: \(selectedGame)")
+                }
             }
+        } else {
+            
         }
     }
     
@@ -106,6 +111,13 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
             print("error did not delete")
         }
     }
+    
+    
+    @IBAction func goToSettings(_ sender: UIBarButtonItem) {
+        self.settings = true
+        performSegue(withIdentifier: "toSettings", sender: nil)
+    }
+    
     
     // calculating the number of rows for each component in the picker view
     internal func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
