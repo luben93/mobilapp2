@@ -30,6 +30,7 @@ class Rules {
     static let phaseTwo = Notification.Name("phaseTwo")
     static let nextTurn = Notification.Name("nextTurn")
     
+    private var millCounter = 0
     //private let save = UserDefaults.standard
     private var playerDefaultTiles:[Tiles:Int]{
         get{
@@ -127,10 +128,10 @@ class Rules {
         for possibleMill in possibleMills {
             if(possibleMill[0] == place || possibleMill[1] == place || possibleMill[2] == place ){
                 if(gameplan[possibleMill[0]] == player && gameplan[possibleMill[1]] == player && gameplan[possibleMill[2]] == player ){
+                    millCounter += 1
+                    hadMill = true
                     //TODO only detect new mills!!!!
                     //NotificationCenter.default.post(name: Rules.mill, object: nil)
-                   
-                    return true
                 }
             }
         }
@@ -142,7 +143,10 @@ class Rules {
             }
         }
             */
-        
+        if  hadMill{
+            print("Number of mills detected: \(millCounter)"
+            )
+        }
         return hadMill //todo
     }
     
@@ -179,12 +183,19 @@ class Rules {
         if (isBluesTurn){ opponent = Tiles.Red }
         
         if (gameplan[tile] == opponent ){
+            millCounter -= 1
             
             // TODO check for mills, if has more mills, let player remove more.
+            
+            
             gameplan[tile] = .Empty
             if didWin() {
                 print("player did win")
                 NotificationCenter.default.post(name: Rules.win, object: nil)
+                return true
+            } else if millCounter > 0 {
+                print("Remaining mills: \(millCounter)")
+                NotificationCenter.default.post(name: Rules.mill, object: nil)
                 return true
             } else {
                 print("remove done, next turn")
