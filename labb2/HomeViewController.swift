@@ -50,7 +50,7 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+    
         let destinationView = segue.destination as! ViewController
         destinationView.newGame = self.newGame
         //destinationView.savedGames = self.savedGames
@@ -85,6 +85,9 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
         
     }
     
+    @IBAction func settings(_ sender: Any) {
+        //performSegue(withIdentifier: "toSettings", sender: )
+    }
     @IBAction func deletegame(_ sender: UIBarButtonItem) {
         do {
             if savedGameTags.count == 0 {

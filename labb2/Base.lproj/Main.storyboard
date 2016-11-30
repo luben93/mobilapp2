@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -87,16 +88,25 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="vb2-K8-elx">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="trash" id="GzH-Cp-kIi">
-                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="deletegame:" destination="7s1-vy-1k5" id="Kit-Um-sN6"/>
-                            </connections>
-                        </barButtonItem>
+                        <nil key="title"/>
+                        <rightBarButtonItems>
+                            <barButtonItem style="plain" systemItem="trash" id="GzH-Cp-kIi">
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="deletegame:" destination="7s1-vy-1k5" id="Kit-Um-sN6"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem style="plain" systemItem="organize" id="MBc-gv-z23">
+                                <connections>
+                                    <action selector="settings:" destination="7s1-vy-1k5" id="5Yh-LO-lEh"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="gamePickerView" destination="bNy-up-5Lg" id="xMN-eg-cCQ"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="toGame" id="RSD-yH-KCX"/>
+                        <segue destination="jZu-h0-syA" kind="showDetail" identifier="toSettings" id="uBm-vN-mhe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Opc-M7-5eK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -153,6 +163,33 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-298.39999999999998" y="362.96851574212894"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="EQ4-MH-p5q">
+            <objects>
+                <viewController id="jZu-h0-syA" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yy9-W6-ntJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="CBs-oD-BTn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="u4p-sH-mQJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="todo calle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pms-3q-IYV">
+                                <rect key="frame" x="166" y="273" width="75" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qca-dB-4TJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="759" y="-231"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
