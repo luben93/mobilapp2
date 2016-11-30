@@ -312,11 +312,20 @@ class GameScene: SKScene {
         return out
     }
     func placeDeletedTile(tile:PlayerTile) -> CGPoint {
-        let tileRemoveOffset = tileDefaultOffset * 0.4
+        
+        
+        if size.height + 70 < size.width {
         if tile.isBlue {
-            return CGPoint(x: size.width * CGFloat(Double( tile.number ) * 0.1  ), y: size.height - tileRemoveOffset)
+            return CGPoint(x:  size.width * 0.95, y: size.height  * CGFloat(Double( tile.number ) * 0.1  ))
         } else {
-            return CGPoint(x: size.width * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ), y: tileRemoveOffset)
+            return CGPoint(x:size.width * 0.05 , y: size.height * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ))
+        }
+        }else{
+            if tile.isBlue {
+                return CGPoint(x: size.width * CGFloat(Double( tile.number ) * 0.1  ), y: size.height - tileDefaultOffset * 0.4)
+            } else {
+                return CGPoint(x: size.width * (CGFloat( abs( Double( tile.number ) * 0.1 - 1)) ), y: tileDefaultOffset * 0.4)
+            }
         }
     }
     
@@ -491,9 +500,8 @@ class GameScene: SKScene {
             var blueTilesPosition = CGPoint(x: size.width * (CGFloat( abs( Double( i ) * 0.1 - 1)) ), y: tileDefaultOffset)
             var redTilesPosition = CGPoint(x: size.width * CGFloat(Double( i ) * 0.1  ), y: size.height - tileDefaultOffset )
             
-            print("size h\(size.height) w\(size.width)")
             
-            if landscaped && size.height > size.width{
+            if landscaped && size.height + 70 < size.width{
                 blueTilesPosition = CGPoint(x:size.width*0.15, y:  size.height * (CGFloat( abs( Double( i ) * 0.1 - 1)) ))
                 redTilesPosition = CGPoint(x:size.width * 0.85 , y: size.height  * CGFloat(Double( i ) * 0.1  )  )
             }
