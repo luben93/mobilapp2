@@ -13,6 +13,7 @@ class PlayerTile: SKSpriteNode{
     var isBlue = false
     var isPlaced = false
     var isDeleted = false
+    var currentPlace = 0
     var number = 0
     
     
