@@ -30,9 +30,18 @@ class GameScene: SKScene {
     var blueCan = SKSpriteNode()
     var redCan = SKSpriteNode()
     let label = SKLabelNode()
-    var gameInfo = GameInfo()
-    var rule = Rules()
-
+    var gameInfo:GameInfo {
+        return gameInfoOpt!
+    }
+    var gameInfoOpt:GameInfo?{
+        didSet{
+            print("didset in gamescene "+(gameInfoOpt?.timeStamp.description)!)
+        }
+    }
+    var rule:Rules{
+        return ruleOpt!
+    }
+    var ruleOpt: Rules?
     var eventMode = Event.normal
     
     var playerTiles:[PlayerTile?]{

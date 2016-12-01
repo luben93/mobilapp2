@@ -35,7 +35,7 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     
     @IBAction func loadGamePressed(_ sender: UIButton) {
         if savedGameTags.count > 0 {
-            
+        
             newGame = false
             performSegue(withIdentifier: "toGame", sender: nil)
             
@@ -58,7 +58,7 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
             //destinationView.savedGames = self.savedGames
             destinationView.savedGameTags = self.savedGameTags
             if !newGame {
-                //destinationView.gameId = self.gameId
+                
                 
                 if let game = NSKeyedUnarchiver.unarchiveObject(withFile: GameInfo.ArchiveURL.path + selectedGame){
                     print("loaded Game: \(selectedGame)")

@@ -12,11 +12,19 @@ import SpriteKit
 class ViewController: UIViewController {
     
     var newGame = true
-    var gameId = 0
-    var activeGameInfo = GameInfo()
+   // var gameId = 0
+    var activeGameInfo:GameInfo?{
+        didSet{
+            if let tmp = sceneOptional{
+                tmp.ruleOpt?.info = activeGameInfo!
+            }
+        }
+    }
     var savedGames: [GameInfo] = []
     var savedGameTags: [String] = []
-    var rules = Rules()
+    var rules:Rules {
+        return (sceneOptional?.rule)!
+    }
     @IBOutlet weak var blueLabel: UILabel!
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var redLabel: UILabel!
@@ -44,7 +52,7 @@ class ViewController: UIViewController {
             
             
         } else {
-            print("old game choosen")
+            print("old game choosen \(activeGameInfo?.timeStamp)")
             loadGame()
         }
         
@@ -89,7 +97,8 @@ class ViewController: UIViewController {
        let scene = GameScene(size: view.bounds.size)
         sceneOptional = scene
         let gameInfo = GameInfo()
-        self.rules = Rules(gameInfo: gameInfo)
+        activeGameInfo = gameInfo
+        scene.ruleOpt = Rules(gInfo: gameInfo)
         
         
         print("TimeStamp: \(gameInfo.timeStamp.description)")
@@ -103,8 +112,7 @@ class ViewController: UIViewController {
         NSKeyedArchiver.archiveRootObject(gameInfo, toFile: GameInfo.ArchiveURL.path + gameInfo.timeStamp.description)
     
         
-        scene.rule = rules
-        scene.gameInfo = gameInfo
+        scene.gameInfoOpt = gameInfo
         scene.initializeNotifiers()
 //        gameView.contentMode = .redraw
 
@@ -119,9 +127,9 @@ class ViewController: UIViewController {
         let scene = GameScene(size: view.bounds.size)
         sceneOptional = scene
 
-        self.rules = Rules(gameInfo: activeGameInfo)
-        scene.rule = rules
-        scene.gameInfo = activeGameInfo
+        scene.ruleOpt = Rules(gInfo: activeGameInfo)
+        scene.gameInfoOpt = activeGameInfo!
+        rules.info = activeGameInfo!
         scene.initializeNotifiers()
         
         let skView = gameView as! SKView
@@ -135,11 +143,11 @@ class ViewController: UIViewController {
         performSegue(withIdentifier: "toHome", sender: nil)
     }
     
-    @IBAction func restart(_ sender: UIButton) {
+    @IBAction func restart(_ sender: UIButton) {//TODO not used anymore remove
         var loadedGameTags: [String] = []
         if let loadedTags = UserDefaults.standard.value(forKey: GameInfo.Tags){
             loadedGameTags = loadedTags as! [String]
-            loadedGameTags.remove(at: loadedGameTags.index(of: activeGameInfo.timeStamp.description)!)
+            loadedGameTags.remove(at: loadedGameTags.index(of: activeGameInfo!.timeStamp.description)!)
         
             startNewGame()
         }

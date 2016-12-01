@@ -41,7 +41,7 @@ class Rules {
             info.playerDetailsRed = newValue[.Red]!
             
             NSKeyedArchiver.archiveRootObject(info, toFile: GameInfo.ArchiveURL.path + info.timeStamp.description)
-            
+            print(info.playerDetailsBlue)
         }
     }
     var phaseOne:Bool{
@@ -84,9 +84,9 @@ class Rules {
     
     
     var id:Int? = nil
-    var info:GameInfo = GameInfo(){
+    var info:GameInfo {
         didSet{
-            print("setting gInfo")
+            print("setting gInfo \(info.timeStamp)")
         }
     }
     
@@ -99,12 +99,10 @@ class Rules {
     }
     private var possibleMills = [[3,6,9],[2,5,8],[1,4,7],[24,23,22],[10,11,12],[19,16,13],[20,17,14],[21,18,15],//horizontal
         [3,24,21],[2,23,20],[1,22,19],[6,5,4],[16,17,18],[7,10,13],[8,11,14],[9,12,15]] //vertical
-    init() {
-        
-    }
     
-    init(gameInfo: GameInfo){
-        info = gameInfo
+    init(gInfo: GameInfo?){
+        info = gInfo!
+        print(info.timeStamp)
     }
     
     // end of model

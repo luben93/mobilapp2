@@ -25,7 +25,6 @@ class GameInfo: NSObject, NSCoding {
     var timeStamp = Date().timeIntervalSince1970
     //override var description: String
     
-    
     override init() {
         
     }
