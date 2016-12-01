@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     var savedGames: [GameInfo] = []
     var savedGameTags: [String] = []
     var rules = Rules()
+
     @IBOutlet weak var blueLabel: UILabel!
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var redLabel: UILabel!
@@ -34,6 +35,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+        
         //self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.notifiedEventWin), name: Rules.win, object: nil)
         loadGameTags()
@@ -86,7 +91,7 @@ class ViewController: UIViewController {
     
     func startNewGame() {
         
-       let scene = GameScene(size: view.bounds.size)
+        let scene = GameScene(size: view.bounds.size)
         sceneOptional = scene
         let gameInfo = GameInfo()
         self.rules = Rules(gameInfo: gameInfo)
