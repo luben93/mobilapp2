@@ -42,6 +42,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+        
         //self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.notifiedEventWin), name: Rules.win, object: nil)
         loadGameTags()
@@ -94,7 +98,7 @@ class ViewController: UIViewController {
     
     func startNewGame() {
         
-       let scene = GameScene(size: view.bounds.size)
+        let scene = GameScene(size: view.bounds.size)
         sceneOptional = scene
         let gameInfo = GameInfo()
         activeGameInfo = gameInfo

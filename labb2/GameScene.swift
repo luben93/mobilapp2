@@ -83,6 +83,7 @@ class GameScene: SKScene {
     func notifiedEventNextTurn(){
         print("Notified: Next Player turn")
         eventMode = .normal
+        label.text = "Move"
         setTurnText()
     }
     func notifiedEventPlaced(){
@@ -97,6 +98,7 @@ class GameScene: SKScene {
     func notifiedEventMill(){
         print("Notified: Mill")
         eventMode = .mill
+        label.text = "Mill"
     }
     
 
@@ -276,9 +278,11 @@ class GameScene: SKScene {
         case .Blue:
             label.fontColor = SKColor.blue
             label.zRotation = CGFloat(0)
+            
         case .Red:
             label.fontColor = SKColor.red
             label.zRotation = CGFloat(M_PI)
+            
         case .Empty: print("labelsetter error error"); break;
             
         }
@@ -537,6 +541,7 @@ class GameScene: SKScene {
                     if let tile = blueTiles[b]{
                         tile.removeFromParent()
                         tile.position = places[i]
+                        
                         addChild(tile)
                     }
                     b += 1
@@ -545,6 +550,7 @@ class GameScene: SKScene {
                     if let tile = redTiles[b]{
                         tile.removeFromParent()
                         tile.position = places[i]
+                        
                         addChild(tile)
                     }
                     r += 1
@@ -562,15 +568,24 @@ class GameScene: SKScene {
 
     
     func drawRect(_ rect:CGMutablePath){
+        var lineColor = UIColor.gray
+        var backgroundColor = UIColor.white
+        if let loadedColor = NSKeyedUnarchiver.unarchiveObject(withFile: SettingsViewController.ArchiveURL.path + SettingsViewController.lineColorSettingTag){
+            lineColor = loadedColor as! UIColor
+        }
+        if let loadedColor = NSKeyedUnarchiver.unarchiveObject(withFile: SettingsViewController.ArchiveURL.path + SettingsViewController.backgroundColorSettingTag){
+            backgroundColor = loadedColor as! UIColor
+        }
         
         rect.closeSubpath()
         let shapeNode = SKShapeNode()
         shapeNode.path = rect
         //        shapeNode.name = rect
-        shapeNode.strokeColor = UIColor.gray
+        shapeNode.strokeColor = lineColor
         shapeNode.lineWidth = 2
         shapeNode.zPosition = 1
         self.addChild(shapeNode)
+        self.backgroundColor = backgroundColor
     }
     
     
