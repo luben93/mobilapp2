@@ -36,6 +36,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         //self.redLabel.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.notifiedEventWin), name: Rules.win, object: nil)
+        loadGameTags()
         
         if newGame == true {
             print("New Game choosen")
@@ -48,6 +49,14 @@ class ViewController: UIViewController {
         }
         
         
+    }
+    func loadGameTags(){
+        if let loadedTags = UserDefaults.standard.array(forKey: GameInfo.Tags){
+            savedGameTags = loadedTags as! [String]
+            print("ViewController:Loading data was succesful")
+            print("ViewController:Games: \(savedGameTags)")
+            
+        }
     }
     
     func notifiedEventWin(){
