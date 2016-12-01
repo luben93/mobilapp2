@@ -88,6 +88,8 @@ class GameScene: SKScene {
     }
     func notifiedEventPlaced(){
         print("Notified: Placed")
+        label.text = "Select"
+
         //TODO place
     }
     func notifiedEventRemoved(){
@@ -273,15 +275,20 @@ class GameScene: SKScene {
          }else{
          label.text = "place tile"
          }*/
-        
+        var up = 0.0
+        var down = M_PI
+        if UIDevice.current.orientation.isLandscape {
+            up -= M_PI/2
+            down -= M_PI/2
+        }
         switch rule.currentPlayerTile { //was a flipped bool, now normal
         case .Blue:
             label.fontColor = SKColor.blue
-            label.zRotation = CGFloat(0)
+            label.zRotation = CGFloat(up)
             
         case .Red:
             label.fontColor = SKColor.red
-            label.zRotation = CGFloat(M_PI)
+            label.zRotation = CGFloat(down)
             
         case .Empty: print("labelsetter error error"); break;
             

@@ -97,11 +97,6 @@
                                     <action selector="deletegame:" destination="7s1-vy-1k5" id="Kit-Um-sN6"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem style="plain" systemItem="organize" id="MBc-gv-z23">
-                                <connections>
-                                    <action selector="settings:" destination="7s1-vy-1k5" id="5Yh-LO-lEh"/>
-                                </connections>
-                            </barButtonItem>
                             <barButtonItem image="settings" id="1Fo-P0-x3T">
                                 <connections>
                                     <action selector="goToSettings:" destination="7s1-vy-1k5" id="ySU-tQ-Tyh"/>
@@ -228,6 +223,6 @@
         <image name="settings" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="URw-Vz-wEB"/>
+        <segue reference="RSD-yH-KCX"/>
     </inferredMetricsTieBreakers>
 </document>
