@@ -17,18 +17,27 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     
     @IBOutlet weak var gamePickerView: UIPickerView!
     //var savedGames:[GameInfo] = []
-    var savedGameTags:[String] = []
+    var savedGameTags:[String] = []{
+        didSet{
+            UserDefaults.standard.set(savedGameTags, forKey: GameInfo.Tags)
+            print("saves \(UserDefaults.standard.array(forKey: GameInfo.Tags))")
+            UserDefaults.standard.synchronize()
+        }
+    }
     
     override func viewDidLoad() {
         print("Number Of Games: \(savedGameTags.count)")
         gamePickerView.delegate = self
         loadGames()
+        print("Number Of Games: \(savedGameTags.count)")
+
         //gameId = savedGames[gamePickerView.selectedRow(inComponent: 0)].id
         //gamePickerView.reloadAllComponents()
     }
     
     @IBAction func newGamePressed(_ sender: UIButton) {
         newGame = true
+        savedGameTags.append(Date().timeIntervalSince1970.description)
         updateUI()
         performSegue(withIdentifier: "toGame", sender: nil)
     }
@@ -74,19 +83,19 @@ class HomeViewController: UIViewController,UIPickerViewDataSource, UIPickerViewD
     }
     
     func loadGames(){
-        savedGameTags = []
+       // savedGameTags = []
         if let loadedTags = UserDefaults.standard.array(forKey: GameInfo.Tags){
-            savedGameTags = loadedTags as! [String]
-            print("Loading data was succesful")
-            print("Games: \(savedGameTags)")
-           
-        } else {
-            UserDefaults.standard.setValue(savedGameTags, forKey: GameInfo.Tags)
-            UserDefaults.standard.synchronize()
-            print("Saved Games was succesfully initiated")
-            
-            
+            let temp = loadedTags as! [String]
+            if(temp.count != 0){
+                print("Loading data was succesful")
+                print("Games: \(savedGameTags)")
+                savedGameTags = temp
+                return
+            }
         }
+        UserDefaults.standard.setValue(savedGameTags, forKey: GameInfo.Tags)
+        UserDefaults.standard.synchronize()
+        print("Saved Games was succesfully initiated")
         
     }
     

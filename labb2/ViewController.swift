@@ -88,8 +88,8 @@ class ViewController: UIViewController {
         savedGameTags.append(gameInfo.timeStamp.description)
         print("gameTagsAfterAppend: \(savedGameTags) ")
         
-        UserDefaults.standard.set(savedGameTags, forKey: GameInfo.Tags)
-        UserDefaults.standard.synchronize()
+        //UserDefaults.standard.set(savedGameTags, forKey: GameInfo.Tags)
+        //UserDefaults.standard.synchronize()
         
         NSKeyedArchiver.archiveRootObject(gameInfo, toFile: GameInfo.ArchiveURL.path + gameInfo.timeStamp.description)
     
